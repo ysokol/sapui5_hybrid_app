@@ -1,165 +1,185 @@
 {
-	"run": [
-		{
-			"filePath": "/sapui5_hybrid_app/webapp/test/flpSandbox.html",
-			"previewMode": 1,
-			"dataMode": 1,
-			"workspace": "withoutWorkspace",
-			"urlParameters": [
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				},
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				}
-			],
-			"hashParameter": "sapui5_hybrid_app-display",
-			"ui5ActiveVersion": "snapshot",
-			"ui5VerSource": null,
-			"isDefaultVersion": 1,
-			"_metadata": {
-				"id": "6894311",
-				"runnerId": "webapprunner",
-				"displayName": "App in FLP Sandbox"
-			}
-		},
-		{
-			"filePath": "/sapui5_hybrid_app/webapp/test/flpSandboxMockServer.html",
-			"previewMode": 1,
-			"dataMode": 1,
-			"workspace": "withoutWorkspace",
-			"urlParameters": [
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				},
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				}
-			],
-			"hashParameter": "sapui5_hybrid_app-display",
-			"ui5ActiveVersion": "snapshot",
-			"ui5VerSource": null,
-			"isDefaultVersion": 1,
-			"_metadata": {
-				"id": "197252",
-				"runnerId": "webapprunner",
-				"displayName": "App in FLP Sandbox (Mock Server)"
-			}
-		},
-		{
-			"filePath": "/sapui5_hybrid_app/webapp/test/unit/unitTests.qunit.html",
-			"previewMode": 1,
-			"dataMode": 1,
-			"workspace": "withoutWorkspace",
-			"ui5ActiveVersion": "snapshot",
-			"ui5VerSource": null,
-			"isDefaultVersion": 1,
-			"urlParameters": [
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				},
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				}
-			],
-			"_metadata": {
-				"id": "1183397",
-				"runnerId": "webapprunner",
-				"displayName": "Unit Tests"
-			}
-		},
-		{
-			"filePath": "/sapui5_hybrid_app/webapp/test/integration/opaTests.qunit.html",
-			"previewMode": 1,
-			"dataMode": 1,
-			"workspace": "withoutWorkspace",
-			"ui5ActiveVersion": "snapshot",
-			"ui5VerSource": null,
-			"isDefaultVersion": 1,
-			"urlParameters": [
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				},
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				}
-			],
-			"hashParameter": "",
-			"_metadata": {
-				"id": "6337660",
-				"runnerId": "webapprunner",
-				"displayName": "OPA Tests"
-			}
-		},
-		{
-			"filePath": "/sapui5_hybrid_app/webapp/test/testsuite.qunit.html",
-			"previewMode": 1,
-			"dataMode": 1,
-			"workspace": "withoutWorkspace",
-			"ui5ActiveVersion": "snapshot",
-			"ui5VerSource": null,
-			"isDefaultVersion": 1,
-			"urlParameters": [
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				},
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				}
-			],
-			"hashParameter": "",
-			"_metadata": {
-				"id": "4958659",
-				"runnerId": "webapprunner",
-				"displayName": "Test Suite (Unit, OPA)"
-			}
-		},
-		{
-			"filePath": "/sapui5_hybrid_app/webapp/Component.js",
-			"previewMode": 1,
-			"dataMode": 1,
-			"workspace": "withoutWorkspace",
-			"ui5ActiveVersion": "snapshot",
-			"ui5VerSource": null,
-			"isDefaultVersion": 1,
-			"urlParameters": [
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				},
-				{
-					"paramName": "",
-					"paramValue": "",
-					"paramActive": false
-				}
-			],
-			"hashParameter": "",
-			"_metadata": {
-				"id": "8314645",
-				"runnerId": "fiorirunner",
-				"displayName": "App as Fiori Component"
-			}
-		}
-	]
+  "run": [
+    {
+      "filePath": "/sapui5_hybrid_app/webapp/Component.js",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": "snapshot",
+      "ui5VerSource": null,
+      "isDefaultVersion": 1,
+      "urlParameters": [
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        },
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        }
+      ],
+      "hashParameter": "",
+      "_metadata": {
+        "id": "8314645",
+        "runnerId": "fiorirunner",
+        "displayName": "App as Fiori Component",
+        "lastRunTimeStamp": 1519163732809
+      }
+    },
+    {
+      "filePath": "/webapp/test.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": null,
+      "ui5VerSource": null,
+      "isDefaultVersion": 0,
+      "urlParameters": [],
+      "hashParameter": "",
+      "backendSystem": [],
+      "urlParametersNotNeeded": false,
+      "_metadata": {
+        "runnerId": "webapprunner",
+        "id": 4417835,
+        "displayName": "Run test.html",
+        "lastRunTimeStamp": 1519163702935
+      }
+    },
+    {
+      "filePath": "/sapui5_hybrid_app/webapp/test/flpSandbox.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "urlParameters": [
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        },
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        }
+      ],
+      "hashParameter": "sapui5_hybrid_app-display",
+      "ui5ActiveVersion": "snapshot",
+      "ui5VerSource": null,
+      "isDefaultVersion": 1,
+      "_metadata": {
+        "id": "6894311",
+        "runnerId": "webapprunner",
+        "displayName": "App in FLP Sandbox"
+      }
+    },
+    {
+      "filePath": "/sapui5_hybrid_app/webapp/test/flpSandboxMockServer.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "urlParameters": [
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        },
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        }
+      ],
+      "hashParameter": "sapui5_hybrid_app-display",
+      "ui5ActiveVersion": "snapshot",
+      "ui5VerSource": null,
+      "isDefaultVersion": 1,
+      "_metadata": {
+        "id": "197252",
+        "runnerId": "webapprunner",
+        "displayName": "App in FLP Sandbox (Mock Server)"
+      }
+    },
+    {
+      "filePath": "/sapui5_hybrid_app/webapp/test/unit/unitTests.qunit.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": "snapshot",
+      "ui5VerSource": null,
+      "isDefaultVersion": 1,
+      "urlParameters": [
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        },
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        }
+      ],
+      "_metadata": {
+        "id": "1183397",
+        "runnerId": "webapprunner",
+        "displayName": "Unit Tests"
+      }
+    },
+    {
+      "filePath": "/sapui5_hybrid_app/webapp/test/integration/opaTests.qunit.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": "snapshot",
+      "ui5VerSource": null,
+      "isDefaultVersion": 1,
+      "urlParameters": [
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        },
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        }
+      ],
+      "hashParameter": "",
+      "_metadata": {
+        "id": "6337660",
+        "runnerId": "webapprunner",
+        "displayName": "OPA Tests"
+      }
+    },
+    {
+      "filePath": "/sapui5_hybrid_app/webapp/test/testsuite.qunit.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": "snapshot",
+      "ui5VerSource": null,
+      "isDefaultVersion": 1,
+      "urlParameters": [
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        },
+        {
+          "paramName": "",
+          "paramValue": "",
+          "paramActive": false
+        }
+      ],
+      "hashParameter": "",
+      "_metadata": {
+        "id": "4958659",
+        "runnerId": "webapprunner",
+        "displayName": "Test Suite (Unit, OPA)"
+      }
+    }
+  ]
 }
