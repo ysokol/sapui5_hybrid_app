@@ -1,0 +1,27 @@
+{
+	"smp": {
+		"appid": "my.orders.hybrid",
+		"features": {
+			"logon": true,
+			"odata": true,
+			"device": false,
+			"network": false
+		},
+		"context": {
+			"serverHost": "hcpms-s0004431717trial.hanatrial.ondemand.com",
+			"https": true,
+			"serverPort": "443",
+			"custom": {}
+		}
+	},
+	"data": {
+		"proxy": "smpodata",
+		"format": null,
+		"services": [
+			{
+				"name": "mainService",
+				"serviceUrl": "https://hcpms-s0004431717trial.hanatrial.ondemand.com:443/my_orders_odata/"
+			}
+		]
+	}
+}

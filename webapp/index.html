@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>orders.hybrid</title>
+
+		<!-- Bootstrap the unified shell in sandbox mode for standalone usage.
+
+			The renderer is specified in the global Unified Shell configuration object "sap-ushell-config".
+
+			The fiori2 renderer will render the shell header allowing, for instance,
+			testing of additional application setting buttons.
+
+			The navigation target resolution service is configured in a way that the empty URL hash is
+			resolved to our own application.
+
+			This example uses relative path references for the SAPUI5 resources and test-resources;
+			it might be necessary to adapt them depending on the target runtime platform.
+			The sandbox platform is restricted to development or demo use cases and must NOT be used
+			for productive scenarios.
+		-->
+		<!--<script>
+			window["sap-ushell-config"] = {
+				defaultRenderer : "fiori2",
+				renderers: {
+					fiori2: {
+						componentData: {
+							config: {
+								search: "hidden"
+							}
+						}
+					}
+				},
+				applications: {
+					"ordershybrid-display": {
+						additionalInformation: "SAPUI5.Component=my.my_orders_hybrid",
+						applicationType: "URL",
+						url: "../",
+						description: "MyOrders Hybrid",
+						title: "orders.hybrid"
+					}
+				}
+			};
+		</script>
+-->
+
+		<!--<script src="../test-resources/sap/ushell/bootstrap/sandbox.js" id="sap-ushell-bootstrap"></script>
+-->
+<script type="text/javascript">
+window["sap-ushell-config"] = {
+	defaultRenderer : "fiorisandbox",
+	services: {
+		NavTargetResolution: {
+			// navigation target resolution service is configured to resolve the empty location hash to the application
+			config : {
+				resolveLocal : [ {
+					"linkId" : "",
+					resolveTo : {
+						additionalInformation : "SAPUI5.Component=my",
+						applicationType : "URL",
+						url : "./" + window.location.search // pass URL query parameters to application
+					}
+				}]
+			}
+		}
+	}
+};
+</script>
+<script src="test-resources/sap/ushell/bootstrap/sandbox.js" id="sap-ushell-bootstrap"></script>
+
+
+		<!-- Bootstrap the UI5 core library -->
+		<!--<script id="sap-ui-bootstrap"
+				src="../resources/sap-ui-core-dbg.js"
+				data-sap-ui-libs="sap.ushell, sap.collaboration, sap.m, sap.ui.layout"
+				data-sap-ui-theme="sap_belize"
+				data-sap-ui-preload="async"
+				data-sap-ui-compatVersion="edge"
+				data-sap-ui-frameOptions='allow'> // NON-SECURE setting for testing environment
+		</script>
+-->
+<script id="sap-ui-bootstrap"
+				src="resources/sap-ui-core-dbg.js"
+				data-sap-ui-libs="sap.ushell, sap.collaboration, sap.m, sap.ui.layout"
+				data-sap-ui-theme="sap_belize"
+				data-sap-ui-preload="async"
+				data-sap-ui-compatVersion="edge"
+				data-sap-ui-frameOptions='allow'
+				data-sap-ui-resourceroots='{ "my.sapui5_hybrid_app": "./" }'
+				> // NON-SECURE setting for testing environment
+		</script>
+
+<script src="hybrid/sap-mobile-hybrid.js" id="sap-mobile-hybrid" type="text/javascript"></script>
+<script src="cordova.js" onload="sap.hybrid.setCordova();" type="text/javascript"></script>
+<script>
+sap.hybrid.startApp = function() {
+	var oScript = document.createElement("script");
+	oScript.text = "\
+			sap.ui.getCore().attachInit(function() {\
+								sap.ushell.Container.createRenderer().placeAt(\"content\");\
+			});\
+			";
+	document.head.appendChild(oScript);
+
+}
+</script>
+<script>sap.hybrid.bootStrap();</script>
+
+		<!--<script>
+			sap.ui.getCore().attachInit(function() {
+				// initialize the ushell sandbox component
+				sap.ushell.Container.createRenderer().placeAt("content");
+			});
+		</script>
+-->
+
+	</head>
+
+	<!-- UI Content -->
+	<body class="sapUiBody" id="content">
+	</body>
+</html>
