@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<edmx:Edmx Version="1.0"
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:DataServices m:DataServiceVersion="1.0"
+        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+        <Schema Namespace="my.orders.persistance.unit"
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="SalesOrderItem">
+                <Key>
+                    <PropertyRef Name="SalesOrder"/>
+                    <PropertyRef Name="SalesOrderItem"/>
+                </Key>
+                <Property Name="AmountGross" Type="Edm.Decimal" Nullable="true" Precision="15" Scale="2"/>
+                <Property Name="Material" Type="Edm.String" Nullable="true" MaxLength="20"/>
+                <Property Name="OrderUom" Type="Edm.String" Nullable="true" MaxLength="3"/>
+                <Property Name="Price" Type="Edm.Decimal" Nullable="true" Precision="15" Scale="2"/>
+                <Property Name="Quantity" Type="Edm.Decimal" Nullable="true" Precision="15" Scale="2"/>
+                <Property Name="SalesOrder" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="SalesOrderItem" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="UpdateFlag" Type="Edm.String" Nullable="true" MaxLength="1"/>
+                <NavigationProperty Name="MaterialDetails" Relationship="my.orders.persistance.unit.SalesOrderItem_Material_Many_One0" FromRole="SalesOrderItem" ToRole="Material"/>
+                <NavigationProperty Name="SalesOrderDetails" Relationship="my.orders.persistance.unit.SalesOrderItem_SalesOrder_Many_One0" FromRole="SalesOrderItem" ToRole="SalesOrder"/>
+            </EntityType>
+            <EntityType Name="SalesOrder">
+                <Key>
+                    <PropertyRef Name="SalesOrder"/>
+                </Key>
+                <Property Name="Comment" Type="Edm.String" Nullable="true" MaxLength="50"/>
+                <Property Name="Currency" Type="Edm.String" Nullable="true" MaxLength="3"/>
+                <Property Name="Customer" Type="Edm.String" Nullable="true" MaxLength="10"/>
+                <Property Name="OrderDate" Type="Edm.DateTime" Nullable="true"/>
+                <Property Name="OrderTotalGross" Type="Edm.Decimal" Nullable="true" Precision="15" Scale="2"/>
+                <Property Name="SalesOrder" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="Status" Type="Edm.String" Nullable="true" MaxLength="10"/>
+                <Property Name="UpdateFlag" Type="Edm.String" Nullable="true" MaxLength="1"/>
+                <NavigationProperty Name="CustomerDetails" Relationship="my.orders.persistance.unit.SalesOrder_Customer_Many_One0" FromRole="SalesOrder" ToRole="Customer"/>
+                <NavigationProperty Name="SalesOrderItemDetails" Relationship="my.orders.persistance.unit.SalesOrderItem_SalesOrder_Many_One0" FromRole="SalesOrder" ToRole="SalesOrderItem"/>
+            </EntityType>
+            <EntityType Name="Material">
+                <Key>
+                    <PropertyRef Name="Material"/>
+                </Key>
+                <Property Name="BaseUom" Type="Edm.String" Nullable="true" MaxLength="3"/>
+                <Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="50"/>
+                <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="Price" Type="Edm.Decimal" Nullable="true" Precision="15" Scale="2"/>
+            </EntityType>
+            <EntityType Name="UnitOfMeasure">
+                <Key>
+                    <PropertyRef Name="Uom"/>
+                </Key>
+                <Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="50"/>
+                <Property Name="Uom" Type="Edm.String" Nullable="false" MaxLength="3"/>
+            </EntityType>
+            <EntityType Name="Customer">
+                <Key>
+                    <PropertyRef Name="Customer"/>
+                </Key>
+                <Property Name="Customer" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="50"/>
+            </EntityType>
+            <Association Name="SalesOrderItem_Material_Many_One0">
+                <End Type="my.orders.persistance.unit.SalesOrderItem" Multiplicity="*" Role="SalesOrderItem"/>
+                <End Type="my.orders.persistance.unit.Material" Multiplicity="1" Role="Material"/>
+                <ReferentialConstraint>
+                    <Principal Role="Material">
+                        <PropertyRef Name="Material"/>
+                    </Principal>
+                    <Dependent Role="SalesOrderItem">
+                        <PropertyRef Name="Material"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="SalesOrderItem_SalesOrder_Many_One0">
+                <End Type="my.orders.persistance.unit.SalesOrderItem" Multiplicity="*" Role="SalesOrderItem"/>
+                <End Type="my.orders.persistance.unit.SalesOrder" Multiplicity="1" Role="SalesOrder"/>
+                <ReferentialConstraint>
+                    <Principal Role="SalesOrder">
+                        <PropertyRef Name="SalesOrder"/>
+                    </Principal>
+                    <Dependent Role="SalesOrderItem">
+                        <PropertyRef Name="SalesOrder"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="SalesOrder_Customer_Many_One0">
+                <End Type="my.orders.persistance.unit.SalesOrder" Multiplicity="*" Role="SalesOrder"/>
+                <End Type="my.orders.persistance.unit.Customer" Multiplicity="1" Role="Customer"/>
+                <ReferentialConstraint>
+                    <Principal Role="Customer">
+                        <PropertyRef Name="Customer"/>
+                    </Principal>
+                    <Dependent Role="SalesOrder">
+                        <PropertyRef Name="Customer"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="my.orders.persistance.unitContainer" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="SalesOrderItems" EntityType="my.orders.persistance.unit.SalesOrderItem"/>
+                <EntitySet Name="SalesOrders" EntityType="my.orders.persistance.unit.SalesOrder"/>
+                <EntitySet Name="Materials" EntityType="my.orders.persistance.unit.Material"/>
+                <EntitySet Name="UnitOfMeasures" EntityType="my.orders.persistance.unit.UnitOfMeasure"/>
+                <EntitySet Name="Customers" EntityType="my.orders.persistance.unit.Customer"/>
+                <AssociationSet Name="SalesOrderItem_Material_Many_One0Set" Association="my.orders.persistance.unit.SalesOrderItem_Material_Many_One0">
+                    <End EntitySet="SalesOrderItems" Role="SalesOrderItem"/>
+                    <End EntitySet="Materials" Role="Material"/>
+                </AssociationSet>
+                <AssociationSet Name="SalesOrderItem_SalesOrder_Many_One0Set" Association="my.orders.persistance.unit.SalesOrderItem_SalesOrder_Many_One0">
+                    <End EntitySet="SalesOrderItems" Role="SalesOrderItem"/>
+                    <End EntitySet="SalesOrders" Role="SalesOrder"/>
+                </AssociationSet>
+                <AssociationSet Name="SalesOrder_Customer_Many_One0Set" Association="my.orders.persistance.unit.SalesOrder_Customer_Many_One0">
+                    <End EntitySet="SalesOrders" Role="SalesOrder"/>
+                    <End EntitySet="Customers" Role="Customer"/>
+                </AssociationSet>
+                <FunctionImport Name="CreateSalesOrderDraft" ReturnType="Edm.String" m:HttpMethod="POST"/>
+                <FunctionImport Name="CopySalesOrder" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="SalesOrder" Type="Edm.String" Nullable="true"/>
+                </FunctionImport>
+                <FunctionImport Name="CopySalesOrderItem" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="SalesOrder" Type="Edm.String" Nullable="true"/>
+                    <Parameter Name="SalesOrderItem" Type="Edm.String" Nullable="true"/>
+                </FunctionImport>
+                <FunctionImport Name="CreateSalesOrderItem" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="SalesOrder" Type="Edm.String" Nullable="true"/>
+                </FunctionImport>
+                <FunctionImport Name="RecalculateAmounts" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="SalesOrder" Type="Edm.String" Nullable="true"/>
+                </FunctionImport>
+                <FunctionImport Name="SumbitSalesOrder" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="SalesOrder" Type="Edm.String" Nullable="true"/>
+                </FunctionImport>
+                <FunctionImport Name="UndoSalesOrderSubmission" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="SalesOrder" Type="Edm.String" Nullable="true"/>
+                </FunctionImport>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
