@@ -11,7 +11,7 @@
 		},
 		"dataSources": {
 			"mainService": {
-				"uri": "/here/goes/your/serviceurl/",
+				"uri": "https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
