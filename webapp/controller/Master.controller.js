@@ -9,8 +9,9 @@ sap.ui.define([
 		"sap/ui/Device",
 		"my/sapui5_hybrid_app/model/formatter",
 		"my/sapui5_hybrid_app/model/grouper",
-		"my/sapui5_hybrid_app/model/GroupSortState"
-	], function (BaseController, JSONModel, History, Filter, FilterOperator, GroupHeaderListItem, Device, formatter, grouper, GroupSortState) {
+		"my/sapui5_hybrid_app/model/GroupSortState",
+		"my/sapui5_hybrid_app/model/models"
+	], function (BaseController, JSONModel, History, Filter, FilterOperator, GroupHeaderListItem, Device, formatter, grouper, GroupSortState, models) {
 		"use strict";
 
 		return BaseController.extend("my.sapui5_hybrid_app.controller.Master", {
@@ -26,6 +27,31 @@ sap.ui.define([
 			 * @public
 			 */
 			onInit : function () {
+				// setup mobile features
+
+				this._oODataModel = models.createODataModel()
+				
+				debugger;
+				var isCordovaApp = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
+				if (isCordovaApp) {
+					//this.getView().setBusy(true);
+					//sap.hybrid.synAppOfflineStore(jQuery.proxy(this._syncSuccess, this), jQuery.proxy(this._syncFailed, this));
+					var properties = {
+						"name": "SalesOrdersStore",
+						"host": "hcpms-s0004431717trial.hanatrial.ondemand.com",
+						"port": "443",
+						"https": true, 
+						"storePath": "/sdcard",
+						"serviceRoot":  "/my_orders_odata",
+						"definingRequests": {
+							"SalesOrders": "/SalesOrders"
+							}
+						};
+					this._store = sap.OData.createOfflineStore(properties);
+					this._store.open($.proxy(this._openSuccess, this), $.proxy(this._openFailed, this));
+					sap.OData.applyHttpClient();
+				}
+				
 				// Control state model
 				var oList = this.byId("list"),
 					oViewModel = this._createViewModel(),
@@ -60,26 +86,6 @@ sap.ui.define([
 
 				this.getRouter().getRoute("master").attachPatternMatched(this._onMasterMatched, this);
 				this.getRouter().attachBypassed(this.onBypassed, this);
-				// Get ODataModel
-				this._oODataModel = this.getOwnerComponent().getModel();
-				debugger;
-				//this.getView().setBusy(true);
-				//sap.hybrid.synAppOfflineStore(jQuery.proxy(this._syncSuccess, this), jQuery.proxy(this._syncFailed, this));
-				
-				var properties = {
-					"name": "SalesOrdersStore",
-					"host": "hcpms-s0004431717trial.hanatrial.ondemand.com",
-					"port": "443",
-					"https": true, 
-					"storePath": "/sdcard",
-					"serviceRoot":  "/my_orders_odata",
-					"definingRequests": {
-						"SalesOrders": "/SalesOrders"
-						}
-					};
-				this._store = sap.OData.createOfflineStore(properties);
-				this._store.open($.proxy(this._openSuccess, this), $.proxy(this._openFailed, this));
-				sap.OData.applyHttpClient();
 			},
 			/* =========================================================== */
 			/* Offline event handlers                                              */

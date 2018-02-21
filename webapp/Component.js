@@ -20,6 +20,10 @@ sap.ui.define([
 			 * @override
 			 */
 			init : function () {
+				// set the OData model
+				this.setModel(models.createODataModel());
+				sap.ui.getCore().setModel(this.getModel());
+				
 				this.oListSelector = new ListSelector();
 				this._oErrorHandler = new ErrorHandler(this);
 
@@ -27,10 +31,11 @@ sap.ui.define([
 				this.setModel(models.createDeviceModel(), "device");
 				// set the FLP model
 				this.setModel(models.createFLPModel(), "FLP");
-
+				
 				// call the base component's init function and create the App view
 				UIComponent.prototype.init.apply(this, arguments);
-
+				
+				
 				// create the views based on the url/hash
 				this.getRouter().initialize();
 			},

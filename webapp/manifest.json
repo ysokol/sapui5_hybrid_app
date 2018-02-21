@@ -11,8 +11,7 @@
 		},
 		"dataSources": {
 			"mainService": {
-				"web_uri": "https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata/",
-				"uri": "https://hcpms-s0004431717trial.hanatrial.ondemand.com:443/my_orders_odata/",
+				"uri": "https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
@@ -68,10 +67,6 @@
 				"settings": {
 					"bundleName": "my.sapui5_hybrid_app.i18n.i18n"
 				}
-			},
-			"": {
-				"dataSource": "mainService",
-				"preload": true
 			}
 		},
 		"routing": {
