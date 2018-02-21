@@ -11,7 +11,8 @@
 		},
 		"dataSources": {
 			"mainService": {
-				"uri": "https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata/",
+				"web_uri": "https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata/",
+				"uri": "https://hcpms-s0004431717trial.hanatrial.ondemand.com:443/my_orders_odata/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",

@@ -60,8 +60,69 @@ sap.ui.define([
 
 				this.getRouter().getRoute("master").attachPatternMatched(this._onMasterMatched, this);
 				this.getRouter().attachBypassed(this.onBypassed, this);
+				// Get ODataModel
+				this._oODataModel = this.getOwnerComponent().getModel();
+				debugger;
+				//this.getView().setBusy(true);
+				//sap.hybrid.synAppOfflineStore(jQuery.proxy(this._syncSuccess, this), jQuery.proxy(this._syncFailed, this));
+				
+				var properties = {
+					"name": "SalesOrdersStore",
+					"host": "hcpms-s0004431717trial.hanatrial.ondemand.com",
+					"port": "443",
+					"https": true, 
+					"storePath": "/sdcard",
+					"serviceRoot":  "/my_orders_odata",
+					"definingRequests": {
+						"SalesOrders": "/SalesOrders"
+						}
+					};
+				this._store = sap.OData.createOfflineStore(properties);
+				this._store.open($.proxy(this._openSuccess, this), $.proxy(this._openFailed, this));
+				sap.OData.applyHttpClient();
+			},
+			/* =========================================================== */
+			/* Offline event handlers                                              */
+			/* =========================================================== */
+
+			//Synchronization Succeeds
+			_openSuccess: function() {
+				sap.m.MessageToast.show("Offline Data Open succeeded :)", {
+					duration: 3000
+				});
+				sap.OData.applyHttpClient();
+				this._store.refresh($.proxy(this._refreshSuccess, this), $.proxy(this._refreshFailed, this), ["SalesOrders"]);
+				
+				//this.getView().setBusy(false);
+				//this._oODataModel.refresh();
 			},
 
+			//Synchronization Failed
+			_openFailed: function() {
+				sap.m.MessageToast.show("Offline Data Open failed :(", {
+					duration: 3000
+				});
+				//this.getView().setBusy(false);
+				//this._oODataModel.refresh();
+			},
+			
+			_refreshSuccess: function() {
+				sap.m.MessageToast.show("Offline Data Refresh succeeded :)", {
+					duration: 3000
+				});
+				this._oODataModel.refresh();
+				//this.getView().setBusy(false);
+				//this._oODataModel.refresh();
+			},
+
+			//Synchronization Failed
+			_refreshFailed: function() {
+				sap.m.MessageToast.show("Data Offline Data Refresh failed :(", {
+					duration: 3000
+				});
+				this._oODataModel.refresh();
+			},
+			
 			/* =========================================================== */
 			/* event handlers                                              */
 			/* =========================================================== */
