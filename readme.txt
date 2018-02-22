@@ -1,6 +1,6 @@
 Intention of this project is to check capabilities of SAP Hybrid Application Toolkit (HAT). 
 
-So far project is in very beginning.
+So far project is in a very beginning.
 
 Features:
 - Sign-on with fingureprint or pass-key on Mobile device 
@@ -10,7 +10,7 @@ Features:
 Front-end technology:
 - SAPUI5 
 - Apache Cordova
-- Kapsel
+- SAP Kapsel Plugins set for Apache Cordova
 
 Back-end technology:
 - HANA Cloud Platform: OData service is built om Java + Apache Olingo + Spring Framework, deployed on 
