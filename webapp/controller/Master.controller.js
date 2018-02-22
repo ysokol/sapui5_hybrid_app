@@ -9,9 +9,8 @@ sap.ui.define([
 		"sap/ui/Device",
 		"my/sapui5_hybrid_app/model/formatter",
 		"my/sapui5_hybrid_app/model/grouper",
-		"my/sapui5_hybrid_app/model/GroupSortState",
-		"my/sapui5_hybrid_app/model/models"
-	], function (BaseController, JSONModel, History, Filter, FilterOperator, GroupHeaderListItem, Device, formatter, grouper, GroupSortState, models) {
+		"my/sapui5_hybrid_app/model/GroupSortState"
+	], function (BaseController, JSONModel, History, Filter, FilterOperator, GroupHeaderListItem, Device, formatter, grouper, GroupSortState) {
 		"use strict";
 
 		return BaseController.extend("my.sapui5_hybrid_app.controller.Master", {
