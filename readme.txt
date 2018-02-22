@@ -1,14 +1,25 @@
- #### WELCOME ####
+Intention of this project is to check capabilities of SAP Hybrid Application Toolkit (HAT). 
 
-This is your copy of the SAPUI5 Master-Detail Freestyle Application Template.
-You can find the template version in the .project.json - file in your workspace
+So far project is in a very beginning.
 
-Standalone runnable files (*.html) are located in the test-folder
+Features:
+- Sign-on with fingureprint or pass-key on Mobile device 
+- Offline Data support (app should work without connection)
+- ...
 
-This application is ready for client-side build in the SAP Web IDE and deployment to ABAP/HCP repositories
+Front-end technology:
+- SAPUI5 
+- Apache Cordova
+- SAP Kapsel Plugins set for Apache Cordova
 
-Documentation of all template-app features can be found in the SAPUI5 demokit here:
-https://sapui5.hana.ondemand.com/#docs/guide/a460a7348a6c431a8bd967ab9fb8d918.html
+Back-end technology:
+- HANA Cloud Platform: OData service is built om Java + Apache Olingo + Spring Framework, deployed on 
+- AP HANA Cloud Mobile Platform Mobile Services: used for authorizations and proxying OData service for mobile devices
 
+Datasource:
+- SAP HANA Cloud MDC
 
- #### Happy Development! ####
+Tools used:
+- SAP HAT for building mobile applications for Android \ iOS platforms
+- SAP WebIDE for 
+- SAP Hana Cloud Platform
