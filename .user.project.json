@@ -25,7 +25,7 @@
         "id": "8314645",
         "runnerId": "fiorirunner",
         "displayName": "App as Fiori Component",
-        "lastRunTimeStamp": 1519235782892
+        "lastRunTimeStamp": 1519508199357
       }
     },
     {
@@ -44,7 +44,7 @@
         "runnerId": "webapprunner",
         "id": 4417835,
         "displayName": "Run test.html",
-        "lastRunTimeStamp": 1519163702935
+        "lastRunTimeStamp": 1519473753362
       }
     },
     {

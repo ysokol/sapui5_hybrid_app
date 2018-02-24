@@ -49,12 +49,12 @@
 		"dependencies": {
 			"minUI5Version": "1.42.0",
 			"libs": {
-				"sap.ui.core": {},
-				"sap.m": {},
-				"sap.ushell": {},
 				"sap.collaboration": {
 					"lazy": true
-				}
+				},
+				"sap.m": {},
+				"sap.ui.core": {},
+				"sap.ushell": {}
 			}
 		},
 		"contentDensities": {

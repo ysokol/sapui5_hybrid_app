@@ -60,6 +60,35 @@ sap.ui.define([
 				} else {
 					this.getRouter().navTo("master", {}, true);
 				}
+			},
+			
+			getComponentModel : function (sName) {
+				return this.getOwnerComponent().getModel(sName);
+			},
+			
+			getComponentOfflineDataStore: function () {
+				return this.getOwnerComponent()._store;
+			},
+			
+			isOffline: function() {
+				if (!this.getComponentModel("mobileDevice")) {
+					throw "Model mobileDeviceModel not defined";
+				}
+				if (!this.getComponentModel("mobileDevice").getProperty("/isMobileDevice")) {
+					return true;
+				}
+				else {
+					if(sap.smp && sap.smp.registration && sap.smp.registration.stores)
+						return true;
+					return false;
+				}
+			},
+			
+			isMobileDevice: function() {
+				if (!this.getComponentModel("mobileDevice")) {
+					throw "Model mobileDeviceModel not defined";
+				}
+				return this.getComponentModel("mobileDevice").getProperty("/isMobileDevice");
 			}
 
 		});

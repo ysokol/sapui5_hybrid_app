@@ -1,107 +1,59 @@
-<mvc:View
-	controllerName="my.sapui5_hybrid_app.controller.Detail"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:semantic="sap.m.semantic"
-	xmlns:footerbar="sap.ushell.ui.footerbar">
-
-	<semantic:DetailPage
-		id="page"
-		navButtonPress="onNavBack"
-		showNavButton="{device>/system/phone}"
-		title="{i18n>detailTitle}"
-		busy="{detailView>/busy}"
-		busyIndicatorDelay="{detailView>/delay}">
-
+<mvc:View controllerName="my.sapui5_hybrid_app.controller.Detail" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+	xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<semantic:DetailPage id="page" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}"
+		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
 		<semantic:content>
-			<ObjectHeader
-				id="objectHeader"
-				title="{SalesOrder}"
-				number="{
-					path: 'OrderTotalGross',
-					formatter: '.formatter.currencyValue'
-				}"
-				numberUnit="{Currency}">
-			</ObjectHeader>
-			<IconTabBar
-				id="iconTabBar"
-				class="sapUiResponsiveContentPadding">
+			<ObjectHeader id="objectHeader" title="{SalesOrder}" number="{ path: 'OrderTotalGross', formatter: '.formatter.currencyValue' }"
+				numberUnit="{Currency}"></ObjectHeader>
+			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
 				<items>
-					<IconTabFilter
-						id="iconTabBarFilter1"
-						icon="sap-icon://hint"
-						tooltip="{i18n>detailIconTabBarInfo}">
+					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}">
+						<form:SimpleForm>
+							<form:content>
+								<ComboBox selectedKey="{Customer}" id="CustomerComboBox" width="40em"
+											items="{ path: '/Customers', sorter: { path: 'Customer' }, templateShareable : true }" change="onMaintenancePlanChange"
+											selectionChange="onMaintenancePlanChange">
+											<core:Item key="{Customer}" text="{Description}"/>
+								</ComboBox>
+							</form:content>
+						</form:SimpleForm>
 					</IconTabFilter>
-					<IconTabFilter
-						id="iconTabBarFilter2"
-						icon="sap-icon://attachment"
-						tooltip="{i18n>detailIconTabBarAttachments}">
-					</IconTabFilter>
+					<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}"></IconTabFilter>
 				</items>
 			</IconTabBar>
-			<Table
-				id="lineItemsList"
-				width="auto"
-				items="{SalesOrderItemDetails}"
-				updateFinished="onListUpdateFinished"
-				noDataText="{i18n>detailLineItemTableNoDataText}"
-				busyIndicatorDelay="{detailView>/lineItemTableDelay}"
-				class="sapUiResponsiveMargin">
+			<Table id="lineItemsList" width="auto" items="{SalesOrderItemDetails}" updateFinished="onListUpdateFinished"
+				noDataText="No Data" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
 				<headerToolbar>
 					<Toolbar id="lineItemsToolbar">
-						<Title
-							id="lineItemsHeader"
-							text="{detailView>/lineItemListTitle}"/>
+						<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
 					</Toolbar>
 				</headerToolbar>
 				<columns>
 					<Column>
-						<Text text="{i18n>detailLineItemTableIDColumn}"/>
+						<Text text="Material"/>
 					</Column>
-					<Column
-						minScreenWidth="Tablet"
-						demandPopin="true"
-						hAlign="End">
-						<Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
+					<Column hAlign="End">
+						<Text text="Quantity"/>
 					</Column>
 				</columns>
 				<items>
 					<ColumnListItem>
 						<cells>
-							<ObjectIdentifier
-								title="{Material}"
-								text="{SalesOrderItem}"/>
-							<ObjectNumber
-								number="{
-									path: 'Quantity',
-									formatter: '.formatter.currencyValue'
-								}"
-								unit="{OrderUom}"/>
+							<ObjectIdentifier title="{Material}" text="{SalesOrderItem}"/>
+							<ObjectNumber number="{ path: 'Quantity', formatter: '.formatter.currencyValue' }" unit="{OrderUom}"/>
 						</cells>
 					</ColumnListItem>
 				</items>
 			</Table>
 		</semantic:content>
-
 		<semantic:sendEmailAction>
-			<semantic:SendEmailAction
-				id="shareEmail"
-				press="onShareEmailPress"/>
+			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
 		</semantic:sendEmailAction>
-
 		<semantic:shareInJamAction>
-			<semantic:ShareInJamAction
-				id="shareInJam"
-				visible="{FLP>/isShareInJamActive}"
-				press="onShareInJamPress"/>
+			<semantic:ShareInJamAction id="shareInJam" visible="{FLP>/isShareInJamActive}" press="onShareInJamPress"/>
 		</semantic:shareInJamAction>
-
 		<semantic:saveAsTileAction>
-			<footerbar:AddBookmarkButton
-				id="shareTile"
-				title="{detailView>/saveAsTileTitle}"/>
+			<footerbar:AddBookmarkButton id="shareTile" title="{detailView>/saveAsTileTitle}"/>
 		</semantic:saveAsTileAction>
-
 	</semantic:DetailPage>
-
 </mvc:View>

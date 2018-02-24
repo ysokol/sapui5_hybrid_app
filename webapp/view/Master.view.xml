@@ -110,6 +110,11 @@
 					text="{i18n>masterGroup1}"/>
 			</semantic:GroupSelect>
 		</semantic:group>
+		
+		<semantic:customFooterContent>
+			<OverflowToolbarButton icon="sap-icon://download" text="Refresh Data" press="onDataStoreRefresh"/>
+			<OverflowToolbarButton icon="sap-icon://upload" text="flush Data" press="onDataStoreFlush"/>
+		</semantic:customFooterContent>
 
 	</semantic:MasterPage>
 
