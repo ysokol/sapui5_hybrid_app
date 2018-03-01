@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form">
+	<Dialog title="Edit Doc Line: {SalesOrder} / {SalesOrderItem}">
+		<form:Form width="95%">
+			<form:layout>
+				<form:ResponsiveGridLayout/>
+			</form:layout>
+			<form:formContainers>
+				<form:FormContainer>
+					<form:FormElement label="Material">
+						<form:fields>
+							<ComboBox selectedKey="{Material}" items="{ path: '/Materials', sorter: { path: 'Material' }, templateShareable : true }"
+								change="onMaintenancePlanChange" selectionChange="onMaterialSelected"
+								enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}">
+								<core:Item key="{Material}" text="{Description}"/>
+							</ComboBox>
+							<Label text="{Material}"/>
+						</form:fields>
+					</form:FormElement>
+					<form:FormElement label="Quantity">
+						<form:fields>
+							<StepInput value="{Quantity}" min="0" max="9999" step="1" largerStep="10"
+								enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}"/>
+							<ComboBox selectedKey="{OrderUom}" id="OrderUomComboBox"
+								items="{ path: '/UnitOfMeasures', sorter: { path: 'Uom' }, templateShareable : true }" change="onMaintenancePlanChange"
+								selectionChange="onMaintenancePlanChange" enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}">
+								<core:Item key="{Uom}" text="{Uom}"/>
+							</ComboBox>
+						</form:fields>
+					</form:FormElement>
+					<form:FormElement label="Price">
+						<form:fields>
+							<Input value="{Price}" type="Number" enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}"/>
+						</form:fields>
+					</form:FormElement>
+					<form:FormElement label="Amount">
+						<form:fields>
+							<Label text="{AmountGross}"/>
+						</form:fields>
+					</form:FormElement>
+				</form:FormContainer>
+			</form:formContainers>
+		</form:Form>
+		<beginButton>
+			<Button text="Cancel" press="onSalesOrderItemCancel"/>
+		</beginButton>
+		<endButton>
+			<Button text="Confirm" press="onSalesOrderItemConfirm"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

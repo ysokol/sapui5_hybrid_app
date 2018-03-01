@@ -55,5 +55,9 @@
 		<semantic:saveAsTileAction>
 			<footerbar:AddBookmarkButton id="shareTile" title="{detailView>/saveAsTileTitle}"/>
 		</semantic:saveAsTileAction>
+		<semantic:customFooterContent>
+			<OverflowToolbarButton icon="sap-icon://add" text="Add Itemm" press="onAddSalesOrderItem"/>
+			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onSave"/>
+		</semantic:customFooterContent>
 	</semantic:DetailPage>
 </mvc:View>

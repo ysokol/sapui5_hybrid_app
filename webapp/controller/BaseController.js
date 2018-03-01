@@ -1,16 +1,19 @@
 /*global history */
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
-		"sap/ui/core/routing/History"
-	], function (Controller, History) {
+		"sap/ui/core/routing/History",
+		"my/sapui5_hybrid_app/utils/utils"
+	], function (Controller, History, utils) {
 		"use strict";
-
 		return Controller.extend("my.sapui5_hybrid_app.controller.BaseController", {
 			/**
 			 * Convenience method for accessing the router in every controller of the application.
 			 * @public
 			 * @returns {sap.ui.core.routing.Router} the router for this component
 			 */
+			
+			_utils: utils,
+			
 			getRouter : function () {
 				return this.getOwnerComponent().getRouter();
 			},
@@ -66,8 +69,8 @@ sap.ui.define([
 				return this.getOwnerComponent().getModel(sName);
 			},
 			
-			getComponentOfflineDataStore: function () {
-				return this.getOwnerComponent()._store;
+			getComponentOfflineStoreService  : function () {
+				return this.getOwnerComponent()._offlineStoreService;
 			},
 			
 			isOffline: function() {
@@ -89,7 +92,7 @@ sap.ui.define([
 					throw "Model mobileDeviceModel not defined";
 				}
 				return this.getComponentModel("mobileDevice").getProperty("/isMobileDevice");
-			}
+			},
 
 		});
 

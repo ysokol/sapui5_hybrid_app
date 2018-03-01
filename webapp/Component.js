@@ -5,7 +5,8 @@ sap.ui.define([
 	"my/sapui5_hybrid_app/controller/ListSelector",
 	"my/sapui5_hybrid_app/controller/ErrorHandler",
 	"my/sapui5_hybrid_app/localService/mockserver",
-], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer) {
+	"my/sapui5_hybrid_app/model/offlineStoreService"
+], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, offlineStoreService) {
 	"use strict";
 
 	return UIComponent.extend("my.sapui5_hybrid_app.Component", {
@@ -14,12 +15,6 @@ sap.ui.define([
 			manifest: "json"
 		},
 
-		/**
-		 * The component is initialized by UI5 automatically during the startup of the app and calls the init method once.
-		 * In this method, the FLP and device models are set and the router is initialized.
-		 * @public
-		 * @override
-		 */
 		init: function() {
 			debugger;
 			this.setModel(models.createMobileDeviceModel(), "mobileDevice");
@@ -64,52 +59,15 @@ sap.ui.define([
 					"UnitOfMeasures": "/UnitOfMeasures"
 				}
 			};
-			this._store = sap.OData.createOfflineStore(properties);
-			this._store.open($.proxy(this.storeOpenSuccess, this), $.proxy(this.storeOpenFailed, this));
+			//this._store = sap.OData.createOfflineStore(properties);
+			//this._store.open($.proxy(this.storeOpenSuccess, this), $.proxy(this.storeOpenFailed, this));
+			this._offlineStoreService = offlineStoreService;
+			this._offlineStoreService.init(this);
+			this._offlineStoreService.openStore();
 			this.initComponent();
 
 		},
 		
-		onOffline: function() {
-			this.getModel("mobileDevice").setProperty("/isOffline", true);
-			sap.m.MessageToast.show("You go offline, please come back soon!");
-			console.log('onOffline()');
-		},
-
-		onOnline: function() {
-			this.getModel("mobileDevice").setProperty("/isOffline", false);
-			sap.m.MessageToast.show("Greate, you are back online");
-			console.log('onOnline()');
-		},
-		
-		storeOpenSuccess: function() {
-			sap.m.MessageToast.show("Offline Data Open succeeded :)", {
-				duration: 3000
-			});
-			sap.OData.applyHttpClient();
-			//if (!this.getModel("mobileDevice").getProperty("/isOffline")) {
-			//	this._store.refresh($.proxy(this.storeRefreshSuccess, this), $.proxy(this.storeRefreshFailed, this), ["SalesOrders"]);
-			//}
-		},
-
-		storeOpenFailed: function() {
-			alert("Store Open Failed!");
-		},
-
-		/*storeRefreshSuccess: function() {
-			debugger;
-			sap.m.MessageToast.show("Offline Data Refresh succeeded :)", {
-				duration: 3000
-			});
-		},
-
-		//Synchronization Failed
-		storeRefreshFailed: function() {
-			sap.m.MessageToast.show("Data Offline Data Refresh failed :(", {
-				duration: 3000
-			});
-		},*/
-
 		initComponent: function() {
 
 			//alert("my.sapui5_hybrid_app.Component.init()");
@@ -124,6 +82,7 @@ sap.ui.define([
 			} else {
 				this.setModel(models.createODataModelWeb());
 			}
+			//MockServer.init(); // start mock server in order to handle $metdata request which is not handled by Kapsel offline data 
 			
 			sap.ui.getCore().setModel(this.getModel());
 
@@ -136,6 +95,31 @@ sap.ui.define([
 			// create the views based on the url/hash
 			this.getRouter().initialize();
 		},
+		
+		onOffline: function() {
+			this.getModel("mobileDevice").setProperty("/isOffline", true);
+			sap.m.MessageToast.show("You go offline, please come back soon!");
+			console.log('onOffline()');
+		},
+
+		onOnline: function() {
+			this.getModel("mobileDevice").setProperty("/isOffline", false);
+			sap.m.MessageToast.show("Greate, you are back online");
+			console.log('onOnline()');
+		},
+		/*storeRefreshSuccess: function() {
+			debugger;
+			sap.m.MessageToast.show("Offline Data Refresh succeeded :)", {
+				duration: 3000
+			});
+		},
+
+		//Synchronization Failed
+		storeRefreshFailed: function() {
+			sap.m.MessageToast.show("Data Offline Data Refresh failed :(", {
+				duration: 3000
+			});
+		},*/
 
 		/**
 		 * The component is destroyed by UI5 automatically.

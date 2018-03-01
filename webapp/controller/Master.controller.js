@@ -92,9 +92,58 @@ sap.ui.define([
 		/* =========================================================== */
 		/* event handlers                                              */
 		/* =========================================================== */
+		onAddSalesOrder: function(oEvent) {
+
+			/*this.getComponentModel().create("/SalesOrders", {
+				SalesOrder: "TMP0000001",
+				Currency: "RUB",
+				OrderTotalGross: "0",
+				Status: "DRAFT"
+			});*/
+
+			debugger;
+			var maxSalesOrder = "5000000000";
+			if (this.isMobileDevice()) {
+				maxSalesOrder = "TMP1";
+			}
+			var that = this;
+
+			this.getComponentModel().read("/SalesOrders", {
+				success: function(oData) {
+					for (let order of oData.results) {
+						if (order.SalesOrder > maxSalesOrder) {
+							maxSalesOrder = order.SalesOrder;
+						}
+					}
+					var nextSoNumber;
+					if (that.isMobileDevice()) {
+						nextSoNumber = maxSalesOrder.replace(/(\d+)+/g, function(match, number) {
+														       return parseInt(number)+1;
+														});
+					} else {
+						nextSoNumber = that._utils.stringPad(parseInt(maxSalesOrder) + 1, 10);
+					}
+
+					that.getComponentModel().create("/SalesOrders", {
+						SalesOrder: nextSoNumber,
+						Currency: "RUB",
+						OrderTotalGross: "0",
+						Status: "DRAFT"
+					});
+				}
+			});
+		},
+
+		onDeleteSalesOrder: function(oEvent) {
+			this.getComponentModel().remove(this.byId("list").getSelectedItem().getBindingContext().getPath());
+		},
+
+		onNavToOfflineStore: function(oEvent) {
+			this.getRouter().navTo("offlineStore");
+		},
 
 		onDataStoreRefresh: function(oEvent) {
-			this.getComponentOfflineDataStore().refresh($.proxy(this.storeRefreshSuccess, this), $.proxy(this.storeRefreshFailed, this));
+			//this.getComponentOfflineDataStore().refresh($.proxy(this.storeRefreshSuccess, this), $.proxy(this.storeRefreshFailed, this));
 		},
 
 		storeRefreshSuccess: function() {
@@ -326,8 +375,8 @@ sap.ui.define([
 						return;
 					}
 					var sObjectId = mParams.firstListitem.getBindingContext().getProperty("SalesOrder");
-					this.getRouter().navTo("object", {
-						objectId: sObjectId
+					this.getRouter().navTo("salesOrder", {
+						objectPath: sObjectId
 					}, true);
 				}.bind(this),
 				function(mParams) {
@@ -347,8 +396,9 @@ sap.ui.define([
 		 */
 		_showDetail: function(oItem) {
 			var bReplace = !Device.system.phone;
-			this.getRouter().navTo("object", {
-				objectId: oItem.getBindingContext().getProperty("SalesOrder")
+			this.getRouter().navTo("salesOrder", {
+				//objectId: oItem.getBindingContext().getProperty("SalesOrder") => web version
+				objectPath: oItem.getBindingContext().getPath().substring(1) // => mobile version
 			}, bReplace);
 		},
 

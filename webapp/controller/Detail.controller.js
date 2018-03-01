@@ -30,6 +30,40 @@ sap.ui.define([
 
 				this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
 			},
+			
+			onSave : function () {
+				debugger;
+				var currentSalesOrderPath = this.getView().getElementBinding().getPath();
+				this.getComponentModel().read(currentSalesOrderPath + "/SalesOrderItemDetails");
+				var salesOrderItemDetails = this.getComponentModel().getProperty(currentSalesOrderPath + "/SalesOrderItemDetails");
+				this.getComponentModel().read(currentSalesOrderPath + "/$links/SalesOrderItemDetails");
+				salesOrderItemDetails = this.getComponentModel().getProperty(currentSalesOrderPath + "/$links/SalesOrderItemDetails");
+				this.getComponentModel().setProperty(currentSalesOrderPath + "/SalesOrder", "0000000002");
+				this.getComponentModel().submitChanges();
+				
+			},
+			
+			onAddSalesOrderItem : function () {
+				debugger;
+				var currentSalesOrderPath = this.getView().getElementBinding().getPath();
+				
+				this.getComponentModel().create(currentSalesOrderPath + "/SalesOrderItemDetails", {
+	                
+	                //SalesOrder: '0000000002',
+	                SalesOrderItem: "T0028"/*,
+	                SalesOrderDetails: {__metadata: {uri: currentSalesOrderPath.substring(1) }}*/ 
+            	});
+				
+				/*"SalesOrders('0000000002')"*/
+				
+				//this.getView().getBindingContext().getPath();
+				/*this.getComponentModel().create("/SalesOrderItems", {
+	                SalesOrder: "TMP0000001",
+	                Currency: "RUB",
+	                OrderTotalGross: "0",
+	                Status: "DRAFT"
+            	});*/
+			},
 
 			/* =========================================================== */
 			/* event handlers                                              */
@@ -41,7 +75,7 @@ sap.ui.define([
 			 */
 			onShareEmailPress : function () {
 				var oViewModel = this.getModel("detailView");
-
+				
 				sap.m.URLHelper.triggerEmail(
 					null,
 					oViewModel.getProperty("/shareSendEmailSubject"),
@@ -103,10 +137,11 @@ sap.ui.define([
 			_onObjectMatched : function (oEvent) {
 				var sObjectId =  oEvent.getParameter("arguments").objectId;
 				this.getModel().metadataLoaded().then( function() {
-					var sObjectPath = this.getModel().createKey("SalesOrders", {
+					/*var sObjectPath = this.getModel().createKey("SalesOrders", {
 						SalesOrder :  sObjectId
 					});
-					this._bindView("/" + sObjectPath);
+					this._bindView("/" + sObjectPath);*/ // => Web Version 
+					this._bindView("/" + sObjectId); // Mobile Version
 				}.bind(this));
 			},
 
@@ -125,14 +160,14 @@ sap.ui.define([
 				oViewModel.setProperty("/busy", false);
 
 				this.getView().bindElement({
-					path : sObjectPath,
+					path : sObjectPath,// + "?$expand=SalesOrderItemDetails", // / - requried for web, for mobile not required
 					events: {
 						change : this._onBindingChange.bind(this),
 						dataRequested : function () {
-							oViewModel.setProperty("/busy", true);
+							//oViewModel.setProperty("/busy", true);
 						},
 						dataReceived: function () {
-							oViewModel.setProperty("/busy", false);
+							//oViewModel.setProperty("/busy", false);
 						}
 					}
 				});

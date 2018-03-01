@@ -1,0 +1,49 @@
+<mvc:View
+	controllerName="my.sapui5_hybrid_app.controller.OfflineStore"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:semantic="sap.m.semantic">
+
+	<semantic:MasterPage
+		id="page1"
+		title="Offline Store"
+		navButtonPress="onNavBack"
+		showNavButton="true">
+
+		<semantic:content>
+			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+			<Table id="lineItemsList1534534"
+				items="{ path: '/ErrorArchive' }">
+				<columns>
+					<Column>
+						<Text text="RequestID"/>
+					</Column>
+					<Column>
+						<Text text="SaleSorder"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier title="{RequestID}" text="{RequestURL}"/>
+							<Label text="{AffectedEntity/SalesOrder}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+		
+		<semantic:customFooterContent>
+			<OverflowToolbarButton icon="sap-icon://technical-object" text="Fix links" press="onDataStoreFix"/>
+			<OverflowToolbarButton icon="sap-icon://refresh" text="Refresh View" press="onErrorsArchiveRefresh"/>
+			<OverflowToolbarButton icon="sap-icon://download" text="Refresh Data" press="onDataStoreRefresh"/>
+			<OverflowToolbarButton icon="sap-icon://upload" text="flush Data" press="onDataStoreFlush"/>
+			<OverflowToolbarButton icon="sap-icon://delete" text="clear Data" press="onDataStoreClear"/>
+			<OverflowToolbarButton icon="sap-icon://open-folder" text="clear Data" press="onDataStoreOpen"/>
+			<OverflowToolbarButton icon="sap-icon://system-exit" text="clear Data" press="onDataStoreClose"/>
+		</semantic:customFooterContent>
+
+	</semantic:MasterPage>
+
+</mvc:View>

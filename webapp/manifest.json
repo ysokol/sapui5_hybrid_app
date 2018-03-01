@@ -89,17 +89,22 @@
 					"pattern": "",
 					"name": "master",
 					"target": [
-						"object",
+						"salesOrder",
 						"master"
 					]
 				},
 				{
-					"pattern": "SalesOrders/{objectId}",
-					"name": "object",
+					"pattern": "SalesOrders/{objectPath}",
+					"name": "salesOrder",
 					"target": [
 						"master",
-						"object"
+						"salesOrder"
 					]
+				},
+				{
+					"pattern": "OfflineStore",
+					"name": "offlineStore",
+					"target": "offlineStore"
 				}
 			],
 			"targets": {
@@ -108,6 +113,11 @@
 					"viewLevel": 1,
 					"viewId": "master",
 					"controlAggregation": "masterPages"
+				},
+				"salesOrder": {
+					"viewName": "SalesOrder",
+					"viewId": "salesOrder",
+					"viewLevel": 2
 				},
 				"object": {
 					"viewName": "Detail",
@@ -125,6 +135,10 @@
 				"notFound": {
 					"viewName": "NotFound",
 					"viewId": "notFound"
+				},
+				"offlineStore": {
+					"viewName": "OfflineStore",
+					"viewId": "offlineStore"
 				}
 			}
 		}

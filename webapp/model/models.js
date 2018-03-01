@@ -33,30 +33,66 @@ sap.ui.define([
 		},
 
 		createODataModelWeb: function() { // oData model used for web application
-			return new ODataModel(
+			var oDataModel = new ODataModel(
 				"https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata", {
 					json: true,
-					useBatch: true,
+					//useBatch: true,
 					defaultBindingMode: sap.ui.model.BindingMode.TwoWay,
 					defaultUpdateMethod: sap.ui.model.odata.UpdateMethod.Put,
 					loadMetadataAsync: false,
 					tokenHandling: true
 				}
 			);
+			
+			oDataModel.attachPropertyChange(this.onODataModelPropertyChange, oDataModel);
+			
+			return oDataModel;
 		},
 		
 		createODataModelMobile: function() { // oData model used for mobile application, it's proxied thru  HCP Mobile Services
-			return new ODataModel(
+			var oDataModel = new ODataModel(
 				"https://hcpms-s0004431717trial.hanatrial.ondemand.com:443/my_orders_odata/", {
 					json: true,
 					useBatch: false,
 					defaultBindingMode: sap.ui.model.BindingMode.TwoWay,
-					defaultUpdateMethod: sap.ui.model.odata.UpdateMethod.Put
+					defaultUpdateMethod: sap.ui.model.odata.UpdateMethod.Patch
 					//loadMetadataAsync: false,
 					//tokenHandling: true
 				}
 			);
-		}
+			
+			//oDataModel.attachPropertyChange(this.onODataModelPropertyChange, oDataModel);
+			
+			return oDataModel;
+			
+		},
+		
+		onODataModelPropertyChange: function (oEvent) {
+            debugger;
+            try {
+            	// Conver number to string, Apache Olingo does not understand numbers :(
+                if (oEvent.getParameters().path === "Quantity" && typeof oEvent.getParameters().value === "number") {
+                	this.setProperty(oEvent.getParameters().context.getPath() + "/Quantity", oEvent.getParameters().value.toString());
+                }
+                // Trigger UpdateFlag property
+                if (oEvent.getParameters().path !== "UpdateFlag") {
+                    this.setProperty(oEvent.getParameters().context.getPath() + "/UpdateFlag", "");
+                    for (var key in this.getProperty(oEvent.getParameters().context.getPath())) {
+                        if (key !== "UpdateFlag") {
+                            if (this.getOriginalProperty(oEvent.getParameters().context.getPath() + "/" + key) !==
+                                    this.getProperty(oEvent.getParameters().context.getPath() + "/" + key)) {
+                                this.setProperty(oEvent.getParameters().context.getPath() + "/UpdateFlag", "U");
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+            	// Implement Error Handling
+            }
+        }
+		
+		
 	};
 
 });
