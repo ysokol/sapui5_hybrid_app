@@ -61,8 +61,8 @@
     "resourceModelName": "i18n"
   },
   "mockpreview": {
-    "mockUri": "",
-    "metadataFilePath": "",
+    "mockUri": "https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata/",
+    "metadataFilePath": "localService/metadata.xml",
     "loadJSONFiles": false,
     "loadCustomRequests": false,
     "mockRequestsFilePath": ""
