@@ -1,0 +1,34 @@
+{
+    "application": {
+        "id": "",
+        "title": "my.sapui5_hybrid_app.sapui5_hybrid_app",
+        "type": "SAP_UI5_Component",
+        "componentUrl": "/",
+        "appUrl": "#sapui5_hybrid_app-Display",
+        "navigationComponentName": "my.sapui5_hybrid_app",
+        "intentSemanticObject": "sapui5_hybrid_app",
+        "intentAction": "Display",
+        "html5ApplicationName": "sapui5hybridapp",
+        "HCPParentApplicationName": ""
+    },
+    "assignment": {
+        "groups": [
+            "3fafb817-aca3-4fa2-ba6d-82e5220a6d87"
+        ],
+        "contentPackages": [
+            "570ecc86-91f1-48d3-824a-f42910ca9120"
+        ],
+        "categories": []
+    },
+    "tile": {
+        "type": "StaticTile",
+        "title": "SAPUI5 Hybrid App",
+        "subtitle": "Subtitle",
+        "searchKeywords": "SAPUI5 Hybrid App,Subtitle",
+        "displayIconUrl": "sap-icon://approvals",
+        "displayInfoText": "",
+        "size": "1x1",
+        "serviceURL": "",
+        "refreshInterval": ""
+    }
+}

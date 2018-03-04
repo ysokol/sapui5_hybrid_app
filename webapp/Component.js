@@ -25,10 +25,17 @@ sap.ui.define([
 				document.addEventListener('deviceready', $.proxy(this.deviceInit, this), false);
 				document.addEventListener("offline", $.proxy(this.onOffline, this), false);
 				document.addEventListener("online", $.proxy(this.onOnline, this), false);
-				
+
 			} else {
 				this.initComponent();
 			}
+			// google API bootstrap
+			window.addEventListener('load', function() {
+				var script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src = 'https://apis.google.com/js/api.js?onload=googleAPIloaded';
+				document.body.appendChild(script);
+			});
 
 		},
 
@@ -67,7 +74,7 @@ sap.ui.define([
 			this.initComponent();
 
 		},
-		
+
 		initComponent: function() {
 
 			//alert("my.sapui5_hybrid_app.Component.init()");
@@ -83,7 +90,7 @@ sap.ui.define([
 				this.setModel(models.createODataModelWeb());
 			}
 			//MockServer.init(); // start mock server in order to handle $metdata request which is not handled by Kapsel offline data 
-			
+
 			sap.ui.getCore().setModel(this.getModel());
 
 			this.oListSelector = new ListSelector();
@@ -95,7 +102,7 @@ sap.ui.define([
 			// create the views based on the url/hash
 			this.getRouter().initialize();
 		},
-		
+
 		onOffline: function() {
 			this.getModel("mobileDevice").setProperty("/isOffline", true);
 			sap.m.MessageToast.show("You go offline, please come back soon!");
@@ -158,3 +165,11 @@ sap.ui.define([
 	});
 
 });
+
+function googleAPIloaded() {
+	gapi.load('client:auth2', googleStart);
+}
+
+function googleStart() {
+	gapi.client.load('drive', 'v3');
+}

@@ -1,6 +1,4 @@
-<mvc:View controllerName="my.sapui5_hybrid_app.controller.SalesOrder" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
-<<<<<<< HEAD
-	xmlns:semantic="sap.m.semantic" xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified">
+<mvc:View controllerName="my.sapui5_hybrid_app.controller.SalesOrder" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"	xmlns:semantic="sap.m.semantic" xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified">
 	<semantic:DetailPage id="salesOrderPage" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}"
 		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
 		<semantic:content>
@@ -54,60 +52,6 @@
 					<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}">
 						<unif:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="/cmis/root" width="400px" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" change='onChangeDoc'/>
 					</IconTabFilter>
-=======
-	xmlns:semantic="sap.m.semantic" xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
-	<semantic:DetailPage id="salesOrderPage" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}"
-		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
-		<semantic:content>
-			<ObjectHeader id="objectHeader" title="{SalesOrder}" number="{ path: 'OrderTotalGross', formatter: '.formatter.currencyValue' }"
-				numberUnit="{Currency}"></ObjectHeader>
-			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
-				<items>
-					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}">
-						<form:Form>
-							<form:layout>
-								<form:ResponsiveGridLayout/>
-							</form:layout>
-							<form:formContainers>
-								<form:FormContainer>
-									<form:FormElement label="Order Date">
-										<form:fields>
-											<DatePicker value="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}" width="12em"
-												enabled="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
-											<ObjectStatus text="{Status}" state="{path: 'Status', formatter: '.formatter.statusState'}"
-												icon="{path: 'Status', formatter: '.formatter.statusIcon'}"/>
-										</form:fields>
-									</form:FormElement>
-									<form:FormElement label="Customer">
-										<form:fields>
-											<ComboBox selectedKey="{Customer}" id="CustomerComboBox"
-												items="{ path: '/Customers', sorter: { path: 'Customer' }, templateShareable : true }" change="onMaintenancePlanChange"
-												selectionChange="onMaintenancePlanChange" enabled="{path: 'Status', formatter: '.formatter.statusEditable'}">
-												<core:Item key="{Customer}" text="{Description}"/>
-											</ComboBox>
-										</form:fields>
-									</form:FormElement>
-									<form:FormElement label="Order Total Gross">
-										<form:fields>
-											<Input value="{OrderTotalGross}" type="Number" enabled="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
-										</form:fields>
-									</form:FormElement>
-									<form:FormElement label="Currency">
-										<form:fields>
-											<Input value="{Currency}" type="Text" editable="false" enabled="false"/>
-										</form:fields>
-									</form:FormElement>
-									<form:FormElement label="Comment">
-										<form:fields>
-											<Input value="{Comment}" type="Text" editable="true" enabled="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
-										</form:fields>
-									</form:FormElement>
-								</form:FormContainer>
-							</form:formContainers>
-						</form:Form>
-					</IconTabFilter>
-					<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}"></IconTabFilter>
->>>>>>> branch 'master' of https://github.com/ysokol/sapui5_hybrid_app.git
 				</items>
 			</IconTabBar>
 			<Table id="lineItemsList" width="auto" items="{SalesOrderItemDetails}" updateFinished="onListUpdateFinished" noDataText="No Data"

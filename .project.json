@@ -13,7 +13,8 @@
     "excludedFiles": [
       "test.html"
     ],
-    "buildRequired": true
+    "buildRequired": true,
+    "lastBuildDateTime": "Sat, 03 Mar 2018 17:21:31 GMT"
   },
   "dataBinding": {
     "/webapp/view/App.view.xml": {
@@ -88,5 +89,10 @@
         }
       }
     ]
+  },
+  "hcpdeploy": {
+    "account": "s0004431717trial",
+    "name": "sapui5hybridapp",
+    "lastVersionWeTriedToDeploy": "1.0.1"
   }
 }
