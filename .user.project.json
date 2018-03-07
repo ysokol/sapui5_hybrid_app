@@ -25,11 +25,7 @@
         "id": "8314645",
         "runnerId": "fiorirunner",
         "displayName": "App as Fiori Component",
-<<<<<<< HEAD
-        "lastRunTimeStamp": 1520093416374
-=======
-        "lastRunTimeStamp": 1519937904407
->>>>>>> branch 'master' of https://github.com/ysokol/sapui5_hybrid_app.git
+        "lastRunTimeStamp": 1520459999271
       }
     },
     {
@@ -185,5 +181,8 @@
         "displayName": "Test Suite (Unit, OPA)"
       }
     }
-  ]
+  ],
+  "hybrid": {
+    "dirty": true
+  }
 }

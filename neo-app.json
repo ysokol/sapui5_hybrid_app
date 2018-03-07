@@ -35,6 +35,22 @@
         "entryPath": "/test-resources"
       },
       "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/sap_document_center",
+      "target": {
+        "type": "destination",
+        "name": "sap_document_center_global"
+      },
+      "description": "SAP Document Center Destination"
+    },
+    {
+      "path": "/yandex_api",
+      "target": {
+        "type": "destination",
+        "name": "yandex_api"
+      },
+      "description": "Yandex API destination"
     }
   ],
   "welcomeFile": "/webapp/test/flpSandbox.html",

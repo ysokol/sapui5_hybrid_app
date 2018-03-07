@@ -73,6 +73,10 @@ sap.ui.define([
 				return this.getOwnerComponent()._offlineStoreService;
 			},
 			
+			getComponentAttachmentService  : function () {
+				return this.getOwnerComponent()._attachmentService;
+			},
+			
 			isOffline: function() {
 				if (!this.getComponentModel("mobileDevice")) {
 					throw "Model mobileDeviceModel not defined";
