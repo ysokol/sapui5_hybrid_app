@@ -74,7 +74,7 @@
 				</items>
 			</IconTabBar>
 			<Table id="lineItemsList" width="auto" items="{SalesOrderItemDetails}" updateFinished="onListUpdateFinished" noDataText="No Data"
-				busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+				busyIndicatorDelay="{detailView>/lineItemTableDelay}" inset="false">
 				<headerToolbar>
 					<Toolbar id="lineItemsToolbar">
 						<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>

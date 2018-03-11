@@ -6,7 +6,7 @@ sap.ui.define([
 	return Object.extend("my.sapui5_hybrid_app.utils.GoogleDriveStorageService", {
 
 		_apiKey: 'AIzaSyD0r-4o-SYW6VFRZKi5H_o1jdRxs5JZafU',
-		_clientId: '655021029955-0pi7pf9cr0t4eug4oidua7ottihov8b9.apps.googleusercontent.com',
+		_clientId: '655021029955-rhoaknhgtf6vhs7mllqa1a4ghpmo3ndp.apps.googleusercontent.com',
 		_scope: 'https://www.googleapis.com/auth/drive',
 		_parentId: '1vxuDR9UWaY9tIyyaQ0hfLP259v-NtP5f',
 		_isLoggedIn: false,
@@ -16,12 +16,7 @@ sap.ui.define([
 		},
 
 		init: function() {
-			window.addEventListener('load', function() {
-				var script = document.createElement('script');
-				script.type = 'text/javascript';
-				script.src = 'https://apis.google.com/js/api.js?onload=googleAapiLoaded';
-				document.body.appendChild(script);
-			});
+			
 		},
 
 		clientInitAndLogin: function() {
@@ -30,10 +25,13 @@ sap.ui.define([
 				if (that._isLoggedIn) {
 					resolve();
 				} else {
+					debugger;
 					gapi.client.init({
 							'apiKey': that._apiLey,
 							'clientId': that._clientId,
-							'scope': that._scope
+							'scope': that._scope,
+							'offline': true, 
+            				'cookiepolicy': 'none'
 						})
 						.then(gapi.auth2.getAuthInstance().signIn())
 						.then(function() {
@@ -132,11 +130,3 @@ sap.ui.define([
 
 	});
 });
-
-function googleAapiLoaded() {
-	gapi.load('client:auth2', googleApiLoaded2);
-}
-
-function googleApiLoaded2() {
-	gapi.client.load('drive', 'v3');
-}

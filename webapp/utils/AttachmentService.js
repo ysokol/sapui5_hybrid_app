@@ -117,8 +117,35 @@ sap.ui.define([
 			}
 		},
 
-		pushToCloudStorage: function(attachment) {
+		pushAllToCloudStorage: function() {
+			var that = this;
+			debugger;
+			that._oDataModel.readExt("/Attachments", {
+					"$filter": "StorageId eq ''"
+				})
+				.then(oData => oData.results.forEach(function(oAttachment) {
+					that.pushToCloudStorage(oAttachment);
+				}))
+				.catch(oException => reject(new MyException("AttachmentServiceException", "Failed _getNextAttachmentId()", oException)));
+		},
 
+		pushToCloudStorage: function(oAttachment) {
+			var that = this;
+			return new Promise(function(resolve, reject) {
+				that._oFileSystemService.openFile(cordova.file.externalApplicationStorageDirectory, oAttachment.LocalStoragePath)
+					.then(fileEntry => that._oFileSystemService.readFileAsDataUrl(fileEntry))
+					.then(dataUrl => that._googleDriveStorageService.publishFile(oAttachment, dataUrl))
+					.then(fileId => {
+						oAttachment.StorageProvider = "GOOGLE_DRIVE"
+						oAttachment.StorageId = fileId;
+						var sPath = oAttachment.__metadata.uri.replace(that._oDataModel.sServiceUrl, "");
+						that._oDataModel.setProperty(sPath + "/" + "StorageProvider", oAttachment.StorageProvider);
+						that._oDataModel.setProperty(sPath + "/" + "StorageId", oAttachment.StorageId);
+						that._oDataModel.submitChanges();
+						resolve(oAttachment);
+					})
+					.catch(oException => reject(new MyException("AttachmentServiceException", "Failed pushToCloudStorage()", oException)));
+			});
 		},
 
 		pullFromCloudStorage: function(attachment) {
@@ -143,33 +170,33 @@ sap.ui.define([
 			var that = this;
 			return new Promise(function(resolve, reject) {
 				that._oDataModel.readExt("/Attachments", {
-					"$top": "1",
-					"$orderby": "Attachment desc"
-				})
-				.then(function(oData) {
-					var maxAttachmentId = "0000000000";
-					if (that._isMobileDevice()) {
-						var maxAttachmentId = "TMP1";
-					}
-					if (oData.results.length > 1) {
-						reject(new MyException("AttachmentServiceException", "Failed _getNextAttachmentId()", "oData.results.length > 1"))
-					} 
-					if (oData.results[0]) {
-						maxAttachmentId = oData.results[0].Attachment;
-					}
+						"$top": "1",
+						"$orderby": "Attachment desc"
+					})
+					.then(function(oData) {
+						var maxAttachmentId = "0000000000";
+						if (that._isMobileDevice()) {
+							var maxAttachmentId = "$1";
+						}
+						if (oData.results.length > 1) {
+							reject(new MyException("AttachmentServiceException", "Failed _getNextAttachmentId()", "oData.results.length > 1"))
+						}
+						if (oData.results[0]) {
+							maxAttachmentId = oData.results[0].Attachment;
+						}
 
-					var nextAttachmentId;
-					if (that._isMobileDevice()) {
-						nextAttachmentId = maxAttachmentId.replace(/(\d+)+/g, function(match, number) {
-							return parseInt(number) + 1;
-						});
-					} else {
-						nextAttachmentId = that._utils.stringPad(parseInt(maxAttachmentId) + 1, 10);
-					}
+						var nextAttachmentId;
+						if (that._isMobileDevice()) {
+							nextAttachmentId = maxAttachmentId.replace(/(\d+)+/g, function(match, number) {
+								return parseInt(number) + 1;
+							});
+						} else {
+							nextAttachmentId = that._utils.stringPad(parseInt(maxAttachmentId) + 1, 10);
+						}
 
-					resolve(nextAttachmentId);
-				})
-				.catch(oException => reject(new MyException("AttachmentServiceException", "Failed _getNextAttachmentId()", oException)));
+						resolve(nextAttachmentId);
+					})
+					.catch(oException => reject(new MyException("AttachmentServiceException", "Failed _getNextAttachmentId()", oException)));
 			});
 		}
 

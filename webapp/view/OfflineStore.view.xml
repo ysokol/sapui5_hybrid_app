@@ -1,20 +1,9 @@
-<mvc:View
-	controllerName="my.sapui5_hybrid_app.controller.OfflineStore"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:core="sap.ui.core"
-	xmlns="sap.m"
+<mvc:View controllerName="my.sapui5_hybrid_app.controller.OfflineStore" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m"
 	xmlns:semantic="sap.m.semantic">
-
-	<semantic:MasterPage
-		id="page1"
-		title="Offline Store"
-		navButtonPress="onNavBack"
-		showNavButton="true">
-
+	<semantic:MasterPage id="page1" title="Offline Store" navButtonPress="onNavBack" showNavButton="true">
 		<semantic:content>
-			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
-			<Table id="lineItemsList1534534"
-				items="{ path: '/ErrorArchive' }">
+			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}"
+			<Table id="lineItemsList1534534" items="{ path: '/ErrorArchive' }">
 				<columns>
 					<Column>
 						<Text text="RequestID"/>
@@ -31,9 +20,22 @@
 						</cells>
 					</ColumnListItem>
 				</items>
-			</Table>
+			</Table> -->
+			
+			
+			<List id="OfflineStoreListId" items="{ path: '/ErrorArchive' }"> <!--, parameters: {expand: 'AffectedEntity'} -->
+				<items>
+					<CustomListItem>
+						<VBox>
+							<Label text="{RequestID}"/>
+							<Label text="{RequestMethod}"/>
+							<Label text="{Domain}"/>
+							<Text text="{RequestURL}"/>
+						</VBox>
+					</CustomListItem>
+				</items>
+			</List>
 		</semantic:content>
-		
 		<semantic:customFooterContent>
 			<OverflowToolbarButton icon="sap-icon://technical-object" text="Fix links" press="onDataStoreFix"/>
 			<OverflowToolbarButton icon="sap-icon://refresh" text="Refresh View" press="onErrorsArchiveRefresh"/>
@@ -42,8 +44,7 @@
 			<OverflowToolbarButton icon="sap-icon://delete" text="clear Data" press="onDataStoreClear"/>
 			<OverflowToolbarButton icon="sap-icon://open-folder" text="clear Data" press="onDataStoreOpen"/>
 			<OverflowToolbarButton icon="sap-icon://system-exit" text="clear Data" press="onDataStoreClose"/>
+			<OverflowToolbarButton icon="sap-icon://upload-to-cloud" text="Push attachment to Cloud" press="onAttachmentPushToCloud"/>
 		</semantic:customFooterContent>
-
 	</semantic:MasterPage>
-
 </mvc:View>

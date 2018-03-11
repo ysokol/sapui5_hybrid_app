@@ -21,14 +21,14 @@ sap.ui.define([
 
 			init: function(uiComponent) {
 				this._uiComponent = uiComponent;
-				if (!this.isMobileDevice()) {
+				//if (!this.isMobileDevice()) {
 					window.addEventListener('load', function() {
 						var script = document.createElement('script');
 						script.type = 'text/javascript';
 						script.src = 'https://apis.google.com/js/api.js?onload=googleAapiLoaded';
 						document.body.appendChild(script);
 					});
-				}
+				//}
 			},
 
 			getNextAttachmentId: function(attachmentId) {

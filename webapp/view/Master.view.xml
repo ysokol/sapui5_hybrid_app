@@ -115,6 +115,7 @@
 			<OverflowToolbarButton icon="sap-icon://add" text="Add Sales Order" press="onAddSalesOrder"/>
 			<OverflowToolbarButton icon="sap-icon://delete" text="Delete Sales Order" press="onDeleteSalesOrder"/>
 			<OverflowToolbarButton icon="sap-icon://database" text="Offline Store" press="onNavToOfflineStore"/>
+			<OverflowToolbarButton icon="sap-icon://notification-2" text="Offline Store" press="onNavToNotifications"/>
 		</semantic:customFooterContent>
 
 	</semantic:MasterPage>

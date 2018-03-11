@@ -5,10 +5,11 @@ sap.ui.define([
 	"my/sapui5_hybrid_app/controller/ListSelector",
 	"my/sapui5_hybrid_app/controller/ErrorHandler",
 	"my/sapui5_hybrid_app/localService/mockserver",
-	"my/sapui5_hybrid_app/model/offlineStoreService",
-	"my/sapui5_hybrid_app/model/AttachmentService",
-	"my/sapui5_hybrid_app/utils/MyException"
-], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, offlineStoreService, AttachmentService, MyException) {
+	"my/sapui5_hybrid_app/utils/OfflineStoreService",
+	"my/sapui5_hybrid_app/utils/AttachmentService",
+	"my/sapui5_hybrid_app/utils/MyException",
+	"my/sapui5_hybrid_app/utils/PushNotificationService"
+], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, OfflineStoreService, AttachmentService, MyException, PushNotificationService) {
 	"use strict";
 
 	return UIComponent.extend("my.sapui5_hybrid_app.Component", {
@@ -31,19 +32,11 @@ sap.ui.define([
 				this.initComponent();
 			}
 			
-			// google API bootstrap
-			this._attachmentService = AttachmentService;
-			this._attachmentService.init(this);
 			window.addEventListener('load', function() {
-				var script = document.createElement('script');
-				script.type = 'text/javascript';
-				script.src = 'https://apis.google.com/js/api.js?onload=googleAPIloaded';
-				document.body.appendChild(script);
+				$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			});
 			
-			/*window.addEventListener('onerror', function(msg, url, line, col, error) {
-				alert(msg);
-			});*/
+			
 			window.onerror = function(msg, url, line, col, error) {
 				alert(msg);
 			};
@@ -56,6 +49,8 @@ sap.ui.define([
 
 		deviceInit: function() {
 			console.log('onDeviceReady()');
+			
+			//$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 
 			if (sap.Logger) {
 				sap.Logger.setLogLevel(sap.Logger.DEBUG); //enables the display of debug log messages from the Kapsel plugins.
@@ -66,7 +61,7 @@ sap.ui.define([
 				this.getModel("mobileDevice").setProperty("/isOffline", true);
 			}
 
-			var properties = {
+			/*var properties = {
 				"name": "SalesOrdersStore",
 				"host": "hcpms-s0004431717trial.hanatrial.ondemand.com",
 				"port": "443",
@@ -80,12 +75,16 @@ sap.ui.define([
 					"Materials": "/Materials",
 					"UnitOfMeasures": "/UnitOfMeasures"
 				}
-			};
+			};*/
 			//this._store = sap.OData.createOfflineStore(properties);
 			//this._store.open($.proxy(this.storeOpenSuccess, this), $.proxy(this.storeOpenFailed, this));
-			this._offlineStoreService = offlineStoreService;
+			this._offlineStoreService = new OfflineStoreService();
 			this._offlineStoreService.init(this);
 			this._offlineStoreService.openStore();
+			
+			this._oPushNotificationService = new PushNotificationService();
+			//this._oPushNotificationService.init();
+			
 			this.initComponent();
 
 		},
@@ -105,7 +104,10 @@ sap.ui.define([
 				this.setModel(models.createODataModelWeb());
 			}
 			//MockServer.init(); // start mock server in order to handle $metdata request which is not handled by Kapsel offline data 
-
+			
+			// google API bootstrap
+			this._attachmentService = new AttachmentService(this, this.getModel());
+			
 			sap.ui.getCore().setModel(this.getModel());
 
 			this.oListSelector = new ListSelector();
@@ -129,26 +131,7 @@ sap.ui.define([
 			sap.m.MessageToast.show("Greate, you are back online");
 			console.log('onOnline()');
 		},
-		/*storeRefreshSuccess: function() {
-			debugger;
-			sap.m.MessageToast.show("Offline Data Refresh succeeded :)", {
-				duration: 3000
-			});
-		},
 
-		//Synchronization Failed
-		storeRefreshFailed: function() {
-			sap.m.MessageToast.show("Data Offline Data Refresh failed :(", {
-				duration: 3000
-			});
-		},*/
-
-		/**
-		 * The component is destroyed by UI5 automatically.
-		 * In this method, the ListSelector and ErrorHandler are destroyed.
-		 * @public
-		 * @override
-		 */
 		destroy: function() {
 			this.oListSelector.destroy();
 			this._oErrorHandler.destroy();
@@ -156,12 +139,6 @@ sap.ui.define([
 			UIComponent.prototype.destroy.apply(this, arguments);
 		},
 
-		/**
-		 * This method can be called to determine whether the sapUiSizeCompact or sapUiSizeCozy
-		 * design mode class should be set, which influences the size appearance of some controls.
-		 * @public
-		 * @return {string} css class, either 'sapUiSizeCompact' or 'sapUiSizeCozy' - or an empty string if no css class should be set
-		 */
 		getContentDensityClass: function() {
 			if (this._sContentDensityClass === undefined) {
 				// check whether FLP has already set the content density class; do nothing in this case
@@ -181,10 +158,10 @@ sap.ui.define([
 
 });
 
-function googleAPIloaded() {
-	gapi.load('client:auth2', googleStart);
+function googleAapiLoaded() {
+	gapi.load('client:auth2', googleApiLoaded2);
 }
 
-function googleStart() {
+function googleApiLoaded2() {
 	gapi.client.load('drive', 'v3');
 }

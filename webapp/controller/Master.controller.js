@@ -92,6 +92,9 @@ sap.ui.define([
 		/* =========================================================== */
 		/* event handlers                                              */
 		/* =========================================================== */
+		onNavToNotifications: function(oEvent) {
+			this.getOwnerComponent()._oPushNotificationService.init();
+		},
 		onAddSalesOrder: function(oEvent) {
 
 			/*this.getComponentModel().create("/SalesOrders", {

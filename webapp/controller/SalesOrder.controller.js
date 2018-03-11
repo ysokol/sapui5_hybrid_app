@@ -19,7 +19,7 @@ sap.ui.define([
 		/* =========================================================== */
 		onInit: function() {
 			this.getRouter().getRoute("salesOrder").attachPatternMatched(this._onObjectMatched, this);
-			this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
+			//this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
 		},
 
 		onAddAttachment: function(oEvent) {
@@ -63,7 +63,7 @@ sap.ui.define([
 
 			that.getView().byId("AttachmentListId").setBusy(true);
 
-			that._attachmentService.addAttachment({
+			that.getComponentAttachmentService().addAttachment({
 					BusinessObject: "SOH" + salesOrderNum,
 					SalesOrder: salesOrderNum,
 					SalesOrderDetails: {
@@ -118,7 +118,7 @@ sap.ui.define([
 			var attachment = this.getComponentModel().getProperty(attachmentPath);
 			var that = this;
 			that.getView().byId("AttachmentListId").setBusy(true);
-			that._attachmentService.removeAttachment(attachment, attachmentPath).then(function() {
+			that.getComponentAttachmentService().removeAttachment(attachment, attachmentPath).then(function() {
 				that.getView().byId("AttachmentListId").setBusy(false);
 			}).catch(function(error) {
 				that.getView().byId("AttachmentListId").setBusy(false);
@@ -132,7 +132,7 @@ sap.ui.define([
 			var that = this;
 
 			that.getView().byId("AttachmentListId").setBusy(true);
-			that._attachmentService.getAttachmentSrc(attachment).then(function(imageSrc) {
+			that.getComponentAttachmentService().getAttachmentSrc(attachment).then(function(imageSrc) {
 				var oDialog = new sap.m.Dialog({
 					content: new sap.m.Image({
 						src: imageSrc,
