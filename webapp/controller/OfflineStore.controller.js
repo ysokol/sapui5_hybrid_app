@@ -34,7 +34,7 @@ sap.ui.define([
 						that.getComponentModel().setProperty(sPath + "/SalesOrder", item.SalesOrderDetails.SalesOrder);
 						that.getComponentModel().submitChanges();
 					}
-				})); //12342
+				}));
 				
 				/*this.getComponentModel().read("/SalesOrderItems?$expand=SalesOrderDetails", {
 					success: function(oData) {

@@ -16,7 +16,6 @@ sap.ui.define([
 	});
 	
 	MyException.prototype.toString = function () {
-		debugger;
 		var sCausedBy = null;
 		if ( this._oCausedBy instanceof MyException) {
 			sCausedBy = this._oCausedBy.toString();
