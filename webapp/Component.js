@@ -6,8 +6,9 @@ sap.ui.define([
 	"my/sapui5_hybrid_app/controller/ErrorHandler",
 	"my/sapui5_hybrid_app/localService/mockserver",
 	"my/sapui5_hybrid_app/model/offlineStoreService",
-	"my/sapui5_hybrid_app/model/AttachmentService"
-], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, offlineStoreService, AttachmentService) {
+	"my/sapui5_hybrid_app/model/AttachmentService",
+	"my/sapui5_hybrid_app/utils/MyException"
+], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, offlineStoreService, AttachmentService, MyException) {
 	"use strict";
 
 	return UIComponent.extend("my.sapui5_hybrid_app.Component", {
@@ -17,7 +18,6 @@ sap.ui.define([
 		},
 
 		init: function() {
-			debugger;
 			this.setModel(models.createMobileDeviceModel(), "mobileDevice");
 			this.getModel("mobileDevice").setProperty("/isMobileDevice", document.URL.indexOf('http://') === -1 && document.URL.indexOf(
 				'https://') === -1);
@@ -40,7 +40,18 @@ sap.ui.define([
 				script.src = 'https://apis.google.com/js/api.js?onload=googleAPIloaded';
 				document.body.appendChild(script);
 			});
-
+			
+			/*window.addEventListener('onerror', function(msg, url, line, col, error) {
+				alert(msg);
+			});*/
+			window.onerror = function(msg, url, line, col, error) {
+				alert(msg);
+			};
+			
+			window.addEventListener('unhandledrejection', function(event) {
+				 throw new MyException("Unhandled Rejection", "N/A", event);
+			});
+			
 		},
 
 		deviceInit: function() {

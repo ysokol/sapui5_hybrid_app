@@ -26,7 +26,17 @@ sap.ui.define([
 			onDataStoreFix  : function () {
 				debugger;
 				var that = this;
-				this.getComponentModel().read("/SalesOrderItems?$expand=SalesOrderDetails", {
+				//that.getComponentModel().sServiceUrl
+				this.getComponentModel().readExt("/SalesOrderItems", { "$expand": "SalesOrderDetails" })
+				.then(oData => oData.results.forEach( function (oItem) {
+					if (oItem["@com.sap.vocabularies.Offline.v1.inErrorState"])  {
+						var sPath = oItem.__metadata.uri.replace(that.getComponentModel().sServiceUrl, "");
+						that.getComponentModel().setProperty(sPath + "/SalesOrder", item.SalesOrderDetails.SalesOrder);
+						that.getComponentModel().submitChanges();
+					}
+				})); //12342
+				
+				/*this.getComponentModel().read("/SalesOrderItems?$expand=SalesOrderDetails", {
 					success: function(oData) {
 						oData.results.forEach(function(soItem) {
 							if (soItem["@com.sap.vocabularies.Offline.v1.inErrorState"]) {
@@ -44,7 +54,7 @@ sap.ui.define([
 							}
 						}); 
 					}
-				});
+				});*/
 			},
 			
 			onDataStoreFlush : function (oEvent) {

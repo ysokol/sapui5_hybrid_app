@@ -5,20 +5,21 @@ function onFileInput() {
 sap.ui.define([
 	"my/sapui5_hybrid_app/controller/BaseController",
 	"my/sapui5_hybrid_app/model/formatter",
-	"my/sapui5_hybrid_app/utils/AttachmentService"
-], function(BaseController, formatter, AttachmentService) {
+	"my/sapui5_hybrid_app/utils/AttachmentService",
+	"my/sapui5_hybrid_app/utils/MyException"
+], function(BaseController, formatter, AttachmentService, MyException) {
 	"use strict";
 
 	return BaseController.extend("my.sapui5_hybrid_app.controller.SalesOrder", {
 
 		formatter: formatter,
-
+		_attachmentService: null,
 		/* =========================================================== */
 		/* lifecycle methods                                           */
 		/* =========================================================== */
 		onInit: function() {
 			this.getRouter().getRoute("salesOrder").attachPatternMatched(this._onObjectMatched, this);
-			var object = new AttachmentService();
+			this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
 		},
 
 		onAddAttachment: function(oEvent) {
@@ -38,8 +39,8 @@ sap.ui.define([
 			var captureSuccess = function(mediaFiles) {
 				var i, path, len;
 				for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-					debugger;
 					path = mediaFiles[i].fullPath;
+					mediaFiles[i].isCamerShot = true;
 					that.addAttachment(mediaFiles[i]);
 				}
 			};
@@ -62,7 +63,30 @@ sap.ui.define([
 
 			that.getView().byId("AttachmentListId").setBusy(true);
 
-			this.getComponentAttachmentService().addAttachment(file, {
+			that._attachmentService.addAttachment({
+					BusinessObject: "SOH" + salesOrderNum,
+					SalesOrder: salesOrderNum,
+					SalesOrderDetails: {
+						__metadata: {
+							uri: currentSalesOrderPath.substring(1)
+						}
+					}
+				},
+				file
+			).then(function(attachment_result) {
+				that.getView().byId("AttachmentListId").setBusy(false);
+			}).catch(function(oException) {
+				that.getView().byId("AttachmentListId").setBusy(false);
+				alert("FAILED");
+				if (oException instanceof my.sapui5_hybrid_app.utils.MyException) {
+					oException.alert();
+				} else {
+					alert(oException);
+				}
+
+			});
+
+			/*this.getComponentAttachmentService().addAttachment(file, {
 				BusinessObject: "SOH" + salesOrderNum,
 				SalesOrder: salesOrderNum,
 				SalesOrderDetails: {
@@ -76,7 +100,7 @@ sap.ui.define([
 			}).catch(function(error) {
 				that.getView().byId("AttachmentListId").setBusy(false);
 				alert("Failed to create file: " + error);
-			});
+			});*/
 		},
 
 		onFileUploaderSet: function(oEvent) {
@@ -94,23 +118,21 @@ sap.ui.define([
 			var attachment = this.getComponentModel().getProperty(attachmentPath);
 			var that = this;
 			that.getView().byId("AttachmentListId").setBusy(true);
-			this.getComponentAttachmentService().removeAttachment(attachment).then(function() {
-				that.getComponentModel().remove(attachmentPath);
+			that._attachmentService.removeAttachment(attachment, attachmentPath).then(function() {
 				that.getView().byId("AttachmentListId").setBusy(false);
 			}).catch(function(error) {
-				that.getComponentModel().remove(attachmentPath);
 				that.getView().byId("AttachmentListId").setBusy(false);
-				sap.m.MessageToast.show("Failed to delete on Google Drive");
+				alert("Failed to delete on Google Drive: " + error);
 			});
 		},
 
-		onAttachmentViewImage: function(oEVent) {
-			var attachmentPath = oEVent.getSource().getParent().getBindingContext().getPath();
+		onAttachmentViewImage: function(event) {
+			var attachmentPath = event.getSource().getParent().getBindingContext().getPath();
 			var attachment = this.getComponentModel().getProperty(attachmentPath);
 			var that = this;
 
 			that.getView().byId("AttachmentListId").setBusy(true);
-			this.getComponentAttachmentService().getImageSrc(attachment).then(function(imageSrc) {
+			that._attachmentService.getAttachmentSrc(attachment).then(function(imageSrc) {
 				var oDialog = new sap.m.Dialog({
 					content: new sap.m.Image({
 						src: imageSrc,
@@ -128,6 +150,9 @@ sap.ui.define([
 					}
 				});
 				oDialog.open();
+			}).catch(function(error) {
+				that.getView().byId("AttachmentListId").setBusy(false);
+				alert("View Attachment Failed: " + error);
 			});
 		},
 
@@ -185,11 +210,17 @@ sap.ui.define([
 		},
 
 		_onObjectMatched: function(oEvent) {
-			debugger;
 			var objectPath = oEvent.getParameter("arguments").objectPath;
-			this.getModel().metadataLoaded().then(function() {
-				this._bindView("/" + objectPath); // Mobile Version
-			}.bind(this));
+			var that = this;
+			if (objectPath && objectPath !== "") {
+				that.getModel().metadataLoaded()
+				.then(function() {
+					that._bindView("/" + objectPath); // Mobile Version
+				}/*.bind(this)*/)
+				.catch(function() {
+					// Metadata Not loaded :[o]
+				});
+			}
 		},
 
 		_bindView: function(sObjectPath) {

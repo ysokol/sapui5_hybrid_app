@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/Device",
-	"sap/ui/model/odata/v2/ODataModel"
-], function(JSONModel, Device, ODataModel) {
+	"sap/ui/model/odata/v2/ODataModel",
+	"my/sapui5_hybrid_app/model/MyODataModel"
+], function(JSONModel, Device, ODataModel, MyODataModel) {
 	"use strict";
 
 	return {
@@ -33,10 +34,10 @@ sap.ui.define([
 		},
 
 		createODataModelWeb: function() { // oData model used for web application
-			var oDataModel = new ODataModel(
+			var oDataModel = new MyODataModel(
 				"https://myorderss0004431717trial.hanatrial.ondemand.com/MyOrders/odata", {
 					json: true,
-					//useBatch: true,
+					useBatch: false,
 					defaultBindingMode: sap.ui.model.BindingMode.TwoWay,
 					defaultUpdateMethod: sap.ui.model.odata.UpdateMethod.Put,
 					loadMetadataAsync: false,
@@ -50,7 +51,7 @@ sap.ui.define([
 		},
 		
 		createODataModelMobile: function() { // oData model used for mobile application, it's proxied thru  HCP Mobile Services
-			var oDataModel = new ODataModel(
+			var oDataModel = new MyODataModel(
 				"https://hcpms-s0004431717trial.hanatrial.ondemand.com:443/my_orders_odata/", {
 					json: true,
 					useBatch: false,
