@@ -77,6 +77,14 @@ sap.ui.define([
 				return this.getOwnerComponent()._attachmentService;
 			},
 			
+			getComponentPushNotificationService : function () {
+				return this.getOwnerComponent()._oPushNotificationService;
+			},
+			
+			getComponenetBarcodeScannerService : function () {
+				return this.getOwnerComponent()._oBarcodeScannerService;
+			},
+			
 			isOffline: function() {
 				if (!this.getComponentModel("mobileDevice")) {
 					throw "Model mobileDeviceModel not defined";

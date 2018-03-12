@@ -71,6 +71,10 @@
 						<Button icon="sap-icon://add" press="onAddAttachment"/>
 						<Button icon="sap-icon://add-photo" press="onAddPhoto"/>
 					</IconTabFilter>
+					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications">
+						<Button icon="sap-icon://paper-plane" press="onSendNotification"/>
+						<Button icon="sap-icon://bar-code" press="onScanBarcode"/>
+					</IconTabFilter>
 				</items>
 			</IconTabBar>
 			<Table id="lineItemsList" width="auto" items="{SalesOrderItemDetails}" updateFinished="onListUpdateFinished" noDataText="No Data"

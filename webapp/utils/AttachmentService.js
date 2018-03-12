@@ -169,10 +169,14 @@ sap.ui.define([
 		_getNextAttachmentId: function(attachmentId) {
 			var that = this;
 			return new Promise(function(resolve, reject) {
-				that._oDataModel.readExt("/Attachments", {
-						"$top": "1",
-						"$orderby": "Attachment desc"
-					})
+				var mODataFilter = {
+					"$top": "1",
+					"$orderby": "Attachment desc"
+				}
+				if (that._isMobileDevice()) {
+					mODataFilter["$filter"] = "startswith(Attachment, '$') eq true";
+				}
+				that._oDataModel.readExt("/Attachments", mODataFilter)
 					.then(function(oData) {
 						var maxAttachmentId = "0000000000";
 						if (that._isMobileDevice()) {

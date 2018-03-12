@@ -8,8 +8,10 @@ sap.ui.define([
 	"my/sapui5_hybrid_app/utils/OfflineStoreService",
 	"my/sapui5_hybrid_app/utils/AttachmentService",
 	"my/sapui5_hybrid_app/utils/MyException",
-	"my/sapui5_hybrid_app/utils/PushNotificationService"
-], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, OfflineStoreService, AttachmentService, MyException, PushNotificationService) {
+	"my/sapui5_hybrid_app/utils/PushNotificationService",
+	"my/sapui5_hybrid_app/utils/BarcodeScannerService"
+], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, OfflineStoreService, AttachmentService, MyException,
+	PushNotificationService, BarcodeScannerService) {
 	"use strict";
 
 	return UIComponent.extend("my.sapui5_hybrid_app.Component", {
@@ -23,6 +25,11 @@ sap.ui.define([
 			this.getModel("mobileDevice").setProperty("/isMobileDevice", document.URL.indexOf('http://') === -1 && document.URL.indexOf(
 				'https://') === -1);
 			this.getModel("mobileDevice").setProperty("/isOffline", false);
+
+			this._oPushNotificationService = new PushNotificationService();
+			
+			this._oBarcodeScannerService = new BarcodeScannerService();
+
 			if (this.getModel("mobileDevice").getProperty("/isMobileDevice")) {
 				document.addEventListener('deviceready', $.proxy(this.deviceInit, this), false);
 				document.addEventListener("offline", $.proxy(this.onOffline, this), false);
@@ -31,25 +38,24 @@ sap.ui.define([
 			} else {
 				this.initComponent();
 			}
-			
+
 			window.addEventListener('load', function() {
 				$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			});
-			
-			
+
 			window.onerror = function(msg, url, line, col, error) {
 				alert(msg);
 			};
-			
+
 			window.addEventListener('unhandledrejection', function(event) {
-				 throw new MyException("Unhandled Rejection", "N/A", event);
+				throw new MyException("Unhandled Rejection", "N/A", event);
 			});
-			
+
 		},
 
 		deviceInit: function() {
 			console.log('onDeviceReady()');
-			
+
 			//$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 
 			if (sap.Logger) {
@@ -81,10 +87,9 @@ sap.ui.define([
 			this._offlineStoreService = new OfflineStoreService();
 			this._offlineStoreService.init(this);
 			this._offlineStoreService.openStore();
-			
-			this._oPushNotificationService = new PushNotificationService();
-			//this._oPushNotificationService.init();
-			
+
+			this._oPushNotificationService.init();
+
 			this.initComponent();
 
 		},
@@ -104,10 +109,10 @@ sap.ui.define([
 				this.setModel(models.createODataModelWeb());
 			}
 			//MockServer.init(); // start mock server in order to handle $metdata request which is not handled by Kapsel offline data 
-			
+
 			// google API bootstrap
 			this._attachmentService = new AttachmentService(this, this.getModel());
-			
+
 			sap.ui.getCore().setModel(this.getModel());
 
 			this.oListSelector = new ListSelector();

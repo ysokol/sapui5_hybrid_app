@@ -21,6 +21,22 @@ sap.ui.define([
 			this.getRouter().getRoute("salesOrder").attachPatternMatched(this._onObjectMatched, this);
 			//this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
 		},
+		
+		onScanBarcode: function() {
+			this.getComponenetBarcodeScannerService().scanBarcode().then(sText => alert(sText));
+		},
+		
+		onSendNotification: function() {
+			var that = this;
+			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
+			var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
+
+			this.getComponentPushNotificationService().sendNotificationAll("Check update for Order #" + salesOrderNum, "navto: " +
+					currentSalesOrderPath)
+				.then(oData => sap.m.MessageToast.show("Notification sent!", {
+					duration: 3000
+				}));
+		},
 
 		onAddAttachment: function(oEvent) {
 			var that = this;
@@ -77,13 +93,11 @@ sap.ui.define([
 				that.getView().byId("AttachmentListId").setBusy(false);
 			}).catch(function(oException) {
 				that.getView().byId("AttachmentListId").setBusy(false);
-				alert("FAILED");
 				if (oException instanceof my.sapui5_hybrid_app.utils.MyException) {
 					oException.alert();
 				} else {
 					alert(oException);
 				}
-
 			});
 
 			/*this.getComponentAttachmentService().addAttachment(file, {
@@ -214,12 +228,12 @@ sap.ui.define([
 			var that = this;
 			if (objectPath && objectPath !== "") {
 				that.getModel().metadataLoaded()
-				.then(function() {
-					that._bindView("/" + objectPath); // Mobile Version
-				}/*.bind(this)*/)
-				.catch(function() {
-					// Metadata Not loaded :[o]
-				});
+					.then(function() {
+						that._bindView("/" + objectPath); // Mobile Version
+					} /*.bind(this)*/ )
+					.catch(function() {
+						// Metadata Not loaded :[o]
+					});
 			}
 		},
 
