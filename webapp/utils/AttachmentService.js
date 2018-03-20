@@ -8,23 +8,19 @@ sap.ui.define([
 ], function(Object, Utils, FileSystemService, WebFileSystemService, GoogleDriveStorageService, MyException) {
 	"use strict";
 	return Object.extend("my.sapui5_hybrid_app.utils.AttachmentService", {
-
-		_uiComponent: null,
-		_oDataModel: null,
-		_utils: null,
-		_googleDriveStorageService: null,
-		_webFileSystemService: null,
-
-		constructor: function(uiComponent, oDataModel) {
-			this._uiComponent = uiComponent;
-			this._oDataModel = oDataModel;
+		constructor: function(oUiComponent) {
+			this._uiComponent = oUiComponent;
 			this._utils = Utils;
 			this._googleDriveStorageService = new GoogleDriveStorageService();
 			this._googleDriveStorageService.init();
 			this._webFileSystemService = new WebFileSystemService();
 			this._oFileSystemService = new FileSystemService();
 		},
-
+		
+		getODataModel: function() {
+			return 	this._uiComponent.getModel();            
+		},
+		
 		addAttachment: function(attachment, file) {
 			var that = this;
 			return new Promise(function(resolve, reject) {
@@ -53,7 +49,7 @@ sap.ui.define([
 
 								that._oFileSystemService.writeFile2(createdFileEntry, blob);
 								attachment.Attachment = nextAttachmentId;
-								that._oDataModel.create("/Attachments", attachment);
+								that.getODataModel().create("/Attachments", attachment);
 
 								resolve(attachment);
 							})
@@ -74,7 +70,7 @@ sap.ui.define([
 
 								that._oFileSystemService.writeFile2(createdFileEntry, blob);
 								attachment.Attachment = nextAttachmentId;
-								that._oDataModel.create("/Attachments", attachment);
+								that.getODataModel().create("/Attachments", attachment);
 
 								resolve(attachment);
 							})
@@ -91,7 +87,7 @@ sap.ui.define([
 						]).then(results => {
 							attachment.StorageId = results[0]; // googleDriveFileId
 							attachment.Attachment = results[1]; // nextAttachmentId
-							that._oDataModel.create("/Attachments", attachment);
+							that.getODataModel().create("/Attachments", attachment);
 							resolve(attachment);
 						})
 						.catch(function(oException) {
@@ -105,13 +101,13 @@ sap.ui.define([
 			var that = this;
 			if (that._isMobileDevice()) {
 				return Promise.all([
-					that._oDataModel.remove(attachmentPath),
+					that.getODataModel().remove(attachmentPath),
 					that._oFileSystemService.openFile(cordova.file.externalApplicationStorageDirectory, attachment.LocalStoragePath)
 					.then(fileEntry => that._oFileSystemService.remvoveFile(fileEntry))
 				]);
 			} else {
 				return Promise.all([
-					that._oDataModel.remove(attachmentPath),
+					that.getODataModel().remove(attachmentPath),
 					that._googleDriveStorageService.removeFile(attachment.StorageId)
 				]);
 			}
@@ -120,7 +116,7 @@ sap.ui.define([
 		pushAllToCloudStorage: function() {
 			var that = this;
 			debugger;
-			that._oDataModel.readExt("/Attachments", {
+			that.getODataModel().readExt("/Attachments", {
 					"$filter": "StorageId eq ''"
 				})
 				.then(oData => oData.results.forEach(function(oAttachment) {
@@ -138,10 +134,10 @@ sap.ui.define([
 					.then(fileId => {
 						oAttachment.StorageProvider = "GOOGLE_DRIVE"
 						oAttachment.StorageId = fileId;
-						var sPath = oAttachment.__metadata.uri.replace(that._oDataModel.sServiceUrl, "");
-						that._oDataModel.setProperty(sPath + "/" + "StorageProvider", oAttachment.StorageProvider);
-						that._oDataModel.setProperty(sPath + "/" + "StorageId", oAttachment.StorageId);
-						that._oDataModel.submitChanges();
+						var sPath = oAttachment.__metadata.uri.replace(that.getODataModel().sServiceUrl, "");
+						that.getODataModel().setProperty(sPath + "/" + "StorageProvider", oAttachment.StorageProvider);
+						that.getODataModel().setProperty(sPath + "/" + "StorageId", oAttachment.StorageId);
+						that.getODataModel().submitChanges();
 						resolve(oAttachment);
 					})
 					.catch(oException => reject(new MyException("AttachmentServiceException", "Failed pushToCloudStorage()", oException)));
@@ -176,7 +172,7 @@ sap.ui.define([
 				if (that._isMobileDevice()) {
 					mODataFilter["$filter"] = "startswith(Attachment, '$') eq true";
 				}
-				that._oDataModel.readExt("/Attachments", mODataFilter)
+				that.getODataModel().readExt("/Attachments", mODataFilter)
 					.then(function(oData) {
 						var maxAttachmentId = "0000000000";
 						if (that._isMobileDevice()) {

@@ -1,0 +1,9 @@
+<mvc:View
+	controllerName="my.sapui5_hybrid_app.controller.FullScreenApp"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
+	busy="{appView>/busy}"
+	busyIndicatorDelay="{appView>/delay}"
+	xmlns="sap.m">
+	<App id="idFullScreenAppControl" />
+</mvc:View>

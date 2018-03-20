@@ -1,0 +1,22 @@
+<mvc:View controllerName="my.sapui5_hybrid_app.controller.Visit" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+	xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified">
+	<Page id="visitPage" title="Centered Title" class="sapUiContentPadding" showNavButton="true" navButtonPress="onNavBack">
+		<semantic:DetailPage id="visitDetailPage" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="Visit">
+			<semantic:content>
+				<ObjectHeader id="objectHeader" title="{Visit}"/>
+				<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
+					<items>
+						<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}"></IconTabFilter>
+						<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}"></IconTabFilter>
+						<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
+					</items>
+				</IconTabBar>
+			</semantic:content>
+			<semantic:customFooterContent>
+				<OverflowToolbarButton icon="sap-icon://add" text="Add Itemm" press="onSalesOrderItemAdd"/>
+				<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onSalesOrderSave"/>
+				<OverflowToolbarButton icon="sap-icon://delete" text="Delete Sales Order" press="onSalesOrderDelete"/>
+			</semantic:customFooterContent>
+		</semantic:DetailPage>
+	</Page>
+</mvc:View>

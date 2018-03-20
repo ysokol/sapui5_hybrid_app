@@ -6,7 +6,7 @@ sap.ui.define([
 		constructor: function() {
 			Object.apply(this);
 			this._offlineStore = null;
-			this._deviceModel = null;
+			//this._deviceModel = null;
 			this._oUiComponent = null;
 		},
 
@@ -28,7 +28,7 @@ sap.ui.define([
 				}
 			};
 			this._offlineStore = sap.OData.createOfflineStore(properties);
-			this._deviceModel = oUiComponent.getModel("mobileDevice");
+			//this._deviceModel = oUiComponent.getModel("mobileDevice");
 			this._oUiComponent = oUiComponent;
 		},
 

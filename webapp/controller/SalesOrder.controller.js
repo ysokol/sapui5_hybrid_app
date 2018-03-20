@@ -21,11 +21,11 @@ sap.ui.define([
 			this.getRouter().getRoute("salesOrder").attachPatternMatched(this._onObjectMatched, this);
 			//this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
 		},
-		
+
 		onScanBarcode: function() {
 			this.getComponenetBarcodeScannerService().scanBarcode().then(sText => alert(sText));
 		},
-		
+
 		onSendNotification: function() {
 			var that = this;
 			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
@@ -38,41 +38,41 @@ sap.ui.define([
 				}));
 		},
 
+		onFileUploaderSet: function(oEvent) {
+			debugger;
+			var file = oEvent.getParameter("files")[0];
+			if (!file) {
+				alert("Choose a file first");
+				return;
+			}
+			this._addAttachment(file);
+		},
+
 		onAddAttachment: function(oEvent) {
 			var that = this;
 			var fileSelector = document.createElement('input');
 			fileSelector.setAttribute('type', 'file');
 			fileSelector.setAttribute('accept', 'image/*');
 			fileSelector.onchange = function(data) {
-				that.addAttachment(fileSelector.files[0]);
+				that._addAttachment(fileSelector.files[0]);
 			}
 			fileSelector.click();
 		},
 
 		onAddPhoto: function(oEvent) {
-			// capture callback
 			var that = this;
-			var captureSuccess = function(mediaFiles) {
-				var i, path, len;
-				for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-					path = mediaFiles[i].fullPath;
-					mediaFiles[i].isCamerShot = true;
-					that.addAttachment(mediaFiles[i]);
-				}
-			};
-
-			// capture error callback
-			var captureError = function(error) {
-				navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-			};
-
-			// start image capture
-			navigator.device.capture.captureImage(captureSuccess, captureError, {
-				limit: 1
-			});
+			this.getComponentCaptureMediaService().captureSingleImage()
+				.then(function(aMediaFiles) {
+					var i, path, len;
+					for (i = 0, len = aMediaFiles.length; i < len; i += 1) {
+						//path = mediaFiles[i].fullPath;
+						aMediaFiles[i].isCamerShot = true;
+						that._addAttachment(aMediaFiles[i]);
+					}
+				});
 		},
 
-		addAttachment: function(file) {
+		_addAttachment: function(file) {
 			var that = this;
 			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
 			var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
@@ -99,32 +99,6 @@ sap.ui.define([
 					alert(oException);
 				}
 			});
-
-			/*this.getComponentAttachmentService().addAttachment(file, {
-				BusinessObject: "SOH" + salesOrderNum,
-				SalesOrder: salesOrderNum,
-				SalesOrderDetails: {
-					__metadata: {
-						uri: currentSalesOrderPath.substring(1)
-					}
-				}
-			}).then(function(attachment_result) {
-				that.getComponentModel().create("/Attachments", attachment_result);
-				that.getView().byId("AttachmentListId").setBusy(false);
-			}).catch(function(error) {
-				that.getView().byId("AttachmentListId").setBusy(false);
-				alert("Failed to create file: " + error);
-			});*/
-		},
-
-		onFileUploaderSet: function(oEvent) {
-			debugger;
-			var file = oEvent.getParameter("files")[0];
-			if (!file) {
-				alert("Choose a file first");
-				return;
-			}
-			this.addAttachment(file);
 		},
 
 		onAttachmentDelete: function(oEVent) {
@@ -171,9 +145,6 @@ sap.ui.define([
 		},
 
 		onSalesOrderItemAdd: function(oEvent) {
-			//this.getComponentModel().	
-			debugger;
-
 			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
 			var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
 			var maxItem = "0000";

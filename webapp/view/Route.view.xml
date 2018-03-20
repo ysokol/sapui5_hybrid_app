@@ -1,0 +1,41 @@
+<mvc:View controllerName="my.sapui5_hybrid_app.controller.Route" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+	xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified">
+	<semantic:DetailPage id="routePage" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="Routes"
+		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:content>
+			<ObjectHeader id="objectHeader" title="{Route}"/>
+			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}"></IconTabFilter>
+					<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}"></IconTabFilter>
+					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
+				</items>
+			</IconTabBar>
+			<List id="list" items="{ path: 'VisitDetails', sorter: { path: 'Visit', descending: false } }" growing="true" growingScrollToLoad="true"
+				updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
+				<items>
+					<CustomListItem press="onVisitPress" type="Navigation">
+						<HBox>
+							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+								<Label text="{Visit}"/>
+								<Input value="{Status}" maxLength="10"/>
+							</VBox>
+							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+								<ComboBox selectedKey="{Customer}" items="{ path: '/Customers', sorter: { path: 'Customer' }, templateShareable : true }">
+									<core:Item key="{Customer}" text="{Description}"/>
+								</ComboBox>
+								<Input value="{Comment}" maxLength="50"/>
+							</VBox>
+							<Button icon="sap-icon://delete" press="onVisitDelete"/>
+						</HBox>
+					</CustomListItem>
+				</items>
+			</List>
+		</semantic:content>
+		<semantic:customFooterContent>
+			<OverflowToolbarButton icon="sap-icon://add" text="Add Itemm" press="onVisitAdd"/>
+			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onRouteSave"/>
+			<OverflowToolbarButton icon="sap-icon://delete" text="Delete Sales Order" press="onSalesOrderDelete"/>
+		</semantic:customFooterContent>
+	</semantic:DetailPage>
+</mvc:View>

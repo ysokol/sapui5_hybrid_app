@@ -42,7 +42,7 @@
 	},
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "my.sapui5_hybrid_app.view.App",
+			"viewName": "my.sapui5_hybrid_app.view.FullScreenApp",
 			"type": "XML",
 			"id": "app"
 		},
@@ -74,8 +74,10 @@
 				"routerClass": "sap.m.routing.Router",
 				"viewType": "XML",
 				"viewPath": "my.sapui5_hybrid_app.view",
-				"controlId": "idAppControl",
-				"controlAggregation": "detailPages",
+				"__controlId": "idFullScreenAppControl",
+				"targetAggregation": "pages",
+				"clearTarget": false,
+				"__controlAggregation": "detailPages",
 				"bypassed": {
 					"target": [
 						"master",
@@ -84,30 +86,81 @@
 				},
 				"async": true
 			},
-			"routes": [
-				{
+			"routes": [{
+				"pattern": "",
+				"name": "app",
+				"view": "app",
+				"viewPath": "my.sapui5_hybrid_app.view",
+				"targetControl": "idFullScreenAppControl",
+				"targetAggregation": "pages",
+				"subroutes": [{
 					"pattern": "",
-					"name": "master",
-					"target": [
-						"salesOrder",
-						"master"
-					]
-				},
-				{
-					"pattern": "SalesOrders/{objectPath}",
-					"name": "salesOrder",
-					"target": [
-						"master",
-						"salesOrder"
-					]
-				},
-				{
-					"pattern": "OfflineStore",
-					"name": "offlineStore",
-					"target": "offlineStore"
-				}
-			],
+					"name": "routeListMaster",
+					"view": "routeListMaster",
+					"targetControl": "idAppControl",
+					"targetAggregation": "masterPages",
+					"subroutes": [{
+						"pattern": "Routes/{objectPath}",
+						"name": "route",
+						"view": "route",
+						"targetAggregation": "detailPages"
+					}]
+				}]
+			}, {
+				"pattern": "__old_empty",
+				"name": "__old_master",
+				"target": [
+					"route",
+					"routeListMaster"
+				]
+			}, {
+				"pattern": "__old_Routes/{objectPath}",
+				"name": "__old_route",
+				"target": [
+					"routeListMaster",
+					"route"
+				]
+			}, {
+				"pattern": "Visits/{objectPath}",
+				"name": "visit",
+				"view": "visit",
+				"viewPath": "my.sapui5_hybrid_app.view",
+				"targetControl": "idFullScreenAppControl",
+				"targetAggregation": "pages"
+			}, {
+				"pattern": "SalesOrders/{objectPath}",
+				"name": "salesOrder",
+				"target": [
+					"master",
+					"salesOrder"
+				]
+			}, {
+				"pattern": "OfflineStore",
+				"name": "offlineStore",
+				"target": "offlineStore"
+			}],
 			"targets": {
+				"app": {
+					"viewName": "App",
+					"viewId": "app"
+				},
+				"routeListMaster": {
+					"viewName": "RouteListMaster",
+					"viewLevel": 1,
+					"viewId": "routeListMaster",
+					"controlAggregation": "masterPages"
+				},
+				"route": {
+					"viewName": "Route",
+					"viewId": "route",
+					"controlAggregation": "detailPages",
+					"viewLevel": 2
+				},
+				"visit": {
+					"viewName": "Visit",
+					"viewId": "visit",
+					"viewLevel": 1
+				},
 				"master": {
 					"viewName": "Master",
 					"viewLevel": 1,
