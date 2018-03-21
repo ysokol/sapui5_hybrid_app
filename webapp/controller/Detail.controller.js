@@ -32,7 +32,6 @@ sap.ui.define([
 			},
 			
 			onSave : function () {
-				debugger;
 				var currentSalesOrderPath = this.getView().getElementBinding().getPath();
 				this.getComponentModel().read(currentSalesOrderPath + "/SalesOrderItemDetails");
 				var salesOrderItemDetails = this.getComponentModel().getProperty(currentSalesOrderPath + "/SalesOrderItemDetails");
@@ -44,7 +43,6 @@ sap.ui.define([
 			},
 			
 			onAddSalesOrderItem : function () {
-				debugger;
 				var currentSalesOrderPath = this.getView().getElementBinding().getPath();
 				
 				this.getComponentModel().create(currentSalesOrderPath + "/SalesOrderItemDetails", {

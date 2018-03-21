@@ -15,19 +15,25 @@
 				updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
 				<items>
 					<CustomListItem press="onVisitPress" type="Navigation">
-						<HBox>
-							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+						<VBox>
+							<HBox>
 								<Label text="{Visit}"/>
-								<Input value="{Status}" maxLength="10"/>
-							</VBox>
-							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+								<Label text="{Customer}"/>
+							</HBox>
+							<HBox>
+								<DateTimePicker value="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"
+									displayFormat="short"/>
+								<DateTimePicker value="{path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"
+									displayFormat="short"/>
+							</HBox>
+							<HBox>
 								<ComboBox selectedKey="{Customer}" items="{ path: '/Customers', sorter: { path: 'Customer' }, templateShareable : true }">
 									<core:Item key="{Customer}" text="{Description}"/>
 								</ComboBox>
 								<Input value="{Comment}" maxLength="50"/>
-							</VBox>
+							</HBox>
 							<Button icon="sap-icon://delete" press="onVisitDelete"/>
-						</HBox>
+						</VBox>
 					</CustomListItem>
 				</items>
 			</List>
