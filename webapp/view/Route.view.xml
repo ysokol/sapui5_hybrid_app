@@ -1,12 +1,35 @@
 <mvc:View controllerName="my.sapui5_hybrid_app.controller.Route" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
-	xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified">
+	xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified"
+	xmlns:gmaps="openui5.googlemaps">
 	<semantic:DetailPage id="routePage" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="Routes"
 		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
 		<semantic:content>
 			<ObjectHeader id="objectHeader" title="{Route}"/>
 			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
 				<items>
-					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}"></IconTabFilter>
+					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}">
+						<Button icon="sap-icon://map" press="onRouteMap"></Button>
+						<!--<gmaps:Map height="250px" zoom="12" lat="-33.895" lng="151.275" apiKey="AIzaSyD0r-4o-SYW6VFRZKi5H_o1jdRxs5JZafU">
+							<gmaps:markers>
+								<gmaps:Marker lat="-33.895" lng="151.275" info="Test Marker"/>
+							</gmaps:markers>
+							mapsUrl="http://maps.google.cn/maps/api/js" apiKey="AIzaSyD6EmAk92gaGzjYVYU-ebd_BK-rgejSoZ0" version="3.20" language="en-US"
+						</gmaps:Map>-->
+						<Input id="input123" value="{directions>/start}"/>
+						<Input id="input124" value="{directions>/end}"/>
+						<Input id="input125" value="{directions>/travelMode}"/>
+						<gmaps:Map id="routeMapId" height="350px" lat="{directions>/lat}" lng="{directions>/lng}" zoom="7" zoomControl="true"
+							apiKey="AIzaSyD6EmAk92gaGzjYVYU-ebd_BK-rgejSoZ0">
+							<gmaps:directions>
+								<gmaps:Directions startAddress="{directions>/start}" endAddress="{directions>/end}" waypoints="{directions>/stops}"
+									travelMode="{directions>/travelMode}">
+									<gmaps:waypoints>
+										<gmaps:Waypoint location="{path: 'directions>location'}"/>
+									</gmaps:waypoints>
+								</gmaps:Directions>
+							</gmaps:directions>
+						</gmaps:Map>
+					</IconTabFilter>
 					<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}"></IconTabFilter>
 					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
 				</items>

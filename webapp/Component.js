@@ -22,6 +22,11 @@ sap.ui.define([
 		},
 
 		init: function() {
+			// load google maps library
+			var sHttpPath = jQuery.sap.getModulePath("my.sapui5_hybrid_app");
+			sap.ui.getCore().loadLibrary("openui5.googlemaps", sHttpPath + "/utils/googlemaps/");
+			
+			// create core Services
 			this._oPushNotificationService = new PushNotificationService();
 			this._oBarcodeScannerService = new BarcodeScannerService();
 			this._oCaptureMediaService = new CaptureMediaService();

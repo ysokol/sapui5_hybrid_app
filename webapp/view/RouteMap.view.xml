@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+    xmlns:gmaps="openui5.googlemaps"
+    controllerName="my.sapui5_hybrid_app.controller.RouteMap">
+    <gmaps:Map height="250px" zoom="12" lat="-33.895" lng="151.275"
+    apiKey="AIzaSyD0r-4o-SYW6VFRZKi5H_o1jdRxs5JZafU">
+        <gmaps:markers>
+            <gmaps:Marker lat="-33.895" lng="151.275" info="Bondi Beach" />
+        </gmaps:markers>
+    </gmaps:Map>
+</mvc:View>

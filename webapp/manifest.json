@@ -107,6 +107,13 @@
 					}]
 				}]
 			}, {
+				"pattern": "RouteMap/{objectPath}",
+				"name": "routeMap",
+				"view": "routeMap",
+				"viewPath": "my.sapui5_hybrid_app.view",
+				"targetControl": "idFullScreenAppControl",
+				"targetAggregation": "pages"
+			}, {
 				"pattern": "__old_empty",
 				"name": "__old_master",
 				"target": [
@@ -155,6 +162,10 @@
 					"viewId": "route",
 					"controlAggregation": "detailPages",
 					"viewLevel": 2
+				},
+				"routeMap": {
+					"viewName": "RouteMap",
+					"viewId": "routeMap"
 				},
 				"visit": {
 					"viewName": "Visit",
