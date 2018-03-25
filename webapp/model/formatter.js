@@ -37,9 +37,9 @@ sap.ui.define([], function() {
 		
 		visitStatusIcon: function(sValue) {
 			switch (sValue) {
-				case "DONE":
+				case "CLOSED":
 					return "sap-icon://complete";
-				case "EXEC":
+				case "OPENED":
 					return "sap-icon://status-in-process";
 				case "PLAN":
 					return "sap-icon://future";
@@ -50,9 +50,9 @@ sap.ui.define([], function() {
 		
 		visitStatusState: function(sValue) {
 			switch (sValue) {
-				case "DONE":
+				case "CLOSED":
 					return sap.ui.core.ValueState.Success;
-				case "EXEC":
+				case "OPENED":
 					return sap.ui.core.ValueState.Warning;
 				case "PLAN":
 					return sap.ui.core.ValueState.Warning;

@@ -22,7 +22,8 @@
 					<IconTabFilter icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}">
 						<Label text="Route fullfillment progress:"/>
 						<ProgressIndicator class="sapUiSmallMarginBottom" percentValue="{=${VisitsDone} / ${VisitsTotal} * 100}"
-							displayValue="{VisitsDone} visit(s) done of {VisitsTotal}" showValue="true" state="Success"/>
+							displayValue="{VisitsDone} visit(s) done of {VisitsTotal}" showValue="true"
+							state="{=(${VisitsDone} === ${VisitsTotal}) ? 'Success' : 'Warning'}"/>
 					</IconTabFilter>
 					<IconTabFilter icon="sap-icon://map-2" tooltip="View On Map">
 						<gmaps:Map id="routeMapId" height="350px" lat="{directions>/lat}" lng="{directions>/lng}" zoom="7" zoomControl="true"
@@ -40,16 +41,17 @@
 					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
 				</items>
 			</IconTabBar>
-			<List id="list" items="{ path: 'VisitDetails', sorter: { path: 'Visit', descending: false } }" growing="true" growingScrollToLoad="true"
-				updateFinished="onUpdateFinished" selectionChange="onSelectionChange" mode="Delete">
+			<List id="list" items="{ path: 'VisitDetails', sorter: { path: 'Visit', descending: false }, parameters: {expand: 'CustomerDetails'} }" growing="true" growingScrollToLoad="true"
+				updateFinished="onUpdateFinished" selectionChange="onSelectionChange" mode="Delete" delete="onVisitDelete">
 				<items>
 					<CustomListItem press="onVisitPress" type="Navigation">
 						<HBox>
 							<core:Icon size="2rem" src="sap-icon://visits" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 								<Label text="{Visit}" design="Bold"/>
-								<Link text="{Customer}" href="{Customer}"/>
-								<Label text="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}} - {path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"/>
+								<Link text="{Customer} - {CustomerDetails/Description}" href="{CustomerDetails/Description}"/>
+								<Label
+									text="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}} - {path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"/>
 								<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.visitStatusState'}"
 									icon="{path:'Status', formatter:'.formatter.visitStatusIcon'}"/>
 							</VBox>

@@ -36,6 +36,24 @@ sap.ui.define([
 					}
 				});
 			});
+		},
+		
+		getRelatedPath: function(sFullPath) {
+			return sFullPath.replace(this.sServiceUrl, "");
+		},
+		
+		submitChangesExt: function() {
+			var that = this;
+			return new Promise(function(resolve, reject) {
+				that.submitChanges({
+					success: function(oData) {
+						resolve(oData);
+					},
+					error: function(oException) {
+						reject(new MyException("MyODataModel", "Failed submitChangesExt", oException));
+					}
+				});
+			});
 		}
 
 	});

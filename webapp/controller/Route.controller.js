@@ -2,8 +2,9 @@
 sap.ui.define([
 	"my/sapui5_hybrid_app/controller/BaseController",
 	"my/sapui5_hybrid_app/model/formatter",
-	"sap/ui/model/json/JSONModel"
-], function(BaseController, formatter, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"my/sapui5_hybrid_app/model/service/RouteService"
+], function(BaseController, formatter, JSONModel, RouteService) {
 	"use strict";
 
 	return BaseController.extend("my.sapui5_hybrid_app.controller.Route", {
@@ -11,6 +12,8 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function() {
+			this._oRouteService = new RouteService(this.getComponentModel());
+
 			this.getRouter().getRoute("Route").attachPatternMatched(this._onObjectMatched, this);
 
 			/*var wayPoint1 = new openui5.googlemaps.Waypoint(); 
@@ -19,7 +22,7 @@ sap.ui.define([
 			wayPoint1.location = 'Homebush';
 			wayPoint2.location = 'Bankstown';
 			wayPoint3.location = 'Menai';*/
-			
+
 			var directions = {
 				name: "",
 				lat: 0,
@@ -37,44 +40,45 @@ sap.ui.define([
 
 			this.getView().setModel(this._oDirectionsModel, "directions");
 			//var oContext = new sap.ui.model.Context(this._oDirectionsModel, "/data");
-			
+
 			//this.byId("routeMapId").setBindingContext(oContext);
 			//this.byId("input123").bindElement("");
 			//this.byId("input124").setBindingContext(oContext);
 			//this.byId("input125").setBindingContext(oContext);
 
 		},
-		
+
 		refreshMap: function(sRoutePath) {
 			var that = this;
 			var sCurrentRoutePath = (sRoutePath) ? sRoutePath : this.getView().getElementBinding().getPath();
-		
-			that.getComponentModel().readExt(sCurrentRoutePath + "/VisitDetails").then(function (oData) {
+
+			that.getComponentModel().readExt(sCurrentRoutePath + "/VisitDetails").then(function(oData) {
 				var oFirstVisit = null;
 				var oLastVisit = null;
 				var iCounter = 0;
 				var aWaypoints = [];
-				
-				oLastVisit = oData.results.pop();
-				for (let oVisit of oData.results) {
-					if (!oFirstVisit) {
-						oFirstVisit = oVisit;
-					} else {
-						aWaypoints.push({
-							location: oVisit.GeoPosition
-						});
+				if (oData.results.length >= 2) {
+					oLastVisit = oData.results.pop();
+					for (let oVisit of oData.results) {
+						if (!oFirstVisit) {
+							oFirstVisit = oVisit;
+						} else {
+							aWaypoints.push({
+								location: oVisit.GeoPosition
+							});
+						}
 					}
+
+					that._oDirectionsModel.setProperty("/lat", oFirstVisit.GeoPosition.split(',')[0].trim());
+					that._oDirectionsModel.setProperty("/lng", oFirstVisit.GeoPosition.split(',')[1].trim());
+
+					that._oDirectionsModel.setProperty("/start", oFirstVisit.GeoPosition);
+					that._oDirectionsModel.setProperty("/end", oLastVisit.GeoPosition);
+					that._oDirectionsModel.setProperty("/stops", aWaypoints);
 				}
-				
-				that._oDirectionsModel.setProperty("/lat", oFirstVisit.GeoPosition.split(',')[0].trim());
-				that._oDirectionsModel.setProperty("/lng", oFirstVisit.GeoPosition.split(',')[1].trim());
-				
-				that._oDirectionsModel.setProperty("/start", oFirstVisit.GeoPosition);
-				that._oDirectionsModel.setProperty("/end", oLastVisit.GeoPosition);
-				that._oDirectionsModel.setProperty("/stops", aWaypoints);
 			});
 		},
-		
+
 		onRouteMap: function(oEvent) {
 			this.refreshMap();
 			//var sObjPath = this.getView().getElementBinding().getPath().substring(1);
@@ -106,20 +110,22 @@ sap.ui.define([
 					if (oData.results[0]) {
 						maxItem = oData.results[0].Visit;
 					}
-					that.getComponentModel().create(sCurrentRoutePath + "/VisitDetails", {
-						Route: sRoute,
-						Visit: that.getUtils().stringPad(parseInt(maxItem) + 10, 5),
-						RouteDetails: {
-							__metadata: {
-								uri: sCurrentRoutePath.substring(1)
+					that.getComponentModel().createExt(sCurrentRoutePath + "/VisitDetails", {
+							Route: sRoute,
+							Visit: that.getUtils().stringPad(parseInt(maxItem) + 10, 5),
+							Status: "PLAN",
+							RouteDetails: {
+								__metadata: {
+									uri: sCurrentRoutePath.substring(1)
+								}
 							}
-						}
-					});
+						})
+						.then(() => that._oRouteService.recalcVisitCount(sCurrentRoutePath));
 				});
 		},
 
 		onVisitDelete: function(oEvent) {
-			this.getComponentModel().remove(oEvent.getSource().getParent().getBindingContext().getPath());
+			this.getComponentModel().remove(oEvent.getParameter("listItem").getBindingContext().getPath());
 		},
 
 		onRouteSave: function(oEvent) {
