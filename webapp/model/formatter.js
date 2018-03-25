@@ -9,6 +9,58 @@ sap.ui.define([], function() {
 		 * @param {string} sValue value to be formatted
 		 * @returns {string} formatted currency value with 2 digits
 		 */
+		routeStatusIcon: function(sValue) {
+			switch (sValue) {
+				case "DONE":
+					return "sap-icon://complete";
+				case "EXEC":
+					return "sap-icon://status-in-process";
+				case "PLAN":
+					return "sap-icon://future";
+				default:
+					return "sap-icon://complete";
+			}
+		},
+		
+		routeStatusState: function(sValue) {
+			switch (sValue) {
+				case "DONE":
+					return sap.ui.core.ValueState.Success;
+				case "EXEC":
+					return sap.ui.core.ValueState.Warning;
+				case "PLAN":
+					return sap.ui.core.ValueState.Warning;
+				default:
+					return sap.ui.core.ValueState.Error;
+			}
+		},
+		
+		visitStatusIcon: function(sValue) {
+			switch (sValue) {
+				case "DONE":
+					return "sap-icon://complete";
+				case "EXEC":
+					return "sap-icon://status-in-process";
+				case "PLAN":
+					return "sap-icon://future";
+				default:
+					return "sap-icon://complete";
+			}
+		},
+		
+		visitStatusState: function(sValue) {
+			switch (sValue) {
+				case "DONE":
+					return sap.ui.core.ValueState.Success;
+				case "EXEC":
+					return sap.ui.core.ValueState.Warning;
+				case "PLAN":
+					return sap.ui.core.ValueState.Warning;
+				default:
+					return sap.ui.core.ValueState.Error;
+			}
+		},
+		
 		currencyValue: function(sValue) {
 			if (!sValue) {
 				return "";

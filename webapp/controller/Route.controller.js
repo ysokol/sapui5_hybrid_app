@@ -11,7 +11,7 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function() {
-			this.getRouter().getRoute("route").attachPatternMatched(this._onObjectMatched, this);
+			this.getRouter().getRoute("Route").attachPatternMatched(this._onObjectMatched, this);
 
 			/*var wayPoint1 = new openui5.googlemaps.Waypoint(); 
 			var wayPoint2 = new openui5.googlemaps.Waypoint(); 
@@ -21,17 +21,13 @@ sap.ui.define([
 			wayPoint3.location = 'Menai';*/
 			
 			var directions = {
-				name: "Bondi Beach",
-				lat: -33.890542,
-				lng: 151.274856,
-				start: 'Manly',
-				end: 'Cronulla',
+				name: "",
+				lat: 0,
+				lng: 0,
+				start: '',
+				end: '',
 				travelMode: openui5.googlemaps.TravelMode.driving,
-				stops: [{
-					location: "Homebush"
-				}, {
-					location: "Bankstown"
-				}]
+				stops: []
 			};
 
 			debugger;
@@ -48,12 +44,43 @@ sap.ui.define([
 			//this.byId("input125").setBindingContext(oContext);
 
 		},
-
-		onRouteMap: function(oEvent) {
-			var sObjPath = this.getView().getElementBinding().getPath().substring(1);
-			this.getRouter().navTo("routeMap", {
-				objectPath: sObjPath
+		
+		refreshMap: function(sRoutePath) {
+			var that = this;
+			var sCurrentRoutePath = (sRoutePath) ? sRoutePath : this.getView().getElementBinding().getPath();
+		
+			that.getComponentModel().readExt(sCurrentRoutePath + "/VisitDetails").then(function (oData) {
+				var oFirstVisit = null;
+				var oLastVisit = null;
+				var iCounter = 0;
+				var aWaypoints = [];
+				
+				oLastVisit = oData.results.pop();
+				for (let oVisit of oData.results) {
+					if (!oFirstVisit) {
+						oFirstVisit = oVisit;
+					} else {
+						aWaypoints.push({
+							location: oVisit.GeoPosition
+						});
+					}
+				}
+				
+				that._oDirectionsModel.setProperty("/lat", oFirstVisit.GeoPosition.split(',')[0].trim());
+				that._oDirectionsModel.setProperty("/lng", oFirstVisit.GeoPosition.split(',')[1].trim());
+				
+				that._oDirectionsModel.setProperty("/start", oFirstVisit.GeoPosition);
+				that._oDirectionsModel.setProperty("/end", oLastVisit.GeoPosition);
+				that._oDirectionsModel.setProperty("/stops", aWaypoints);
 			});
+		},
+		
+		onRouteMap: function(oEvent) {
+			this.refreshMap();
+			//var sObjPath = this.getView().getElementBinding().getPath().substring(1);
+			//this.getRouter().navTo("routeMap", {
+			//	objectPath: sObjPath
+			//});
 		},
 
 		onVisitPress: function(oEvent) {
@@ -117,6 +144,7 @@ sap.ui.define([
 			this.getView().bindElement({
 				path: sObjectPath
 			});
+			this.refreshMap();
 			/*, // + "?$expand=SalesOrderItemDetails", // / - requried for web, for mobile not required
 			events: {
 				change: this._onBindingChange.bind(this),

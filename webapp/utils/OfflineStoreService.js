@@ -19,6 +19,9 @@ sap.ui.define([
 				"storePath": "/sdcard",
 				"serviceRoot": "/my_orders_odata",
 				"definingRequests": {
+					"Routes": "/Routes?$expand=VisitDetails",
+					"Visits": "/Visits?$expand=CustomerDetails,RouteDetails,AttachmentDetails",
+					"Audits": "/Audits?$expand=CustomerDetails,EquipmentDetails,VisitDetails",
 					"SalesOrders": "/SalesOrders?$expand=SalesOrderItemDetails,AttachmentDetails",
 					"SalesOrderItems": "/SalesOrderItems?$expand=SalesOrderDetails",
 					"Customers": "/Customers",
@@ -28,7 +31,6 @@ sap.ui.define([
 				}
 			};
 			this._offlineStore = sap.OData.createOfflineStore(properties);
-			//this._deviceModel = oUiComponent.getModel("mobileDevice");
 			this._oUiComponent = oUiComponent;
 		},
 

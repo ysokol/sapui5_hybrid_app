@@ -88,28 +88,28 @@
 			},
 			"routes": [{
 				"pattern": "",
-				"name": "app",
-				"view": "app",
+				"name": "App",
+				"view": "App",
 				"viewPath": "my.sapui5_hybrid_app.view",
 				"targetControl": "idFullScreenAppControl",
 				"targetAggregation": "pages",
 				"subroutes": [{
 					"pattern": "",
-					"name": "routeListMaster",
-					"view": "routeListMaster",
+					"name": "RouteListMaster",
+					"view": "RouteListMaster",
 					"targetControl": "idAppControl",
 					"targetAggregation": "masterPages",
 					"subroutes": [{
 						"pattern": "Routes/{objectPath}",
-						"name": "route",
-						"view": "route",
+						"name": "Route",
+						"view": "Route",
 						"targetAggregation": "detailPages"
 					}]
 				}]
 			}, {
 				"pattern": "RouteMap/{objectPath}",
-				"name": "routeMap",
-				"view": "routeMap",
+				"name": "RouteMap",
+				"view": "RouteMap",
 				"viewPath": "my.sapui5_hybrid_app.view",
 				"targetControl": "idFullScreenAppControl",
 				"targetAggregation": "pages"
@@ -130,7 +130,7 @@
 			}, {
 				"pattern": "Visits/{objectPath}",
 				"name": "visit",
-				"view": "visit",
+				"view": "Visit",
 				"viewPath": "my.sapui5_hybrid_app.view",
 				"targetControl": "idFullScreenAppControl",
 				"targetAggregation": "pages"
@@ -143,33 +143,36 @@
 				]
 			}, {
 				"pattern": "OfflineStore",
-				"name": "offlineStore",
-				"target": "offlineStore"
+				"name": "OfflineStore",
+				"view": "OfflineStore",
+				"viewPath": "my.sapui5_hybrid_app.view",
+				"targetControl": "idFullScreenAppControl",
+				"targetAggregation": "pages"
 			}],
 			"targets": {
-				"app": {
+				"App": {
 					"viewName": "App",
-					"viewId": "app"
+					"viewId": "App"
 				},
-				"routeListMaster": {
+				"RouteListMaster": {
 					"viewName": "RouteListMaster",
 					"viewLevel": 1,
-					"viewId": "routeListMaster",
+					"viewId": "RouteListMaster",
 					"controlAggregation": "masterPages"
 				},
-				"route": {
+				"Route": {
 					"viewName": "Route",
-					"viewId": "route",
+					"viewId": "Route",
 					"controlAggregation": "detailPages",
 					"viewLevel": 2
 				},
-				"routeMap": {
+				"RouteMap": {
 					"viewName": "RouteMap",
-					"viewId": "routeMap"
+					"viewId": "RouteMap"
 				},
 				"visit": {
 					"viewName": "Visit",
-					"viewId": "visit",
+					"viewId": "Visit",
 					"viewLevel": 1
 				},
 				"master": {
@@ -200,9 +203,9 @@
 					"viewName": "NotFound",
 					"viewId": "notFound"
 				},
-				"offlineStore": {
+				"OfflineStore": {
 					"viewName": "OfflineStore",
-					"viewId": "offlineStore"
+					"viewId": "OfflineStore"
 				}
 			}
 		}

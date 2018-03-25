@@ -1,3 +1,4 @@
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
 <edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
 	<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0">
 		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="my.orders.persistance.unit">
@@ -6,18 +7,34 @@
 					<PropertyRef Name="Attachment"/>
 				</Key>
 				<Property Name="Attachment" Type="Edm.String" Nullable="false" MaxLength="20"/>
+				<Property Name="Audit" Type="Edm.String" Nullable="true" MaxLength="10"/>
 				<Property Name="BusinessObject" Type="Edm.String" Nullable="true" MaxLength="20"/>
 				<Property Name="Comment" Type="Edm.String" Nullable="true" MaxLength="255"/>
 				<Property Name="ContentType" Type="Edm.String" Nullable="true" MaxLength="255"/>
+				<Property Name="Customer" Type="Edm.String" Nullable="true" MaxLength="10"/>
 				<Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="255"/>
+				<Property Name="Equipment" Type="Edm.String" Nullable="true" MaxLength="10"/>
 				<Property Name="LocalStoragePath" Type="Edm.String" Nullable="true" MaxLength="255"/>
+				<Property Name="Material" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="Route" Type="Edm.String" Nullable="true" MaxLength="10"/>
 				<Property Name="SalesOrder" Type="Edm.String" Nullable="true" MaxLength="10"/>
 				<Property Name="StorageId" Type="Edm.String" Nullable="true" MaxLength="255"/>
 				<Property Name="StorageProvider" Type="Edm.String" Nullable="true" MaxLength="255"/>
 				<Property Name="StorageUri" Type="Edm.String" Nullable="true" MaxLength="255"/>
 				<Property Name="UpdateFlag" Type="Edm.String" Nullable="true" MaxLength="1"/>
+				<Property Name="Visit" Type="Edm.String" Nullable="true" MaxLength="5"/>
+				<NavigationProperty Name="AuditDetails" Relationship="my.orders.persistance.unit.Attachment_Audit_Many_One0" FromRole="Attachment"
+					ToRole="Audit"/>
+				<NavigationProperty Name="CustomerDetails" Relationship="my.orders.persistance.unit.Attachment_Customer_Many_One0" FromRole="Attachment"
+					ToRole="Customer"/>
+				<NavigationProperty Name="EquipmentDetails" Relationship="my.orders.persistance.unit.Attachment_Equipment_Many_One0" FromRole="Attachment"
+					ToRole="Equipment"/>
+				<NavigationProperty Name="MaterialDetails" Relationship="my.orders.persistance.unit.Attachment_Material_Many_One0" FromRole="Attachment"
+					ToRole="Material"/>
 				<NavigationProperty Name="SalesOrderDetails" Relationship="my.orders.persistance.unit.Attachment_SalesOrder_Many_One0" FromRole="Attachment"
 					ToRole="SalesOrder"/>
+				<NavigationProperty Name="VisitDetails" Relationship="my.orders.persistance.unit.Attachment_Visit_Many_One0" FromRole="Attachment"
+					ToRole="Visit"/>
 			</EntityType>
 			<EntityType Name="SalesOrderItem">
 				<Key>
@@ -65,6 +82,19 @@
 				<Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="20"/>
 				<Property Name="Price" Type="Edm.Decimal" Nullable="true" Precision="15" Scale="2"/>
 			</EntityType>
+			<EntityType Name="Route">
+				<Key>
+					<PropertyRef Name="Route"/>
+				</Key>
+				<Property Name="Comment" Type="Edm.String" Nullable="true" MaxLength="50"/>
+				<Property Name="Date" Type="Edm.DateTime" Nullable="true"/>
+				<Property Name="Route" Type="Edm.String" Nullable="false" MaxLength="10"/>
+				<Property Name="Status" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="UpdateFlag" Type="Edm.String" Nullable="true" MaxLength="1"/>
+				<Property Name="VisitsDone" Type="Edm.Int32" Nullable="true"/>
+				<Property Name="VisitsTotal" Type="Edm.Int32" Nullable="true"/>
+				<NavigationProperty Name="VisitDetails" Relationship="my.orders.persistance.unit.Route_Visit_One_Many0" FromRole="Route" ToRole="Visit"/>
+			</EntityType>
 			<EntityType Name="UnitOfMeasure">
 				<Key>
 					<PropertyRef Name="Uom"/>
@@ -72,13 +102,132 @@
 				<Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="50"/>
 				<Property Name="Uom" Type="Edm.String" Nullable="false" MaxLength="3"/>
 			</EntityType>
+			<EntityType Name="Audit">
+				<Key>
+					<PropertyRef Name="Audit"/>
+				</Key>
+				<Property Name="Audit" Type="Edm.String" Nullable="false" MaxLength="10"/>
+				<Property Name="Audit_status" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="Comment" Type="Edm.String" Nullable="true" MaxLength="50"/>
+				<Property Name="Customer" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="Date" Type="Edm.DateTime" Nullable="true"/>
+				<Property Name="Equipment" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="Equipment_status" Type="Edm.String" Nullable="true" MaxLength="20"/>
+				<Property Name="Performed_by" Type="Edm.String" Nullable="true" MaxLength="20"/>
+				<Property Name="Retail_shelf" Type="Edm.String" Nullable="true" MaxLength="30"/>
+				<Property Name="Retail_shelf_status" Type="Edm.String" Nullable="true" MaxLength="20"/>
+				<Property Name="Route" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="Type" Type="Edm.String" Nullable="true" MaxLength="20"/>
+				<Property Name="UpdateFlag" Type="Edm.String" Nullable="true" MaxLength="1"/>
+				<Property Name="Visit" Type="Edm.String" Nullable="true" MaxLength="5"/>
+				<NavigationProperty Name="CustomerDetails" Relationship="my.orders.persistance.unit.Audit_Customer_Many_One0" FromRole="Audit"
+					ToRole="Customer"/>
+				<NavigationProperty Name="EquipmentDetails" Relationship="my.orders.persistance.unit.Audit_Equipment_Many_One0" FromRole="Audit"
+					ToRole="Equipment"/>
+				<NavigationProperty Name="VisitDetails" Relationship="my.orders.persistance.unit.Audit_Visit_Many_One0" FromRole="Audit" ToRole="Visit"/>
+			</EntityType>
 			<EntityType Name="Customer">
 				<Key>
 					<PropertyRef Name="Customer"/>
 				</Key>
 				<Property Name="Customer" Type="Edm.String" Nullable="false" MaxLength="10"/>
 				<Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="50"/>
+				<Property Name="GeoPosition" Type="Edm.String" Nullable="true" MaxLength="40"/>
+				<Property Name="ImageUri" Type="Edm.String" Nullable="true" MaxLength="2000"/>
+				<NavigationProperty Name="AuditDetails" Relationship="my.orders.persistance.unit.Audit_Customer_Many_One0" FromRole="Customer"
+					ToRole="Audit"/>
+				<NavigationProperty Name="EquipmentDetails" Relationship="my.orders.persistance.unit.Customer_Equipment_One_Many0" FromRole="Customer"
+					ToRole="Equipment"/>
+				<NavigationProperty Name="SalesOrderDetails" Relationship="my.orders.persistance.unit.SalesOrder_Customer_Many_One0" FromRole="Customer"
+					ToRole="SalesOrder"/>
+				<NavigationProperty Name="VisitDetails" Relationship="my.orders.persistance.unit.Customer_Visit_One_Many0" FromRole="Customer"
+					ToRole="Visit"/>
 			</EntityType>
+			<EntityType Name="Visit">
+				<Key>
+					<PropertyRef Name="Route"/>
+					<PropertyRef Name="Visit"/>
+				</Key>
+				<Property Name="Comment" Type="Edm.String" Nullable="true" MaxLength="50"/>
+				<Property Name="Customer" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="Duration" Type="Edm.Int32" Nullable="true"/>
+				<Property Name="GeoPosition" Type="Edm.String" Nullable="true" MaxLength="40"/>
+				<Property Name="PlannedFinish" Type="Edm.DateTime" Nullable="true"/>
+				<Property Name="PlannedStart" Type="Edm.DateTime" Nullable="true"/>
+				<Property Name="Route" Type="Edm.String" Nullable="false" MaxLength="10"/>
+				<Property Name="Status" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="UpdateFlag" Type="Edm.String" Nullable="true" MaxLength="1"/>
+				<Property Name="Visit" Type="Edm.String" Nullable="false" MaxLength="5"/>
+				<NavigationProperty Name="CustomerDetails" Relationship="my.orders.persistance.unit.Customer_Visit_One_Many0" FromRole="Visit"
+					ToRole="Customer"/>
+				<NavigationProperty Name="RouteDetails" Relationship="my.orders.persistance.unit.Route_Visit_One_Many0" FromRole="Visit" ToRole="Route"/>
+				<NavigationProperty Name="AttachmentDetails" Relationship="my.orders.persistance.unit.Attachment_Visit_Many_One0" FromRole="Visit"
+					ToRole="Attachment"/>
+				<NavigationProperty Name="AuditDetails" Relationship="my.orders.persistance.unit.Audit_Visit_Many_One0" FromRole="Visit" ToRole="Audit"/>
+			</EntityType>
+			<EntityType Name="Equipment">
+				<Key>
+					<PropertyRef Name="Equipment"/>
+				</Key>
+				<Property Name="Customer" Type="Edm.String" Nullable="true" MaxLength="10"/>
+				<Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="50"/>
+				<Property Name="Equipment" Type="Edm.String" Nullable="false" MaxLength="10"/>
+				<Property Name="Image" Type="Edm.String" Nullable="true" MaxLength="20"/>
+				<NavigationProperty Name="CustomerDetails" Relationship="my.orders.persistance.unit.Customer_Equipment_One_Many0" FromRole="Equipment"
+					ToRole="Customer"/>
+				<NavigationProperty Name="AttachmentDetails" Relationship="my.orders.persistance.unit.Attachment_Equipment_Many_One0" FromRole="Equipment"
+					ToRole="Attachment"/>
+				<NavigationProperty Name="AuditDetails" Relationship="my.orders.persistance.unit.Audit_Equipment_Many_One0" FromRole="Equipment"
+					ToRole="Audit"/>
+			</EntityType>
+			<Association Name="Attachment_Audit_Many_One0">
+				<End Type="my.orders.persistance.unit.Attachment" Multiplicity="*" Role="Attachment"/>
+				<End Type="my.orders.persistance.unit.Audit" Multiplicity="1" Role="Audit"/>
+				<ReferentialConstraint>
+					<Principal Role="Audit">
+						<PropertyRef Name="Audit"/>
+					</Principal>
+					<Dependent Role="Attachment">
+						<PropertyRef Name="Audit"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Attachment_Customer_Many_One0">
+				<End Type="my.orders.persistance.unit.Attachment" Multiplicity="*" Role="Attachment"/>
+				<End Type="my.orders.persistance.unit.Customer" Multiplicity="1" Role="Customer"/>
+				<ReferentialConstraint>
+					<Principal Role="Customer">
+						<PropertyRef Name="Customer"/>
+					</Principal>
+					<Dependent Role="Attachment">
+						<PropertyRef Name="Customer"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Attachment_Equipment_Many_One0">
+				<End Type="my.orders.persistance.unit.Attachment" Multiplicity="*" Role="Attachment"/>
+				<End Type="my.orders.persistance.unit.Equipment" Multiplicity="1" Role="Equipment"/>
+				<ReferentialConstraint>
+					<Principal Role="Equipment">
+						<PropertyRef Name="Equipment"/>
+					</Principal>
+					<Dependent Role="Attachment">
+						<PropertyRef Name="Equipment"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Attachment_Material_Many_One0">
+				<End Type="my.orders.persistance.unit.Attachment" Multiplicity="*" Role="Attachment"/>
+				<End Type="my.orders.persistance.unit.Material" Multiplicity="1" Role="Material"/>
+				<ReferentialConstraint>
+					<Principal Role="Material">
+						<PropertyRef Name="Material"/>
+					</Principal>
+					<Dependent Role="Attachment">
+						<PropertyRef Name="Material"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
 			<Association Name="Attachment_SalesOrder_Many_One0">
 				<End Type="my.orders.persistance.unit.Attachment" Multiplicity="*" Role="Attachment"/>
 				<End Type="my.orders.persistance.unit.SalesOrder" Multiplicity="1" Role="SalesOrder"/>
@@ -88,6 +237,20 @@
 					</Principal>
 					<Dependent Role="Attachment">
 						<PropertyRef Name="SalesOrder"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Attachment_Visit_Many_One0">
+				<End Type="my.orders.persistance.unit.Attachment" Multiplicity="*" Role="Attachment"/>
+				<End Type="my.orders.persistance.unit.Visit" Multiplicity="1" Role="Visit"/>
+				<ReferentialConstraint>
+					<Principal Role="Visit">
+						<PropertyRef Name="Route"/>
+						<PropertyRef Name="Visit"/>
+					</Principal>
+					<Dependent Role="Attachment">
+						<PropertyRef Name="Route"/>
+						<PropertyRef Name="Visit"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -127,16 +290,114 @@
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
+			<Association Name="Audit_Customer_Many_One0">
+				<End Type="my.orders.persistance.unit.Audit" Multiplicity="*" Role="Audit"/>
+				<End Type="my.orders.persistance.unit.Customer" Multiplicity="1" Role="Customer"/>
+				<ReferentialConstraint>
+					<Principal Role="Customer">
+						<PropertyRef Name="Customer"/>
+					</Principal>
+					<Dependent Role="Audit">
+						<PropertyRef Name="Customer"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Audit_Equipment_Many_One0">
+				<End Type="my.orders.persistance.unit.Audit" Multiplicity="*" Role="Audit"/>
+				<End Type="my.orders.persistance.unit.Equipment" Multiplicity="1" Role="Equipment"/>
+				<ReferentialConstraint>
+					<Principal Role="Equipment">
+						<PropertyRef Name="Equipment"/>
+					</Principal>
+					<Dependent Role="Audit">
+						<PropertyRef Name="Equipment"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Audit_Visit_Many_One0">
+				<End Type="my.orders.persistance.unit.Audit" Multiplicity="*" Role="Audit"/>
+				<End Type="my.orders.persistance.unit.Visit" Multiplicity="1" Role="Visit"/>
+				<ReferentialConstraint>
+					<Principal Role="Visit">
+						<PropertyRef Name="Route"/>
+						<PropertyRef Name="Visit"/>
+					</Principal>
+					<Dependent Role="Audit">
+						<PropertyRef Name="Route"/>
+						<PropertyRef Name="Visit"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Customer_Visit_One_Many0">
+				<End Type="my.orders.persistance.unit.Customer" Multiplicity="1" Role="Customer"/>
+				<End Type="my.orders.persistance.unit.Visit" Multiplicity="*" Role="Visit"/>
+				<ReferentialConstraint>
+					<Principal Role="Customer">
+						<PropertyRef Name="Customer"/>
+					</Principal>
+					<Dependent Role="Visit">
+						<PropertyRef Name="Customer"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Route_Visit_One_Many0">
+				<End Type="my.orders.persistance.unit.Route" Multiplicity="1" Role="Route"/>
+				<End Type="my.orders.persistance.unit.Visit" Multiplicity="*" Role="Visit"/>
+				<ReferentialConstraint>
+					<Principal Role="Route">
+						<PropertyRef Name="Route"/>
+					</Principal>
+					<Dependent Role="Visit">
+						<PropertyRef Name="Route"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Customer_Equipment_One_Many0">
+				<End Type="my.orders.persistance.unit.Customer" Multiplicity="1" Role="Customer"/>
+				<End Type="my.orders.persistance.unit.Equipment" Multiplicity="*" Role="Equipment"/>
+				<ReferentialConstraint>
+					<Principal Role="Customer">
+						<PropertyRef Name="Customer"/>
+					</Principal>
+					<Dependent Role="Equipment">
+						<PropertyRef Name="Customer"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
 			<EntityContainer Name="my.orders.persistance.unitContainer" m:IsDefaultEntityContainer="true">
 				<EntitySet Name="Attachments" EntityType="my.orders.persistance.unit.Attachment"/>
 				<EntitySet Name="SalesOrderItems" EntityType="my.orders.persistance.unit.SalesOrderItem"/>
 				<EntitySet Name="SalesOrders" EntityType="my.orders.persistance.unit.SalesOrder"/>
 				<EntitySet Name="Materials" EntityType="my.orders.persistance.unit.Material"/>
+				<EntitySet Name="Routes" EntityType="my.orders.persistance.unit.Route"/>
 				<EntitySet Name="UnitOfMeasures" EntityType="my.orders.persistance.unit.UnitOfMeasure"/>
+				<EntitySet Name="Audits" EntityType="my.orders.persistance.unit.Audit"/>
 				<EntitySet Name="Customers" EntityType="my.orders.persistance.unit.Customer"/>
+				<EntitySet Name="Visits" EntityType="my.orders.persistance.unit.Visit"/>
+				<EntitySet Name="Equipments" EntityType="my.orders.persistance.unit.Equipment"/>
+				<AssociationSet Name="Attachment_Audit_Many_One0Set" Association="my.orders.persistance.unit.Attachment_Audit_Many_One0">
+					<End EntitySet="Attachments" Role="Attachment"/>
+					<End EntitySet="Audits" Role="Audit"/>
+				</AssociationSet>
+				<AssociationSet Name="Attachment_Customer_Many_One0Set" Association="my.orders.persistance.unit.Attachment_Customer_Many_One0">
+					<End EntitySet="Attachments" Role="Attachment"/>
+					<End EntitySet="Customers" Role="Customer"/>
+				</AssociationSet>
+				<AssociationSet Name="Attachment_Equipment_Many_One0Set" Association="my.orders.persistance.unit.Attachment_Equipment_Many_One0">
+					<End EntitySet="Attachments" Role="Attachment"/>
+					<End EntitySet="Equipments" Role="Equipment"/>
+				</AssociationSet>
+				<AssociationSet Name="Attachment_Material_Many_One0Set" Association="my.orders.persistance.unit.Attachment_Material_Many_One0">
+					<End EntitySet="Attachments" Role="Attachment"/>
+					<End EntitySet="Materials" Role="Material"/>
+				</AssociationSet>
 				<AssociationSet Name="Attachment_SalesOrder_Many_One0Set" Association="my.orders.persistance.unit.Attachment_SalesOrder_Many_One0">
 					<End EntitySet="Attachments" Role="Attachment"/>
 					<End EntitySet="SalesOrders" Role="SalesOrder"/>
+				</AssociationSet>
+				<AssociationSet Name="Attachment_Visit_Many_One0Set" Association="my.orders.persistance.unit.Attachment_Visit_Many_One0">
+					<End EntitySet="Attachments" Role="Attachment"/>
+					<End EntitySet="Visits" Role="Visit"/>
 				</AssociationSet>
 				<AssociationSet Name="SalesOrderItem_Material_Many_One0Set" Association="my.orders.persistance.unit.SalesOrderItem_Material_Many_One0">
 					<End EntitySet="SalesOrderItems" Role="SalesOrderItem"/>
@@ -149,6 +410,30 @@
 				<AssociationSet Name="SalesOrder_Customer_Many_One0Set" Association="my.orders.persistance.unit.SalesOrder_Customer_Many_One0">
 					<End EntitySet="SalesOrders" Role="SalesOrder"/>
 					<End EntitySet="Customers" Role="Customer"/>
+				</AssociationSet>
+				<AssociationSet Name="Audit_Customer_Many_One0Set" Association="my.orders.persistance.unit.Audit_Customer_Many_One0">
+					<End EntitySet="Audits" Role="Audit"/>
+					<End EntitySet="Customers" Role="Customer"/>
+				</AssociationSet>
+				<AssociationSet Name="Audit_Equipment_Many_One0Set" Association="my.orders.persistance.unit.Audit_Equipment_Many_One0">
+					<End EntitySet="Audits" Role="Audit"/>
+					<End EntitySet="Equipments" Role="Equipment"/>
+				</AssociationSet>
+				<AssociationSet Name="Audit_Visit_Many_One0Set" Association="my.orders.persistance.unit.Audit_Visit_Many_One0">
+					<End EntitySet="Audits" Role="Audit"/>
+					<End EntitySet="Visits" Role="Visit"/>
+				</AssociationSet>
+				<AssociationSet Name="Customer_Visit_One_Many0Set" Association="my.orders.persistance.unit.Customer_Visit_One_Many0">
+					<End EntitySet="Customers" Role="Customer"/>
+					<End EntitySet="Visits" Role="Visit"/>
+				</AssociationSet>
+				<AssociationSet Name="Route_Visit_One_Many0Set" Association="my.orders.persistance.unit.Route_Visit_One_Many0">
+					<End EntitySet="Routes" Role="Route"/>
+					<End EntitySet="Visits" Role="Visit"/>
+				</AssociationSet>
+				<AssociationSet Name="Customer_Equipment_One_Many0Set" Association="my.orders.persistance.unit.Customer_Equipment_One_Many0">
+					<End EntitySet="Customers" Role="Customer"/>
+					<End EntitySet="Equipments" Role="Equipment"/>
 				</AssociationSet>
 				<FunctionImport Name="CreateSalesOrderDraft" ReturnType="Edm.String" m:HttpMethod="POST"/>
 				<FunctionImport Name="CopySalesOrder" ReturnType="Edm.String" m:HttpMethod="POST">

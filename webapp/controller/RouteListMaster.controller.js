@@ -16,7 +16,6 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function() {
-			
 		},
 		
 		onSelectionChange: function(oEvent) {
@@ -24,9 +23,23 @@ sap.ui.define([
 			var oSelListItem = oEvent.getParameter("listItem") || oEvent.getSource();
 			var sObjPath = oSelListItem.getBindingContext().getPath().substring(1);
 			
-			this.getRouter().navTo("route", {
+			this.getRouter().navTo("Route", {
 				objectPath: sObjPath
 			}, bReplace);
+		},
+		
+		onRefresh: function() {
+			this.byId("outesListId").getBinding("items").refresh();
+		},
+		
+		onUpdateFinished: function(oEvent) {
+			// update the master list object counter after new data is loaded
+			// hide pull to refresh if necessary
+			this.byId("pullToRefresh").hide();
+		},
+		
+		onNavToOfflineStore: function(oEvent) {
+			this.getRouter().navTo("OfflineStore");
 		}
 
 	});

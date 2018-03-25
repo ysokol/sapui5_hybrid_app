@@ -1,6 +1,24 @@
 {
   "run": [
     {
+      "filePath": "/webapp/Component.js",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": null,
+      "ui5VerSource": null,
+      "isDefaultVersion": 0,
+      "urlParameters": [],
+      "hashParameter": "",
+      "backendSystem": [],
+      "_metadata": {
+        "id": 1402943,
+        "runnerId": "fiorirunner",
+        "displayName": "Run Fiory Component",
+        "lastRunTimeStamp": 1521980936187
+      }
+    },
+    {
       "filePath": "/sapui5_hybrid_app/webapp/Component.js",
       "previewMode": 1,
       "dataMode": 1,
@@ -25,7 +43,7 @@
         "id": "8314645",
         "runnerId": "fiorirunner",
         "displayName": "Debug Fiori Component",
-        "lastRunTimeStamp": 1521760831766
+        "lastRunTimeStamp": 1521919768080
       }
     },
     {
@@ -184,24 +202,6 @@
         "id": "4958659",
         "runnerId": "webapprunner",
         "displayName": "Test Suite (Unit, OPA)"
-      }
-    },
-    {
-      "filePath": "/webapp/Component.js",
-      "previewMode": 1,
-      "dataMode": 1,
-      "workspace": "withoutWorkspace",
-      "ui5ActiveVersion": null,
-      "ui5VerSource": null,
-      "isDefaultVersion": 0,
-      "urlParameters": [],
-      "hashParameter": "",
-      "backendSystem": [],
-      "_metadata": {
-        "id": 1402943,
-        "runnerId": "fiorirunner",
-        "displayName": "Run Fiory Component",
-        "lastRunTimeStamp": 0
       }
     }
   ],

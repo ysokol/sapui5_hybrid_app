@@ -11,15 +11,15 @@
 		</semantic:subHeader>
 		<semantic:content>
 			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh="onRefresh"/>
-			<List id="list" items="{ path: '/Routes', sorter: { path: 'Route', descending: false } }" busyIndicatorDelay="{masterView>/delay}"
+			<List id="routesListId" items="{ path: '/Routes', sorter: { path: 'Route', descending: false } }" busyIndicatorDelay="{masterView>/delay}"
 				noDataText="No Routes" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true"
 				updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
 				<items>
-					<CustomListItem press="onSelectionChange">
+					<CustomListItem press="onSelectionChange" type="Navigation">
 						<HBox>
 							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 								<Label text="{Route}"/>
-								<Label text="{Status}"/>
+								<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.routeStatusState'}" icon="{path:'Status', formatter:'.formatter.routeStatusIcon'}"/>
 							</VBox>
 							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 								<Label text="{Comment}"/>
@@ -30,5 +30,8 @@
 				</items>
 			</List>
 		</semantic:content>
+		<semantic:customFooterContent>
+			<OverflowToolbarButton icon="sap-icon://database" text="Offline Store" press="onNavToOfflineStore"/>
+		</semantic:customFooterContent>
 	</semantic:MasterPage>
 </mvc:View>
