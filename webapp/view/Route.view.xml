@@ -24,6 +24,8 @@
 						<ProgressIndicator class="sapUiSmallMarginBottom" percentValue="{=${VisitsDone} / ${VisitsTotal} * 100}"
 							displayValue="{VisitsDone} visit(s) done of {VisitsTotal}" showValue="true"
 							state="{=(${VisitsDone} === ${VisitsTotal}) ? 'Success' : 'Warning'}"/>
+						<Label text="Comment:"/>
+						<Input value="{Comment}"/>
 					</IconTabFilter>
 					<IconTabFilter icon="sap-icon://map-2" tooltip="View On Map">
 						<gmaps:Map id="routeMapId" height="350px" lat="{directions>/lat}" lng="{directions>/lng}" zoom="7" zoomControl="true"

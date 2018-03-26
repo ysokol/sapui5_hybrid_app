@@ -5,7 +5,8 @@
 			<ObjectHeader id="objectHeader" title="Visit {Visit} of Route {Route}" icon="sap-icon://visits">
 				<attributes>
 					<ObjectAttribute title="Customer" text="{Customer} - {CustomerDetails/Description}"/>
-					<ObjectAttribute title="Timeline" text="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}} - {path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"/>
+					<ObjectAttribute title="Timeline"
+						text="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}} - {path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"/>
 				</attributes>
 				<statuses>
 					<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.visitStatusState'}"
@@ -17,7 +18,7 @@
 			</ObjectHeader>
 			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
 				<items>
-					<IconTabFilter  icon="sap-icon://hint" tooltip="{Visit Details}">
+					<IconTabFilter icon="sap-icon://hint" tooltip="{Visit Details}">
 						<form:Form>
 							<form:layout>
 								<form:ResponsiveGridLayout/>
@@ -39,13 +40,30 @@
 												displayFormat="short"/>
 											<DateTimePicker value="{path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"
 												displayFormat="short"/>
+											
+										</form:fields>
+									</form:FormElement>
+									<form:FormElement label="Pepsico Equipment:">
+										<form:fields>
+											<Link text="4 fridges" href=""/>
+										</form:fields>
+									</form:FormElement>
+									<form:FormElement label="Sales Order">
+										<form:fields>
+											<Link text="3 Open Sales Orders" href=""/>
+										</form:fields>
+									</form:FormElement>
+									<form:FormElement label="Audits">
+										<form:fields>
+											<Link text="2 pending audits" href=""/>
 										</form:fields>
 									</form:FormElement>
 								</form:FormContainer>
 							</form:formContainers>
+							
 						</form:Form>
 					</IconTabFilter>
-					<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}"></IconTabFilter>
+					<IconTabFilter icon="sap-icon://fridge" tooltip="Equipment"></IconTabFilter>
 					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
 				</items>
 			</IconTabBar>
