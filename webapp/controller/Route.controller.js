@@ -120,12 +120,20 @@ sap.ui.define([
 								}
 							}
 						})
-						.then(() => that._oRouteService.recalcVisitCount(sCurrentRoutePath));
+						.then(() => that._oRouteService.recalcVisitCount(sCurrentRoutePath))
+						.then(() => that.getComponentModel().submitChangesExt())
+						.then(() => that.refreshMap(sCurrentRoutePath));
 				});
 		},
 
 		onVisitDelete: function(oEvent) {
-			this.getComponentModel().remove(oEvent.getParameter("listItem").getBindingContext().getPath());
+			var sCurrentRoutePath = this.getView().getElementBinding().getPath();
+			var that = this;
+			
+			this.getComponentModel().removeExt(oEvent.getParameter("listItem").getBindingContext().getPath())
+			.then(() => that._oRouteService.recalcVisitCount(sCurrentRoutePath))
+			.then(() => that.getComponentModel().submitChangesExt())
+			.then(() => that.refreshMap(sCurrentRoutePath));
 		},
 
 		onRouteSave: function(oEvent) {

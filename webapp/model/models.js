@@ -12,7 +12,24 @@ sap.ui.define([
 			oModel.setDefaultBindingMode("OneWay");
 			return oModel;
 		},
+		
+		createRouteMapModel: function() {
+			var directions = {
+				name: "",
+				lat: 0,
+				lng: 0,
+				start: '',
+				end: '',
+				travelMode: openui5.googlemaps.TravelMode.driving,
+				stops: []
+			};
 
+			
+			return new JSONModel(
+				directions
+			);
+		},
+		
 		createFLPModel: function() {
 			var fnGetuser = jQuery.sap.getObject("sap.ushell.Container.getUser"),
 				bIsShareInJamActive = fnGetuser ? fnGetuser().isJamActive() : false,
@@ -54,7 +71,7 @@ sap.ui.define([
 			var oDataModel = new MyODataModel(
 				"https://hcpms-s0004431717trial.hanatrial.ondemand.com:443/my_orders_odata/", {
 					json: true,
-					useBatch: false,
+					useBatch: true,
 					defaultBindingMode: sap.ui.model.BindingMode.TwoWay,
 					defaultUpdateMethod: sap.ui.model.odata.UpdateMethod.Patch
 					//loadMetadataAsync: false,

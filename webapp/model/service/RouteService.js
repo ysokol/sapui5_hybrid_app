@@ -4,9 +4,10 @@ sap.ui.define([
 ], function(Object, MyException) {
 	"use strict";
 	var RouteService = Object.extend("my.sapui5_hybrid_app.model.service.RouteService", {
-		constructor: function(oODataModel) {
+		constructor: function(oODataModel, oMapDataModel) {
 			Object.apply(this);
 			this._oODataModel = oODataModel;
+			this._oMapDataModel = oMapDataModel;
 		},
 
 		recalcVisitCount: function(sRoutePath) {
@@ -22,9 +23,21 @@ sap.ui.define([
 					}
 					that._oODataModel.setProperty(sRoutePath + "/VisitsTotal", oData.results.length/*.toString()*/);
 					that._oODataModel.setProperty(sRoutePath + "/VisitsDone", iClosedCount/*.toString()*/);
+					if (oData.results.length !== 0 && iClosedCount === oData.results.length) {
+						that._oODataModel.setProperty(sRoutePath + "/Status", "DONE");
+					} else {
+						that._oODataModel.setProperty(sRoutePath + "/Status", "EXEC");
+					}
 					resolve();
 				})
 				.catch(oException => reject(new MyException("RouteService", "Failed: recalcVisitCount", oException)));
+			});
+		},
+		
+		refreshMapDirections: function(sRoutePath) {
+			var that = this;
+			return new Promise(function(resolve, reject) {
+				
 			});
 		}
 	});

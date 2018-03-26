@@ -42,7 +42,7 @@ sap.ui.define([
 			return sFullPath.replace(this.sServiceUrl, "");
 		},
 		
-		submitChangesExt: function() {
+		submitChangesExt: function(sFullPath) {
 			var that = this;
 			return new Promise(function(resolve, reject) {
 				that.submitChanges({
@@ -51,6 +51,20 @@ sap.ui.define([
 					},
 					error: function(oException) {
 						reject(new MyException("MyODataModel", "Failed submitChangesExt", oException));
+					}
+				});
+			});
+		},
+		
+		removeExt: function(sFullPath) {
+			var that = this;
+			return new Promise(function(resolve, reject) {
+				that.remove(sFullPath, {
+					success: function(oData) {
+						resolve(oData);
+					},
+					error: function(oException) {
+						reject(new MyException("MyODataModel", "Failed removeExt", oException));
 					}
 				});
 			});

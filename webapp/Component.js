@@ -33,12 +33,11 @@ sap.ui.define([
 			this._oAttachmentService = new AttachmentService(this);
 			this._oOfflineStoreService = new OfflineStoreService();
 			
+			this.setModel(models.createRouteMapModel(), "routeMapModel");
 			this.setModel(models.createMobileDeviceModel(), "mobileDevice");
 			this.getModel("mobileDevice").setProperty("/isMobileDevice", document.URL.indexOf('http://') === -1 && document.URL.indexOf(
 				'https://') === -1);
 			this.getModel("mobileDevice").setProperty("/isOffline", false);
-
-			
 
 			if (this.getModel("mobileDevice").getProperty("/isMobileDevice")) {
 				document.addEventListener('deviceready', $.proxy(this.deviceInit, this), false);

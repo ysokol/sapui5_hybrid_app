@@ -49,7 +49,7 @@
 							<core:Icon size="2rem" src="sap-icon://visits" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 								<Label text="{Visit}" design="Bold"/>
-								<Link text="{Customer} - {CustomerDetails/Description}" href="{CustomerDetails/Description}"/>
+								<Link text="{Customer} - {CustomerDetails/Description}" href="{CustomerDetails/Description}" width="15rem"/>
 								<Label
 									text="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}} - {path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"/>
 								<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.visitStatusState'}"
