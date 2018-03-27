@@ -22,6 +22,7 @@ sap.ui.define([
 					"Routes": "/Routes?$expand=VisitDetails",
 					"Visits": "/Visits?$expand=CustomerDetails,RouteDetails,AttachmentDetails",
 					"Audits": "/Audits?$expand=CustomerDetails,EquipmentDetails,VisitDetails",
+					"Equipments": "/Equipments?$expand=CustomerDetails,AttachmentDetails,AuditDetails",
 					"SalesOrders": "/SalesOrders?$expand=SalesOrderItemDetails,AttachmentDetails",
 					"SalesOrderItems": "/SalesOrderItems?$expand=SalesOrderDetails",
 					"Customers": "/Customers",

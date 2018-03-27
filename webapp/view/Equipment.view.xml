@@ -1,16 +1,15 @@
-<mvc:View controllerName="my.sapui5_hybrid_app.controller.Visit" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+<mvc:View controllerName="my.sapui5_hybrid_app.controller.Equipment" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
 	xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified">
-	<semantic:MasterPage id="visitPageId" title="Visit details" showNavButton="true" navButtonPress="onNavBack">
+	<semantic:MasterPage id="visitPageId" title="Equipment details" showNavButton="true" navButtonPress="onNavBack">
 		<semantic:content>
-			<ObjectHeader id="objectHeader" title="Visit {Visit} of Route {Route}" icon="sap-icon://visits">
+			<ObjectHeader id="objectHeader" title="Equipment {Equipment}" icon="sap-icon://fridge">
 				<attributes>
 					<ObjectAttribute title="Customer" text="{Customer} - {CustomerDetails/Description}"/>
-					<ObjectAttribute title="Timeline"
-						text="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}} - {path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"/>
+					<ObjectAttribute title="Description" text=":'{Description}"/>
 				</attributes>
 				<statuses>
-					<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.visitStatusState'}"
-						icon="{path:'Status', formatter:'.formatter.visitStatusIcon'}"/>
+					<!--<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.visitStatusState'}"
+						icon="{path:'Status', formatter:'.formatter.visitStatusIcon'}"/>-->
 				</statuses>
 				<headerContainer>
 					<HeaderContainer></HeaderContainer>
@@ -65,9 +64,9 @@
 						<List id="EquipmentListId" items="{/Equipments}" mode="Delete" delete="onEquipmentDelete">
 							<headerToolbar>
 								<Toolbar>
+									<Title text="Equipment" level="H3"/>
 									<ToolbarSpacer/>
 									<Button icon="sap-icon://add" text="Add Equipment" press="onEquipmentAddPress"/>
-									<Button icon="sap-icon://bar-code" text="Scan Barcode" press="onEquipmentScanBarcode"/>
 								</Toolbar>
 							</headerToolbar>
 							<items>

@@ -114,23 +114,16 @@
 				"targetControl": "idFullScreenAppControl",
 				"targetAggregation": "pages"
 			}, {
-				"pattern": "__old_empty",
-				"name": "__old_master",
-				"target": [
-					"route",
-					"routeListMaster"
-				]
-			}, {
-				"pattern": "__old_Routes/{objectPath}",
-				"name": "__old_route",
-				"target": [
-					"routeListMaster",
-					"route"
-				]
-			}, {
 				"pattern": "Visits/{objectPath}",
-				"name": "visit",
+				"name": "Visit",
 				"view": "Visit",
+				"viewPath": "my.sapui5_hybrid_app.view",
+				"targetControl": "idFullScreenAppControl",
+				"targetAggregation": "pages"
+			}, {
+				"pattern": "Equipment/{objectPath}",
+				"name": "Equipment",
+				"view": "Equipment",
 				"viewPath": "my.sapui5_hybrid_app.view",
 				"targetControl": "idFullScreenAppControl",
 				"targetAggregation": "pages"
@@ -170,9 +163,14 @@
 					"viewName": "RouteMap",
 					"viewId": "RouteMap"
 				},
-				"visit": {
+				"Visit": {
 					"viewName": "Visit",
 					"viewId": "Visit",
+					"viewLevel": 1
+				},
+				"Equipment": {
+					"viewName": "Equipment",
+					"viewId": "Equipment",
 					"viewLevel": 1
 				},
 				"master": {

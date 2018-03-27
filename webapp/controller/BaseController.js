@@ -39,28 +39,32 @@ sap.ui.define([
 				}
 			},
 			
-			getComponentModel : function (sName) {
+			getComponentModel: function (sName) {
 				return this.getOwnerComponent().getModel(sName);
 			},
 			
-			getComponentOfflineStoreService  : function () {
+			getComponentOfflineStoreService: function () {
 				return this.getOwnerComponent()._oOfflineStoreService;
 			},
 			
-			getComponentAttachmentService  : function () {
+			getComponentAttachmentService: function () {
 				return this.getOwnerComponent()._oAttachmentService;
 			},
 			
-			getComponentPushNotificationService : function () {
+			getComponentPushNotificationService: function () {
 				return this.getOwnerComponent()._oPushNotificationService;
 			},
 			
-			getComponenetBarcodeScannerService : function () {
+			getComponenetBarcodeScannerService: function () {
 				return this.getOwnerComponent()._oBarcodeScannerService;
 			},
 			
-			getComponentCaptureMediaService : function () {
+			getComponentCaptureMediaService: function () {
 				return this.getOwnerComponent()._oCaptureMediaService;
+			},
+			
+			getNumberRangeService: function () {
+				return this.getOwnerComponent()._oNumberRangeService;
 			},
 			
 			isOffline: function() {

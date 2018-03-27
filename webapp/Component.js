@@ -10,9 +10,10 @@ sap.ui.define([
 	"my/sapui5_hybrid_app/utils/MyException",
 	"my/sapui5_hybrid_app/utils/PushNotificationService",
 	"my/sapui5_hybrid_app/utils/BarcodeScannerService",
-	"my/sapui5_hybrid_app/utils/CaptureMediaService"
+	"my/sapui5_hybrid_app/utils/CaptureMediaService",
+	"my/sapui5_hybrid_app/utils/NumberRangeService"
 ], function(UIComponent, Device, models, ListSelector, ErrorHandler, MockServer, OfflineStoreService, AttachmentService, MyException,
-	PushNotificationService, BarcodeScannerService, CaptureMediaService) {
+	PushNotificationService, BarcodeScannerService, CaptureMediaService, NumberRangeService) {
 	"use strict";
 
 	return UIComponent.extend("my.sapui5_hybrid_app.Component", {
@@ -32,6 +33,8 @@ sap.ui.define([
 			this._oCaptureMediaService = new CaptureMediaService();
 			this._oAttachmentService = new AttachmentService(this);
 			this._oOfflineStoreService = new OfflineStoreService();
+			this._oNumberRangeService = null;
+			
 			
 			this.setModel(models.createRouteMapModel(), "routeMapModel");
 			this.setModel(models.createMobileDeviceModel(), "mobileDevice");
@@ -88,6 +91,8 @@ sap.ui.define([
 			} else {
 				this.setModel(models.createODataModelWeb());
 			}
+			
+			this._oNumberRangeService = new NumberRangeService(this.getModel());
 
 			sap.ui.getCore().setModel(this.getModel());
 

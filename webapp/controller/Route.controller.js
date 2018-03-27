@@ -35,7 +35,7 @@ sap.ui.define([
 			var oSelListItem = oEvent.getSource();
 			var sObjPath = oSelListItem.getBindingContext().getPath().substring(1);
 
-			this.getRouter().navTo("visit", {
+			this.getRouter().navTo("Visit", {
 				objectPath: sObjPath
 			});
 		},

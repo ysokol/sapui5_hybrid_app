@@ -18,7 +18,7 @@
 					<CustomListItem press="onSelectionChange" type="Navigation">
 						<HBox>
 							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-								<Label text="{Route}"/>
+								<Label text="{Route}" design="Bold"/>
 								<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.routeStatusState'}" icon="{path:'Status', formatter:'.formatter.routeStatusIcon'}"/>
 							</VBox>
 							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
