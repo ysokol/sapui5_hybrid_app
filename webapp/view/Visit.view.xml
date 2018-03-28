@@ -77,6 +77,8 @@
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 											<Label text="{Equipment}" design="Bold"/>
 											<Label text="{Description}"/>
+											<ObjectStatus text="{Image}" state="{path:'Image', formatter:'.formatter.equipmentStatusState'}"
+												icon="{path:'Image', formatter:'.formatter.equipmentStatusIcon'}"/>
 										</VBox>
 									</HBox>
 								</CustomListItem>
@@ -88,8 +90,8 @@
 			</IconTabBar>
 		</semantic:content>
 		<semantic:customFooterContent>
-			<Button text="Open Visit" press="onVisitOpen"/>
-			<Button text="Close Visit" press="onVisitClose"/>
+			<Button text="Open Visit" icon="sap-icon://open-command-field" press="onVisitOpen"/>
+			<Button text="Close Visit" icon="sap-icon://close-command-field" press="onVisitClose"/>
 			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onVisitSave"/>
 		</semantic:customFooterContent>
 	</semantic:MasterPage>

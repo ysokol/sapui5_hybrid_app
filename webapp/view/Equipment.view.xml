@@ -8,8 +8,8 @@
 					<ObjectAttribute title="Description" text=":'{Description}"/>
 				</attributes>
 				<statuses>
-					<!--<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.visitStatusState'}"
-						icon="{path:'Status', formatter:'.formatter.visitStatusIcon'}"/>-->
+					<ObjectStatus text="{Image}" state="{path:'Image', formatter:'.formatter.equipmentStatusState'}"
+						icon="{path:'Image', formatter:'.formatter.equipmentStatusIcon'}"/>
 				</statuses>
 				<headerContainer>
 					<HeaderContainer></HeaderContainer>
@@ -33,63 +33,47 @@
 											</ComboBox>
 										</form:fields>
 									</form:FormElement>
-									<form:FormElement label="Timeline">
+									<form:FormElement label="Description">
 										<form:fields>
-											<DateTimePicker value="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"
-												displayFormat="short"/>
-											<DateTimePicker value="{path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"
-												displayFormat="short"/>
-										</form:fields>
-									</form:FormElement>
-									<form:FormElement label="Pepsico Equipment:">
-										<form:fields>
-											<Link text="4 fridges" href=""/>
-										</form:fields>
-									</form:FormElement>
-									<form:FormElement label="Sales Order">
-										<form:fields>
-											<Link text="3 Open Sales Orders" href=""/>
-										</form:fields>
-									</form:FormElement>
-									<form:FormElement label="Audits">
-										<form:fields>
-											<Link text="2 pending audits" href=""/>
+											<Input value="{Description}/"/>
 										</form:fields>
 									</form:FormElement>
 								</form:FormContainer>
 							</form:formContainers>
 						</form:Form>
 					</IconTabFilter>
-					<IconTabFilter icon="sap-icon://fridge" tooltip="Equipment">
-						<List id="EquipmentListId" items="{/Equipments}" mode="Delete" delete="onEquipmentDelete">
+					<IconTabFilter icon="sap-icon://attachment" tooltip="Attachments">
+						<List id="AttachmentListId" items="{AttachmentDetails}"  mode="Delete" delete="onAttachmentDelete">
 							<headerToolbar>
 								<Toolbar>
-									<Title text="Equipment" level="H3"/>
 									<ToolbarSpacer/>
-									<Button icon="sap-icon://add" text="Add Equipment" press="onEquipmentAddPress"/>
+									<Button icon="sap-icon://add-document" text="Add File" press="onAddAttachment"/>
+									<Button icon="sap-icon://add-photo" text="Take Photo" press="onAddPhoto"/>
 								</Toolbar>
 							</headerToolbar>
 							<items>
-								<CustomListItem press="onEquipmentPress" type="Navigation">
+								<CustomListItem press="onAttachmentViewImage" type="Navigation">
 									<HBox>
-										<core:Icon size="2rem" src="sap-icon://fridge" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
+										<core:Icon size="2rem" src="sap-icon://attachment-photo" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-											<Label text="{Equipment}" design="Bold"/>
-											<Label text="{Description}"/>
+											<Link text="{Description}" target="" press="onAttachmentViewImage"/>
+											<Label text="{Attachment}"/>
 										</VBox>
 									</HBox>
 								</CustomListItem>
 							</items>
 						</List>
+						<!--<unif:FileUploader id="fileUploader" name="myFileUpload" tooltip="Upload your file to the local server"
+							uploadComplete="handleUploadComplete" change='onFileUploaderSet' mimeType="image/*"/>-->
 					</IconTabFilter>
 					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
 				</items>
 			</IconTabBar>
 		</semantic:content>
 		<semantic:customFooterContent>
-			<Button text="Open Visit" press="onVisitOpen"/>
-			<Button text="Close Visit" press="onVisitClose"/>
-			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onVisitSave"/>
+			<Button icon="sap-icon://accept" text="In Service" press="onStatusInService"/>
+			<Button icon="sap-icon://decline" text="Not Working" press="onStatusNotWorking"/>
+			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onEquipmentSave"/>
 		</semantic:customFooterContent>
 	</semantic:MasterPage>
 </mvc:View>

@@ -28,7 +28,7 @@ sap.ui.define([
 					"Customers": "/Customers",
 					"Materials": "/Materials",
 					"UnitOfMeasures": "/UnitOfMeasures",
-					"Attachments": "/Attachments?$expand=SalesOrderDetails"
+					"Attachments": "/Attachments?$expand=SalesOrderDetails,EquipmentDetails"
 				}
 			};
 			this._offlineStore = sap.OData.createOfflineStore(properties);

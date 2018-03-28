@@ -15,69 +15,131 @@ sap.ui.define([
 			this.getRouter().getRoute("Equipment").attachPatternMatched(this._onObjectMatched, this);
 		},
 
-		onVisitOpen: function(oEvent) {
+		onAddAttachment: function(oEvent) {
 			var that = this;
-			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
-
-			that.getComponentModel().setProperty(sVisitPath + "/Status", "OPENED");
-
-			that.getComponentModel().submitChangesExt()
-				.then((oData) => that.getComponentModel().readExt(sVisitPath + "/RouteDetails"))
-				.then((oData) => that._oRouteService.recalcVisitCount(that.getComponentModel().getRelatedPath(oData.__metadata.uri)))
-				.then(() => that.getComponentModel().submitChangesExt());
-
+			var fileSelector = document.createElement('input');
+			fileSelector.setAttribute('type', 'file');
+			fileSelector.setAttribute('accept', 'image/*');
+			fileSelector.onchange = function(data) {
+				that._addAttachment(fileSelector.files[0]);
+			}
+			fileSelector.click();
 		},
 
-		onVisitClose: function(oEvent) {
+		onAddPhoto: function(oEvent) {
 			var that = this;
-			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
-
-			that.getComponentModel().setProperty(sVisitPath + "/Status", "CLOSED");
-
-			that.getComponentModel().submitChangesExt()
-				.then((oData) => that.getComponentModel().readExt(sVisitPath + "/RouteDetails"))
-				.then((oData) => that._oRouteService.recalcVisitCount(that.getComponentModel().getRelatedPath(oData.__metadata.uri)))
-				.then(() => that.getComponentModel().submitChangesExt());
+			this.getComponentCaptureMediaService().captureSingleImage()
+				.then(function(aMediaFiles) {
+					var i, path, len;
+					for (i = 0, len = aMediaFiles.length; i < len; i += 1) {
+						aMediaFiles[i].isCamerShot = true;
+						that._addAttachment(aMediaFiles[i]);
+					}
+				});
 		},
 
-		onVisitSave: function(oEvent) {
+		_addAttachment: function(file) {
 			var that = this;
-			//var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
+			var objectPath = that.getView().getElementBinding().getPath();
+			var objectNumber = that.getComponentModel().getProperty(objectPath).Equipment;
 
+			that.getView().byId("AttachmentListId").setBusy(true);
+
+			that.getComponentAttachmentService().addAttachment({
+					BusinessObject: "EQP" + objectNumber,
+					Equipment: objectNumber,
+					EquipmentDetails: {
+						__metadata: {
+							uri: objectPath.substring(1)
+						}
+					}
+				},
+				file
+			).then(function(attachment_result) {
+
+				sap.m.MessageBox.confirm("Set image as default equipment picture?", {
+					onClose: function(oAction) {
+						if (oAction === sap.m.MessageBox.Action.OK) {
+							that.getComponentModel().setProperty(objectPath + "/Equipment", attachment_result.Attachment);
+							that.getComponentModel().submitChanges();
+						}
+					}
+				});
+
+				that.getView().byId("AttachmentListId").setBusy(false);
+			}).catch(function(oException) {
+				that.getView().byId("AttachmentListId").setBusy(false);
+				if (oException instanceof my.sapui5_hybrid_app.utils.MyException) {
+					oException.alert();
+				} else {
+					alert(oException);
+				}
+			});
+		},
+
+		onAttachmentDelete: function(oEvent) {
+			var attachmentPath = oEvent.getParameter("listItem").getBindingContext().getPath();
+			var attachment = this.getComponentModel().getProperty(attachmentPath);
+			var that = this;
+			that.getView().byId("AttachmentListId").setBusy(true);
+			that.getComponentAttachmentService().removeAttachment(attachment, attachmentPath).then(function() {
+				that.getView().byId("AttachmentListId").setBusy(false);
+			}).catch(function(error) {
+				that.getView().byId("AttachmentListId").setBusy(false);
+				alert("Failed to delete on Google Drive: " + error);
+			});
+		},
+
+		onAttachmentViewImage: function(oEvent) {
+			var oSelListItem = oEvent.getSource();
+			var attachmentPath = oSelListItem.getBindingContext().getPath();
+			var attachment = this.getComponentModel().getProperty(attachmentPath);
+			var that = this;
+
+			that.getView().byId("AttachmentListId").setBusy(true);
+			that.getComponentAttachmentService().getAttachmentSrc(attachment).then(function(imageSrc) {
+				var oDialog = new sap.m.Dialog({
+					content: new sap.m.Image({
+						src: imageSrc,
+						width: "100%"
+					}),
+					beginButton: new sap.m.Button({
+						text: 'Close',
+						press: function() {
+							oDialog.close();
+							that.getView().byId("AttachmentListId").setBusy(false);
+						}
+					}),
+					afterClose: function() {
+						oDialog.destroy();
+					}
+				});
+				oDialog.open();
+			}).catch(function(error) {
+				that.getView().byId("AttachmentListId").setBusy(false);
+				alert("View Attachment Failed: " + error);
+			});
+		},
+		
+		onStatusInService: function(oEvent) {
+			var that = this;
+			var sObjectPath = oEvent.getSource().getParent().getBindingContext().getPath();
+
+			that.getComponentModel().setProperty(sObjectPath + "/Image", "In Service");
 			that.getComponentModel().submitChangesExt();
-			//.then((oData) => that.getComponentModel().readExt(sVisitPath + "/RouteDetails"))
-			//.then((oData) => that._oRouteService.refreshMapDataModel(that.getComponentModel().getRelatedPath(oData.__metadata.uri)));
 		},
-
-		onCustomerSelected: function(oEvent) {
+		
+		onStatusNotWorking: function(oEvent) {
 			var that = this;
-			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
+			var sObjectPath = oEvent.getSource().getParent().getBindingContext().getPath();
 
-			that.getComponentModel().readExt(oEvent.getParameter("selectedItem").getBindingContext().getPath())
-				.then(oData => that.getComponentModel().setProperty(sVisitPath + "/GeoPosition", oData.GeoPosition));
+			that.getComponentModel().setProperty(sObjectPath + "/Image", "Not Working");
+			that.getComponentModel().submitChangesExt();
 		},
 
-		onEquipmentAddPress: function(oEvent) {
+		onEquipmentSave: function(oEvent) {
 			var that = this;
-			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
-
-			that.getNumberRangeService().getNextNumber({
-					sEntity: "Equipments",
-					sProperty: "Equipment",
-					sInitialValue: "0000000000",
-					iStep: 10
-				})
-				.then((sNextNumber) =>
-					that.getComponentModel().createExt("/Equipments", {
-						Equipment: sNextNumber,
-						Description: "New Equipment",
-						Customer: that.getComponentModel().getProperty(sVisitPath + "/Customer")
-					})
-				);
-		},
-
-		onEquipmentDelete: function(oEvent) {
-			this.getComponentModel().removeExt(oEvent.getParameter("listItem").getBindingContext().getPath());
+			that.getComponentModel().submitChangesExt();
 		},
 
 		onNavBack: function() {

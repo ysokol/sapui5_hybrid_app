@@ -9,6 +9,29 @@ sap.ui.define([], function() {
 		 * @param {string} sValue value to be formatted
 		 * @returns {string} formatted currency value with 2 digits
 		 */
+		
+		equipmentStatusIcon: function(sValue) {
+			switch (sValue) {
+				case "In Service":
+					return "sap-icon://accept";
+				case "Not Working":
+					return "sap-icon://decline";
+				default:
+					return "sap-icon://question-mark";
+			}
+		},
+		
+		equipmentStatusState: function(sValue) {
+			switch (sValue) {
+				case "In Service":
+					return sap.ui.core.ValueState.Success;
+				case "Not Working":
+					return sap.ui.core.ValueState.Error;
+				default:
+					return sap.ui.core.ValueState.Error;
+			}
+		},
+		
 		routeStatusIcon: function(sValue) {
 			switch (sValue) {
 				case "DONE":
@@ -18,7 +41,7 @@ sap.ui.define([], function() {
 				case "PLAN":
 					return "sap-icon://future";
 				default:
-					return "sap-icon://complete";
+					return "sap-icon://question-mark";
 			}
 		},
 		
@@ -44,7 +67,7 @@ sap.ui.define([], function() {
 				case "PLAN":
 					return "sap-icon://future";
 				default:
-					return "sap-icon://complete";
+					return "sap-icon://question-mark";
 			}
 		},
 		

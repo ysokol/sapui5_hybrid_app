@@ -3,8 +3,9 @@ sap.ui.define([
 	"my/sapui5_hybrid_app/controller/BaseController",
 	"my/sapui5_hybrid_app/model/formatter",
 	"sap/ui/core/routing/History",
-	"my/sapui5_hybrid_app/model/service/RouteService"
-], function(BaseController, formatter, History, RouteService) {
+	"my/sapui5_hybrid_app/model/service/RouteService",
+	"sap/m/MessageBox"
+], function(BaseController, formatter, History, RouteService, MessageBox) {
 	"use strict";
 
 	return BaseController.extend("my.sapui5_hybrid_app.controller.Visit", {
@@ -80,7 +81,7 @@ sap.ui.define([
 		onEquipmentDelete: function(oEvent) {
 			this.getComponentModel().removeExt(oEvent.getParameter("listItem").getBindingContext().getPath());
 		},
-		
+
 		onEquipmentPress: function(oEvent) {
 			var oSelListItem = oEvent.getSource();
 			var sObjPath = oSelListItem.getBindingContext().getPath().substring(1);
@@ -89,9 +90,29 @@ sap.ui.define([
 				objectPath: sObjPath
 			});
 		},
-		
+
 		onEquipmentScanBarcode: function(oEvent) {
-			this.getComponenetBarcodeScannerService().scanBarcode().then(sCode => alert(sCode));
+			var that = this;
+			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
+			
+			that.getComponenetBarcodeScannerService().scanBarcode()
+				.then(function(sCode) {
+					that.getComponentModel().readExt("/Equipments('" + sCode.substring(0, 10) + "')")
+						.then(oData => that.getRouter().navTo("Equipment", {
+							objectPath: "Equipments('" + sCode.substring(0, 10) + "')"
+						}))
+						.catch(oException => MessageBox.confirm("Eqipment id '" + sCode + "' not found, do you want to create it?", {
+							onClose: function(oAction) {
+								if (oAction === sap.m.MessageBox.Action.OK) {
+									that.getComponentModel().createExt("/Equipments", {
+										Equipment: sCode.substring(0, 10),
+										Description: "New Equipment",
+										Customer: that.getComponentModel().getProperty(sVisitPath + "/Customer")
+									});
+								}		
+							}
+						}));
+				});
 		},
 
 		onNavBack: function() {
