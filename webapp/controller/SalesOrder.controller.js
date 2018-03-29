@@ -18,7 +18,7 @@ sap.ui.define([
 		/* lifecycle methods                                           */
 		/* =========================================================== */
 		onInit: function() {
-			this.getRouter().getRoute("salesOrder").attachPatternMatched(this._onObjectMatched, this);
+			this.getRouter().getRoute("SalesOrder").attachPatternMatched(this._onObjectMatched, this);
 			//this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
 		},
 

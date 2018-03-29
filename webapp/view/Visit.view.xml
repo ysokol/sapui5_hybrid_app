@@ -85,7 +85,29 @@
 							</items>
 						</List>
 					</IconTabFilter>
-					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
+					<IconTabFilter icon="sap-icon://sales-order" tooltip="Sales Orders">
+						<List id="SalesOrdersListId"  items="{ path: '/SalesOrders', sorter: { path: 'SalesOrder', descending: false }, parameters: {expand: 'CustomerDetails'} }" mode="Delete" delete="onSalesOrderDelete">
+							<headerToolbar>
+								<Toolbar>
+									<ToolbarSpacer/>
+									<Button icon="sap-icon://add" text="New Sales Order" press="onSalesOrderAddPress"/>
+								</Toolbar>
+							</headerToolbar>
+							<items>
+								<ObjectListItem title="{SalesOrder}" press="onSalesOrderPress" type="Navigation" icon="sap-icon://sales-order"
+									number="{ parts:[{path:'OrderTotalGross'},{path:'Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+									numberUnit="{Currency}">
+									<firstStatus>
+										<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.salesOrderStatusState'}"
+											icon="{path:'Status', formatter:'.formatter.salesOrderStatusIcon'}"/>
+									</firstStatus>
+									<attributes>
+										<ObjectAttribute text="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}" />
+									</attributes>
+								</ObjectListItem>
+							</items>
+						</List>
+					</IconTabFilter>
 				</items>
 			</IconTabBar>
 		</semantic:content>

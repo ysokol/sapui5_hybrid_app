@@ -114,6 +114,15 @@ sap.ui.define([
 						}));
 				});
 		},
+		
+		onSalesOrderPress: function(oEvent) {
+			var oSelListItem = oEvent.getSource();
+			var sObjPath = oSelListItem.getBindingContext().getPath().substring(1);
+
+			this.getRouter().navTo("SalesOrder", {
+				objectPath: sObjPath
+			});
+		},
 
 		onNavBack: function() {
 			var sPreviousHash = History.getInstance().getPreviousHash(),

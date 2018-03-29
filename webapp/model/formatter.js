@@ -10,6 +10,28 @@ sap.ui.define([], function() {
 		 * @returns {string} formatted currency value with 2 digits
 		 */
 		
+		salesOrdertStatusIcon: function(sValue) {
+			switch (sValue) {
+				case "SUBMITTED":
+					return "sap-icon://accept";
+				case "DRAFT":
+					return "sap-icon://status-in-process";
+				default:
+					return "sap-icon://question-mark";
+			}
+		},
+		
+		salesOrderStatusState: function(sValue) {
+			switch (sValue) {
+				case "SUBMITTED":
+					return sap.ui.core.ValueState.Success;
+				case "DRAFT":
+					return sap.ui.core.ValueState.Warning;
+				default:
+					return sap.ui.core.ValueState.Error;
+			}
+		},
+		
 		equipmentStatusIcon: function(sValue) {
 			switch (sValue) {
 				case "In Service":

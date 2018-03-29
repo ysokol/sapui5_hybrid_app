@@ -1,11 +1,15 @@
 <mvc:View controllerName="my.sapui5_hybrid_app.controller.SalesOrder" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.m.semantic" xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core"
 	xmlns:unif="sap.ui.unified">
-	<semantic:DetailPage id="salesOrderPage" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}"
-		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+	<semantic:MasterPage id="visitPageId" title="Sales Order details" showNavButton="true" navButtonPress="onNavBack">
 		<semantic:content>
 			<ObjectHeader id="objectHeader" title="{SalesOrder}" number="{ path: 'OrderTotalGross', formatter: '.formatter.currencyValue' }"
-				numberUnit="{Currency}"></ObjectHeader>
+				numberUnit="{Currency}">
+				<statuses>
+					<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.salesOrderStatusState'}"
+						icon="{path:'Status', formatter:'.formatter.salesOrderStatusIcon'}"/>
+				</statuses>
+			</ObjectHeader>
 			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
 				<items>
 					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}">
@@ -67,7 +71,8 @@
 							</items>
 						</List>
 						<unif:FileUploader id="fileUploader" name="myFileUpload" tooltip="Upload your file to the local server"
-							uploadComplete="handleUploadComplete" change='onFileUploaderSet' mimeType="image/*"/> <!--uploadUrl="/cmis/root"-->
+							uploadComplete="handleUploadComplete" change='onFileUploaderSet' mimeType="image/*"/>
+						<!--uploadUrl="/cmis/root"-->
 						<Button icon="sap-icon://add" press="onAddAttachment"/>
 						<Button icon="sap-icon://add-photo" press="onAddPhoto"/>
 					</IconTabFilter>
@@ -77,15 +82,14 @@
 					</IconTabFilter>
 				</items>
 			</IconTabBar>
-			<Table id="lineItemsList" width="auto" items="{SalesOrderItemDetails}" updateFinished="onListUpdateFinished" noDataText="No Data"
-				busyIndicatorDelay="{detailView>/lineItemTableDelay}" inset="false">
+			<!--Table id="lineItemsList" items="{SalesOrderItemDetails}" updateFinished="onListUpdateFinished" noDataText="No Data">
 				<headerToolbar>
 					<Toolbar id="lineItemsToolbar">
 						<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
 					</Toolbar>
 				</headerToolbar>
 				<columns>
-					<Column>
+					<Column hAlign="Begin">
 						<Text text="Item"/>
 					</Column>
 					<Column>
@@ -98,18 +102,31 @@
 				<items>
 					<ColumnListItem type="Detail" detailPress="onSalesOrderItemDetail">
 						<cells>
-							<ObjectIdentifier title="{SalesOrderItem}" text="{Material}"/>
+							<Label text="{SalesOrderItem}"/>
 							<ObjectNumber number="{ path: 'AmountGross', formatter: '.formatter.currencyValue' }" unit="{OrderUom}"/>
 							<Button icon="sap-icon://delete" press="onSalesOrderItemDelete"/>
 						</cells>
 					</ColumnListItem>
 				</items>
-			</Table>
+			</Table>-->
+			<List id="SalesOrdersListId"
+				items="{ path: 'SalesOrderItemDetails', sorter: { path: 'SalesOrderItem', descending: false }, parameters: {expand: 'MaterialDetails'} }"
+				mode="Delete" delete="onSalesOrderDelete">
+				<items>
+					<ObjectListItem title="{Material} - {MeterialDetails/Description}" press="onSalesOrderPress" type="Navigation" icon="sap-icon://product"
+						number="{ parts:[{path:'Quantity'},{path:'OrderUom'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+						numberUnit="{OrderUom}">
+						<attributes>
+							<ObjectAttribute text="{AmountGross} RUB"/>
+						</attributes>
+					</ObjectListItem>
+				</items>
+			</List>
 		</semantic:content>
 		<semantic:customFooterContent>
 			<OverflowToolbarButton icon="sap-icon://add" text="Add Itemm" press="onSalesOrderItemAdd"/>
 			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onSalesOrderSave"/>
 			<OverflowToolbarButton icon="sap-icon://delete" text="Delete Sales Order" press="onSalesOrderDelete"/>
 		</semantic:customFooterContent>
-	</semantic:DetailPage>
+	</semantic:MasterPage>
 </mvc:View>

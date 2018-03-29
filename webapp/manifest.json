@@ -128,12 +128,12 @@
 				"targetControl": "idFullScreenAppControl",
 				"targetAggregation": "pages"
 			}, {
-				"pattern": "SalesOrders/{objectPath}",
-				"name": "salesOrder",
-				"target": [
-					"master",
-					"salesOrder"
-				]
+				"pattern": "SalesOrder/{objectPath}",
+				"name": "SalesOrder",
+				"view": "SalesOrder",
+				"viewPath": "my.sapui5_hybrid_app.view",
+				"targetControl": "idFullScreenAppControl",
+				"targetAggregation": "pages"
 			}, {
 				"pattern": "OfflineStore",
 				"name": "OfflineStore",
@@ -179,9 +179,9 @@
 					"viewId": "master",
 					"controlAggregation": "masterPages"
 				},
-				"salesOrder": {
+				"SalesOrder": {
 					"viewName": "SalesOrder",
-					"viewId": "salesOrder",
+					"viewId": "SalesOrder",
 					"viewLevel": 2
 				},
 				"object": {
