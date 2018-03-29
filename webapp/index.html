@@ -86,7 +86,7 @@ window["sap-ushell-config"] = {
 				src="resources/sap-ui-core-dbg.js"
 				data-sap-ui-libs="sap.ushell, sap.collaboration, sap.m, sap.ui.layout"
 				data-sap-ui-theme="sap_belize"
-				data-sap-ui-preload="async"
+				data-sap-ui-preload=""
 				data-sap-ui-compatVersion="edge"
 				data-sap-ui-frameOptions='allow'
 				data-sap-ui-resourceroots='{ "my.sapui5_hybrid_app": "./" }'
@@ -108,14 +108,6 @@ sap.hybrid.startApp = function() {
 }
 </script>
 <script>sap.hybrid.bootStrap();</script>
-
-		<!--<script>
-			sap.ui.getCore().attachInit(function() {
-				// initialize the ushell sandbox component
-				sap.ushell.Container.createRenderer().placeAt("content");
-			});
-		</script>
--->
 
 	</head>
 
