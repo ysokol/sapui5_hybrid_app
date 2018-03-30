@@ -19,7 +19,7 @@
 					<form:FormElement label="Quantity">
 						<form:fields>
 							<StepInput value="{Quantity}" min="0" max="9999" step="1" largerStep="10"
-								enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}"/>
+								enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}" change="onRecalSalesOrderItem"/>
 							<ComboBox selectedKey="{OrderUom}" id="OrderUomComboBox"
 								items="{ path: '/UnitOfMeasures', sorter: { path: 'Uom' }, templateShareable : true }" change="onMaintenancePlanChange"
 								selectionChange="onMaintenancePlanChange" enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}">
@@ -29,7 +29,7 @@
 					</form:FormElement>
 					<form:FormElement label="Price">
 						<form:fields>
-							<Input value="{Price}" type="Number" enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}"/>
+							<Input value="{Price}" type="Number" enabled="{path: 'SalesOrderDetails/Status', formatter: '.formatter.statusEditable'}" change="onRecalSalesOrderItem"/>
 						</form:fields>
 					</form:FormElement>
 					<form:FormElement label="Amount">

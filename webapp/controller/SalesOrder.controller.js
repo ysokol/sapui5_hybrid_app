@@ -5,9 +5,9 @@ function onFileInput() {
 sap.ui.define([
 	"my/sapui5_hybrid_app/controller/BaseController",
 	"my/sapui5_hybrid_app/model/formatter",
-	"my/sapui5_hybrid_app/utils/AttachmentService",
-	"my/sapui5_hybrid_app/utils/MyException"
-], function(BaseController, formatter, AttachmentService, MyException) {
+	"my/sapui5_hybrid_app/utils/MyException",
+	"my/sapui5_hybrid_app/model/service/SalesOrderService"
+], function(BaseController, formatter, MyException, SalesOrderService) {
 	"use strict";
 
 	return BaseController.extend("my.sapui5_hybrid_app.controller.SalesOrder", {
@@ -20,12 +20,15 @@ sap.ui.define([
 		onInit: function() {
 			this.getRouter().getRoute("SalesOrder").attachPatternMatched(this._onObjectMatched, this);
 			//this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
+			this._oSalesOrderService = new SalesOrderService(this.getComponentModel());
 		},
 
-		onScanBarcode: function() {
-			this.getComponenetBarcodeScannerService().scanBarcode().then(sText => alert(sText));
+		onRecalSalesOrderItem: function(oEvent) {
+			debugger;
+			var sSalesOrderItemPath = oEvent.getSource().getParent().getBindingContext().getPath();
+			this._oSalesOrderService.recalcSalesOrderItem(sSalesOrderItemPath);
 		},
-
+		
 		onSendNotification: function() {
 			var that = this;
 			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
@@ -182,8 +185,11 @@ sap.ui.define([
 		},
 
 		onSalesOrderItemConfirm: function(oEvent) {
-			this._oSalesOrderItemDialog.close();
-			this.getComponentModel().submitChanges();
+			var that = this;
+			that._oSalesOrderItemDialog.close();
+			that.getComponentModel().submitChangesExt()
+			.then(() => that._oSalesOrderService.recalcSalesOrder(this.getView().getElementBinding().getPath()))
+			.then(() => that.getComponentModel().submitChanges());
 		},
 
 		onSalesOrderSave: function(oEvent) {
@@ -212,6 +218,9 @@ sap.ui.define([
 
 			this.getView().bindElement({
 				path: sObjectPath, // + "?$expand=SalesOrderItemDetails", // / - requried for web, for mobile not required
+				parameters: {
+					expand: "SalesOrderItemDetails"
+				},
 				events: {
 					change: this._onBindingChange.bind(this),
 					dataRequested: function() {

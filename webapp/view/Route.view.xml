@@ -43,42 +43,24 @@
 					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
 				</items>
 			</IconTabBar>
-			<List id="list" items="{ path: 'VisitDetails', sorter: { path: 'Visit', descending: false }, parameters: {expand: 'CustomerDetails'} }" growing="true" growingScrollToLoad="true"
-				updateFinished="onUpdateFinished" selectionChange="onSelectionChange" mode="Delete" delete="onVisitDelete">
+			<List id="list" items="{ path: 'VisitDetails', sorter: { path: 'Visit', descending: false }, parameters: {expand: 'CustomerDetails'} }"
+				growing="true" growingScrollToLoad="true" updateFinished="onUpdateFinished" selectionChange="onSelectionChange" mode="Delete"
+				delete="onVisitDelete">
 				<items>
 					<CustomListItem press="onVisitPress" type="Navigation">
 						<HBox>
 							<core:Icon size="2rem" src="sap-icon://visits" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 								<Label text="{Visit}" design="Bold"/>
-								<Link text="{Customer} - {CustomerDetails/Description}" href="{CustomerDetails/Description}" width="15rem"/>
+								<Link text="{Customer} - {CustomerDetails/Description}" href="{CustomerDetails/Description}" width="11rem"/>
 								<Label
 									text="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}} - {path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"/>
+							</VBox>
+							<VBox class="sapUiSmallMarginEnd sapUiSmallMarginTopBottom" width="100%" alignItems="End">
 								<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.visitStatusState'}"
 									icon="{path:'Status', formatter:'.formatter.visitStatusIcon'}"/>
 							</VBox>
 						</HBox>
-						<!--<VBox>
-							
-							<HBox>
-								<Label text="{Visit}"/>
-								<Label text="{Customer}"/>
-							</HBox>
-							<HBox>
-								<DateTimePicker value="{path:'PlannedStart', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"
-									displayFormat="short"/>
-								<DateTimePicker value="{path:'PlannedFinish', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'short', strictParsing: true}}"
-									displayFormat="short"/>
-							</HBox>
-							<HBox>
-								<ComboBox selectedKey="{Customer}" items="{ path: '/Customers', sorter: { path: 'Customer' }, templateShareable : true }">
-									<core:Item key="{Customer}" text="{Description}"/>
-								</ComboBox>
-								<Input value="{Comment}" maxLength="50"/>
-							</HBox>
-							<Input value="{GeoPosition}" maxLength="40"/>
-							<Button icon="sap-icon://delete" press="onVisitDelete"/>
-						</VBox>-->
 					</CustomListItem>
 				</items>
 			</List>

@@ -77,6 +77,8 @@
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 											<Label text="{Equipment}" design="Bold"/>
 											<Label text="{Description}"/>
+										</VBox>
+										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" alignItems="End">
 											<ObjectStatus text="{Image}" state="{path:'Image', formatter:'.formatter.equipmentStatusState'}"
 												icon="{path:'Image', formatter:'.formatter.equipmentStatusIcon'}"/>
 										</VBox>
@@ -86,7 +88,9 @@
 						</List>
 					</IconTabFilter>
 					<IconTabFilter icon="sap-icon://sales-order" tooltip="Sales Orders">
-						<List id="SalesOrdersListId"  items="{ path: '/SalesOrders', sorter: { path: 'SalesOrder', descending: false }, parameters: {expand: 'CustomerDetails'} }" mode="Delete" delete="onSalesOrderDelete">
+						<List id="SalesOrdersListId"
+							items="{ path: '/SalesOrders', sorter: { path: 'SalesOrder', descending: false }, parameters: {expand: 'CustomerDetails'} }" mode="Delete"
+							delete="onSalesOrderDelete">
 							<headerToolbar>
 								<Toolbar>
 									<ToolbarSpacer/>
@@ -94,7 +98,22 @@
 								</Toolbar>
 							</headerToolbar>
 							<items>
-								<ObjectListItem title="{SalesOrder}" press="onSalesOrderPress" type="Navigation" icon="sap-icon://sales-order"
+								<CustomListItem press="onSalesOrderPress" type="Navigation">
+									<HBox>
+										<core:Icon size="2rem" src="sap-icon://sales-order" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
+										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+											<Label text="{SalesOrder}" design="Bold"/>
+											<Link text="{Customer} - {CustomerDetails/Description}" href="{CustomerDetails/Description}" width="11rem"/>
+											<Label text="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}"/>
+										</VBox>
+										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" alignItems="End">
+											<ObjectStatus text="{Status}" state="{path:'Status', formatter:'.formatter.salesOrderStatusState'}"
+												icon="{path:'Status', formatter:'.formatter.salesOrderStatusIcon'}"/>
+											<Label text="{ parts:[{path:'OrderTotalGross'},{path:'Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: true} }"/>
+										</VBox>
+									</HBox>
+								</CustomListItem>
+								<!--<ObjectListItem title="{SalesOrder}" press="onSalesOrderPress" type="Navigation" icon="sap-icon://sales-order"
 									number="{ parts:[{path:'OrderTotalGross'},{path:'Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 									numberUnit="{Currency}">
 									<firstStatus>
@@ -102,9 +121,9 @@
 											icon="{path:'Status', formatter:'.formatter.salesOrderStatusIcon'}"/>
 									</firstStatus>
 									<attributes>
-										<ObjectAttribute text="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}" />
+										<ObjectAttribute text="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}"/>
 									</attributes>
-								</ObjectListItem>
+								</ObjectListItem>-->
 							</items>
 						</List>
 					</IconTabFilter>

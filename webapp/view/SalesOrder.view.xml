@@ -113,13 +113,20 @@
 				items="{ path: 'SalesOrderItemDetails', sorter: { path: 'SalesOrderItem', descending: false }, parameters: {expand: 'MaterialDetails'} }"
 				mode="Delete" delete="onSalesOrderDelete">
 				<items>
-					<ObjectListItem title="{Material} - {MeterialDetails/Description}" press="onSalesOrderPress" type="Navigation" icon="sap-icon://product"
-						number="{ parts:[{path:'Quantity'},{path:'OrderUom'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-						numberUnit="{OrderUom}">
-						<attributes>
-							<ObjectAttribute text="{AmountGross} RUB"/>
-						</attributes>
-					</ObjectListItem>
+					<CustomListItem press="onSalesOrderItemDetail" type="Navigation">
+						<HBox>
+							<core:Icon size="2rem" src="sap-icon://product" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
+							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+								<Label text="{SalesOrderItem}" design="Bold"/>
+								<Label text="{Material}"/>
+								<Label text="{Price} RUB per 1 {OrderUom}"/>
+							</VBox>
+							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" alignItems="End">
+								<Label text="{Quantity} {OrderUom}" design="Bold"/>
+								<Label text="{AmountGross} RUB"/>
+							</VBox>
+						</HBox>
+					</CustomListItem>
 				</items>
 			</List>
 		</semantic:content>
