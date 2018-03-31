@@ -89,12 +89,12 @@
 					</IconTabFilter>
 					<IconTabFilter icon="sap-icon://sales-order" tooltip="Sales Orders">
 						<List id="SalesOrdersListId"
-							items="{ path: '/SalesOrders', sorter: { path: 'SalesOrder', descending: false }, parameters: {expand: 'CustomerDetails'} }" mode="Delete"
+							items="{ path: '/SalesOrders', parameters: {expand: 'CustomerDetails'} }" mode="Delete"
 							delete="onSalesOrderDelete">
 							<headerToolbar>
 								<Toolbar>
 									<ToolbarSpacer/>
-									<Button icon="sap-icon://add" text="New Sales Order" press="onSalesOrderAddPress"/>
+									<Button icon="sap-icon://add" text="New Sales Order" press="onSalesOrderAdd"/>
 								</Toolbar>
 							</headerToolbar>
 							<items>
@@ -103,7 +103,7 @@
 										<core:Icon size="2rem" src="sap-icon://sales-order" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 											<Label text="{SalesOrder}" design="Bold"/>
-											<Link text="{Customer} - {CustomerDetails/Description}" href="{CustomerDetails/Description}" width="11rem"/>
+											<Label text="{Customer} - {CustomerDetails/Description}"/>
 											<Label text="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}"/>
 										</VBox>
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" alignItems="End">

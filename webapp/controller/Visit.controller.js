@@ -44,11 +44,7 @@ sap.ui.define([
 
 		onVisitSave: function(oEvent) {
 			var that = this;
-			//var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
-
 			that.getComponentModel().submitChangesExt();
-			//.then((oData) => that.getComponentModel().readExt(sVisitPath + "/RouteDetails"))
-			//.then((oData) => that._oRouteService.refreshMapDataModel(that.getComponentModel().getRelatedPath(oData.__metadata.uri)));
 		},
 
 		onCustomerSelected: function(oEvent) {
@@ -77,20 +73,7 @@ sap.ui.define([
 					})
 				);
 		},
-
-		onEquipmentDelete: function(oEvent) {
-			this.getComponentModel().removeExt(oEvent.getParameter("listItem").getBindingContext().getPath());
-		},
-
-		onEquipmentPress: function(oEvent) {
-			var oSelListItem = oEvent.getSource();
-			var sObjPath = oSelListItem.getBindingContext().getPath().substring(1);
-
-			this.getRouter().navTo("Equipment", {
-				objectPath: sObjPath
-			});
-		},
-
+		
 		onEquipmentScanBarcode: function(oEvent) {
 			var that = this;
 			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
@@ -113,6 +96,51 @@ sap.ui.define([
 							}
 						}));
 				});
+		},
+
+		onEquipmentDelete: function(oEvent) {
+			this.getComponentModel().removeExt(oEvent.getParameter("listItem").getBindingContext().getPath());
+		},
+
+		onEquipmentPress: function(oEvent) {
+			var oSelListItem = oEvent.getSource();
+			var sObjPath = oSelListItem.getBindingContext().getPath().substring(1);
+
+			this.getRouter().navTo("Equipment", {
+				objectPath: sObjPath
+			});
+		},
+		
+		onSalesOrderAdd: function(oEvent) {
+			var that = this;
+			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
+			var sSalesOrderInitialNumber = "0000000000";
+			var iStep = 10;
+			
+			if (this.isMobileDevice()) {
+				sSalesOrderInitialNumber = "$1";
+				iStep = 1;
+			}
+			
+			that.getNumberRangeService().getNextNumber({
+					sEntity: "SalesOrders",
+					sProperty: "SalesOrder",
+					sInitialValue: sSalesOrderInitialNumber,
+					iStep: iStep
+				})
+				.then((sNextNumber) =>
+					that.getComponentModel().createExt("/SalesOrders", {
+						SalesOrder: sNextNumber,
+						Currency: "RUB",
+						Customer: that.getComponentModel().getProperty(sVisitPath + "/Customer"),
+						Status: "DRAFT",
+						Comment: "New Sales Order"
+					})
+				);
+		},
+		
+		onSalesOrderDelete: function(oEvent) {
+			this.getComponentModel().removeExt(oEvent.getParameter("listItem").getBindingContext().getPath());
 		},
 		
 		onSalesOrderPress: function(oEvent) {
@@ -162,9 +190,6 @@ sap.ui.define([
 			var oFilter = new sap.ui.model.Filter("Customer", sap.ui.model.FilterOperator.EQ,
 				this.getComponentModel().getProperty(sObjectPath + "/Customer"));
 			this.getView().byId("EquipmentListId").getBinding("items").filter([oFilter]);
-			//Add the filtered object oStorage after every filter to access the previous filtered data
-			//oStorage.put("previousFilteredList","yourobj"); 
-
 		}
 
 	});

@@ -6,8 +6,9 @@ sap.ui.define([
 	"my/sapui5_hybrid_app/controller/BaseController",
 	"my/sapui5_hybrid_app/model/formatter",
 	"my/sapui5_hybrid_app/utils/MyException",
-	"my/sapui5_hybrid_app/model/service/SalesOrderService"
-], function(BaseController, formatter, MyException, SalesOrderService) {
+	"my/sapui5_hybrid_app/model/service/SalesOrderService",
+	'sap/ui/model/json/JSONModel'
+], function(BaseController, formatter, MyException, SalesOrderService, JSONModel) {
 	"use strict";
 
 	return BaseController.extend("my.sapui5_hybrid_app.controller.SalesOrder", {
@@ -18,18 +19,184 @@ sap.ui.define([
 		/* lifecycle methods                                           */
 		/* =========================================================== */
 		onInit: function() {
+			
+
 			this.getRouter().getRoute("SalesOrder").attachPatternMatched(this._onObjectMatched, this);
-			//this._attachmentService = new AttachmentService(this.getOwnerComponent(), this.getComponentModel());
-			this._oSalesOrderService = new SalesOrderService(this.getComponentModel());
+			this._oProcessFlowModel = new JSONModel();
+			this.getView().setModel(this._oProcessFlowModel, "processFlow");
+			
+			this._oSalesOrderService = new SalesOrderService(this.getComponentModel(), this._oProcessFlowModel);
 		},
 
 		onRecalSalesOrderItem: function(oEvent) {
-			debugger;
 			var sSalesOrderItemPath = oEvent.getSource().getParent().getBindingContext().getPath();
 			this._oSalesOrderService.recalcSalesOrderItem(sSalesOrderItemPath);
 		},
+
+		onSalesOrderItemAdd: function(oEvent) {
+			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
+			var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
+			var maxItem = "0000";
+			var that = this;
+			this.getComponentModel().read(currentSalesOrderPath + "/SalesOrderItemDetails", {
+				success: function(oData) {
+					for (let item of oData.results) {
+						if (!isNaN(parseInt(item.SalesOrderItem)) && item.SalesOrderItem > maxItem) {
+							maxItem = item.SalesOrderItem;
+						}
+					}
+					that.getComponentModel().createExt(currentSalesOrderPath + "/SalesOrderItemDetails", {
+							SalesOrder: salesOrderNum,
+							SalesOrderItem: that._utils.stringPad(parseInt(maxItem) + 10, 4),
+							SalesOrderDetails: {
+								__metadata: {
+									uri: currentSalesOrderPath.substring(1)
+								}
+							}
+						});
+						/*.then(() => that.getComponentModel().readExt(currentSalesOrderPath, {
+							"$expand": "SalesOrderItemDetails"
+						}));*/
+				}
+			});
+		},
+
+		onSalesOrderItemDelete: function(oEvent) {
+			var that = this;
+			var currentSalesOrderPath = that.getView().getElementBinding().getPath()
+			that.getComponentModel().removeExt(oEvent.getParameter("listItem").getBindingContext().getPath())
+				/*.then(() => that.getComponentModel().readExt(currentSalesOrderPath, {
+					"$expand": "SalesOrderItemDetails"
+				}))*/
+				.then(() => that._oSalesOrderService.recalcSalesOrder(currentSalesOrderPath))
+				.then(() => that.getComponentModel().submitChanges());
+		},
+
+		onSalesOrderItemDetail: function(oEvent) {
+			if (!this._oSalesOrderItemDialog) {
+				this._oSalesOrderItemDialog = new sap.ui.xmlfragment("my.sapui5_hybrid_app.view.SalesOrderItem", this);
+			}
+			this._oSalesOrderItemDialog.bindObject(oEvent.getSource().getBindingContext().getPath());
+			this._oSalesOrderItemDialog.open();
+		},
+
+		onMaterialSelected: function(oEvent) {
+			var that = this;
+			var sSalesOrderItemPath = oEvent.getSource().getParent().getBindingContext().getPath();
+
+			that.getComponentModel().readExt(oEvent.getParameter("selectedItem").getBindingContext().getPath())
+				.then(oData => that.getComponentModel().setProperty(sSalesOrderItemPath + "/Price", oData.Price));
+		},
+
+		onSalesOrderItemConfirm: function(oEvent) {
+			this._oSalesOrderItemDialog.close();
+			this._oSalesOrderService.recalcSalesOrder(this.getView().getElementBinding().getPath());
+			//this.getComponentModel().submitChanges();
+
+			/*that.getComponentModel().submitChangesExt()
+				.then(() => that._oSalesOrderService.recalcSalesOrder(this.getView().getElementBinding().getPath()))
+				.then(() => that.getComponentModel().submitChanges());*/
+		},
+
+		onSalesOrderSave: function(oEvent) {
+			this.getComponentModel().submitChanges();
+		},
 		
-		onSendNotification: function() {
+		onSalesOrderSubmit: function(oEvent) {
+			var sSalesOrderPath = this.getView().getElementBinding().getPath();
+			this.getComponentModel().setProperty(sSalesOrderPath + "/Status", "SUBMITTED");
+			this.getComponentModel().submitChanges();
+			this._oSalesOrderService.refreshStatusModel(sSalesOrderPath);
+		},
+		
+		onSalesOrdeCancel: function(oEvent) {
+			var sSalesOrderPath = this.getView().getElementBinding().getPath();
+			this.getComponentModel().setProperty(sSalesOrderPath + "/Status", "DRAFT");
+			this.getComponentModel().submitChanges();
+			this._oSalesOrderService.refreshStatusModel(sSalesOrderPath);
+		},
+		
+		onSalesOrderRelease: function(oEvent) {
+			var sSalesOrderPath = this.getView().getElementBinding().getPath();
+			this.getComponentModel().setProperty(sSalesOrderPath + "/Status", "RELEASED");
+			this.getComponentModel().submitChanges();
+			this._oSalesOrderService.refreshStatusModel(sSalesOrderPath);
+		},
+
+		onSalesOrderDelete: function(oEvent) {
+			this.getComponentModel().remove(this.getView().getElementBinding().getPath());
+		},
+
+		_onObjectMatched: function(oEvent) {
+			var objectPath = oEvent.getParameter("arguments").objectPath;
+			var that = this;
+			if (objectPath && objectPath !== "") {
+				that.getModel().metadataLoaded()
+					.then(function() {
+						that._bindView("/" + objectPath); // Mobile Version
+					} /*.bind(this)*/ )
+					.catch(function() {
+						// Metadata Not loaded :[o]
+					});
+			}
+		},
+
+		_bindView: function(sObjectPath) {
+			this.getView().bindElement({
+				path: sObjectPath, // + "?$expand=SalesOrderItemDetails", // / - requried for web, for mobile not required
+				parameters: {
+					"$expand": "SalesOrderItemDetails"
+				},
+				events: {
+					change: this._onBindingChange.bind(this),
+					dataRequested: function() {
+						//oViewModel.setProperty("/busy", true);
+					},
+					dataReceived: function() {
+						//oViewModel.setProperty("/busy", false);
+					}
+				}
+			});
+			this._oSalesOrderService.refreshStatusModel(sObjectPath);
+			//this.getComponentModel().readExt(sObjectPath, {
+			//	"$expand": "SalesOrderItemDetails"
+			//});
+		},
+		_onBindingChange: function() {
+			/*var oView = this.getView(),
+				oElementBinding = oView.getElementBinding();
+
+			// No data for the binding
+			if (!oElementBinding.getBoundContext()) {
+				this.getRouter().getTargets().display("detailObjectNotFound");
+				// if object could not be found, the selection in the master list
+				// does not make sense anymore.
+				this.getOwnerComponent().oListSelector.clearMasterListSelection();
+				return;
+			}
+
+			var sPath = oElementBinding.getPath(),
+				oResourceBundle = this.getResourceBundle(),
+				oObject = oView.getModel().getObject(sPath),
+				sObjectId = oObject.SalesOrder,
+				sObjectName = oObject.SalesOrder,
+				oViewModel = this.getModel("detailView");
+
+			this.getOwnerComponent().oListSelector.selectAListItem(sPath);
+
+			oViewModel.setProperty("/saveAsTileTitle", oResourceBundle.getText("shareSaveTileAppTitle", [sObjectName]));
+			oViewModel.setProperty("/shareOnJamTitle", sObjectName);
+			oViewModel.setProperty("/shareSendEmailSubject",
+				oResourceBundle.getText("shareSendEmailObjectSubject", [sObjectId]));
+			oViewModel.setProperty("/shareSendEmailMessage",
+				oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));*/
+		}
+
+	});
+
+});
+
+/*onSendNotification: function() {
 			var that = this;
 			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
 			var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
@@ -145,123 +312,4 @@ sap.ui.define([
 				that.getView().byId("AttachmentListId").setBusy(false);
 				alert("View Attachment Failed: " + error);
 			});
-		},
-
-		onSalesOrderItemAdd: function(oEvent) {
-			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
-			var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
-			var maxItem = "0000";
-			var that = this;
-			this.getComponentModel().read(currentSalesOrderPath + "/SalesOrderItemDetails", {
-				success: function(oData) {
-					for (let item of oData.results) {
-						if (!isNaN(parseInt(item.SalesOrderItem)) && item.SalesOrderItem > maxItem) {
-							maxItem = item.SalesOrderItem;
-						}
-					}
-					that.getComponentModel().create(currentSalesOrderPath + "/SalesOrderItemDetails", {
-						SalesOrder: salesOrderNum,
-						SalesOrderItem: that._utils.stringPad(parseInt(maxItem) + 10, 4),
-						SalesOrderDetails: {
-							__metadata: {
-								uri: currentSalesOrderPath.substring(1)
-							}
-						}
-					});
-				}
-			});
-		},
-
-		onSalesOrderItemDelete: function(oEvent) {
-			this.getComponentModel().remove(oEvent.getSource().getParent().getBindingContext().getPath());
-		},
-
-		onSalesOrderItemDetail: function(oEvent) {
-			if (!this._oSalesOrderItemDialog) {
-				this._oSalesOrderItemDialog = new sap.ui.xmlfragment("my.sapui5_hybrid_app.view.SalesOrderItem", this);
-			}
-			this._oSalesOrderItemDialog.bindObject(oEvent.getSource().getBindingContext().getPath());
-			this._oSalesOrderItemDialog.open();
-		},
-
-		onSalesOrderItemConfirm: function(oEvent) {
-			var that = this;
-			that._oSalesOrderItemDialog.close();
-			that.getComponentModel().submitChangesExt()
-			.then(() => that._oSalesOrderService.recalcSalesOrder(this.getView().getElementBinding().getPath()))
-			.then(() => that.getComponentModel().submitChanges());
-		},
-
-		onSalesOrderSave: function(oEvent) {
-			this.getComponentModel().submitChanges();
-		},
-
-		onSalesOrderDelete: function(oEvent) {
-			this.getComponentModel().remove(this.getView().getElementBinding().getPath());
-		},
-
-		_onObjectMatched: function(oEvent) {
-			var objectPath = oEvent.getParameter("arguments").objectPath;
-			var that = this;
-			if (objectPath && objectPath !== "") {
-				that.getModel().metadataLoaded()
-					.then(function() {
-						that._bindView("/" + objectPath); // Mobile Version
-					} /*.bind(this)*/ )
-					.catch(function() {
-						// Metadata Not loaded :[o]
-					});
-			}
-		},
-
-		_bindView: function(sObjectPath) {
-
-			this.getView().bindElement({
-				path: sObjectPath, // + "?$expand=SalesOrderItemDetails", // / - requried for web, for mobile not required
-				parameters: {
-					expand: "SalesOrderItemDetails"
-				},
-				events: {
-					change: this._onBindingChange.bind(this),
-					dataRequested: function() {
-						//oViewModel.setProperty("/busy", true);
-					},
-					dataReceived: function() {
-						//oViewModel.setProperty("/busy", false);
-					}
-				}
-			});
-		},
-		_onBindingChange: function() {
-			/*var oView = this.getView(),
-				oElementBinding = oView.getElementBinding();
-
-			// No data for the binding
-			if (!oElementBinding.getBoundContext()) {
-				this.getRouter().getTargets().display("detailObjectNotFound");
-				// if object could not be found, the selection in the master list
-				// does not make sense anymore.
-				this.getOwnerComponent().oListSelector.clearMasterListSelection();
-				return;
-			}
-
-			var sPath = oElementBinding.getPath(),
-				oResourceBundle = this.getResourceBundle(),
-				oObject = oView.getModel().getObject(sPath),
-				sObjectId = oObject.SalesOrder,
-				sObjectName = oObject.SalesOrder,
-				oViewModel = this.getModel("detailView");
-
-			this.getOwnerComponent().oListSelector.selectAListItem(sPath);
-
-			oViewModel.setProperty("/saveAsTileTitle", oResourceBundle.getText("shareSaveTileAppTitle", [sObjectName]));
-			oViewModel.setProperty("/shareOnJamTitle", sObjectName);
-			oViewModel.setProperty("/shareSendEmailSubject",
-				oResourceBundle.getText("shareSendEmailObjectSubject", [sObjectId]));
-			oViewModel.setProperty("/shareSendEmailMessage",
-				oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));*/
-		}
-
-	});
-
-});
+		},*/

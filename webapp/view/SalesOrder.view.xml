@@ -1,6 +1,6 @@
 <mvc:View controllerName="my.sapui5_hybrid_app.controller.SalesOrder" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.m.semantic" xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core"
-	xmlns:unif="sap.ui.unified">
+	xmlns:unif="sap.ui.unified" xmlns:suite="sap.suite.ui.commons">
 	<semantic:MasterPage id="visitPageId" title="Sales Order details" showNavButton="true" navButtonPress="onNavBack">
 		<semantic:content>
 			<ObjectHeader id="objectHeader" title="{SalesOrder}" number="{ path: 'OrderTotalGross', formatter: '.formatter.currencyValue' }"
@@ -23,8 +23,6 @@
 										<form:fields>
 											<DatePicker value="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}" width="12em"
 												enabled="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
-											<ObjectStatus text="{Status}" state="{path: 'Status', formatter: '.formatter.statusState'}"
-												icon="{path: 'Status', formatter: '.formatter.statusIcon'}"/>
 										</form:fields>
 									</form:FormElement>
 									<form:FormElement label="Customer">
@@ -80,38 +78,32 @@
 						<Button icon="sap-icon://paper-plane" press="onSendNotification"/>
 						<Button icon="sap-icon://bar-code" press="onScanBarcode"/>
 					</IconTabFilter>
+					<IconTabFilter icon="sap-icon://process" tooltip="Process Flow">
+						<suite:ProcessFlow id="processflow1" scrollable="false" foldedCorners="true" nodePress="onNodePress" nodeTitlePress="onNodeTitlePress"
+							nodes="{processFlow>/nodes}" lanes="{processFlow>/lanes}">
+							<suite:nodes>
+								<suite:ProcessFlowNode laneId="{processFlow>lane}" nodeId="{processFlow>id}" title="{processFlow>title}"
+									titleAbbreviation="{processFlow>titleAbbreviation}" isTitleClickable="{isTitleClickable}" children="{processFlow>children}"
+									state="{processFlow>state}" stateText="{processFlow>stateText}" texts="{processFlow>texts}" highlighted="{processFlow>highlighted}"
+									focused="{processFlow>focused}"/>
+							</suite:nodes>
+							<suite:lanes>
+								<suite:ProcessFlowLaneHeader laneId="{processFlow>id}" iconSrc="{processFlow>icon}" text="{processFlow>label}"
+									position="{processFlow>position}"/>
+							</suite:lanes>
+						</suite:ProcessFlow>
+					</IconTabFilter>
 				</items>
 			</IconTabBar>
-			<!--Table id="lineItemsList" items="{SalesOrderItemDetails}" updateFinished="onListUpdateFinished" noDataText="No Data">
-				<headerToolbar>
-					<Toolbar id="lineItemsToolbar">
-						<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
-					</Toolbar>
-				</headerToolbar>
-				<columns>
-					<Column hAlign="Begin">
-						<Text text="Item"/>
-					</Column>
-					<Column>
-						<Text text="Amount"/>
-					</Column>
-					<Column hAlign="End">
-						<Text text="..."/>
-					</Column>
-				</columns>
-				<items>
-					<ColumnListItem type="Detail" detailPress="onSalesOrderItemDetail">
-						<cells>
-							<Label text="{SalesOrderItem}"/>
-							<ObjectNumber number="{ path: 'AmountGross', formatter: '.formatter.currencyValue' }" unit="{OrderUom}"/>
-							<Button icon="sap-icon://delete" press="onSalesOrderItemDelete"/>
-						</cells>
-					</ColumnListItem>
-				</items>
-			</Table>-->
 			<List id="SalesOrdersListId"
 				items="{ path: 'SalesOrderItemDetails', sorter: { path: 'SalesOrderItem', descending: false }, parameters: {expand: 'MaterialDetails'} }"
-				mode="Delete" delete="onSalesOrderDelete">
+				mode="Delete" delete="onSalesOrderItemDelete">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://add" text="New Item" press="onSalesOrderItemAdd" enabled="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
+					</Toolbar>
+				</headerToolbar>
 				<items>
 					<CustomListItem press="onSalesOrderItemDetail" type="Navigation">
 						<HBox>
@@ -131,9 +123,10 @@
 			</List>
 		</semantic:content>
 		<semantic:customFooterContent>
-			<OverflowToolbarButton icon="sap-icon://add" text="Add Itemm" press="onSalesOrderItemAdd"/>
-			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onSalesOrderSave"/>
-			<OverflowToolbarButton icon="sap-icon://delete" text="Delete Sales Order" press="onSalesOrderDelete"/>
+			<Button icon="sap-icon://decline" text="Cancel" press="onSalesOrdeCancel" visible="{= !${path: 'Status', formatter: '.formatter.statusEditable'} }"/>
+			<Button icon="sap-icon://accept" text="Submit" press="onSalesOrderSubmit" visible="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
+			<Button icon="sap-icon://accept" text="Release" press="onSalesOrderRelease" visible="{= ${Status} === 'SUBMITTED' }"/>
+			<Button icon="sap-icon://save" text="Save" press="onSalesOrderSave" visible="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
 		</semantic:customFooterContent>
 	</semantic:MasterPage>
 </mvc:View>

@@ -118,7 +118,7 @@ sap.ui.define([], function() {
 				case "DRAFT":
 					return true;
 				default:
-					return true;
+					return false;
 			}
 		},
 		statusDisplayChange: function(sValue) {
