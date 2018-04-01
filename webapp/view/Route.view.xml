@@ -4,6 +4,7 @@
 	<semantic:DetailPage id="routePage" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="Route details"
 		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
 		<semantic:content>
+			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh="onRefresh"/>
 			<ObjectHeader id="objectHeader" title="Route {Route}" icon="sap-icon://map-3">
 				<attributes>
 					<ObjectAttribute title="Date" text="{ path: 'Date', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy/MM/dd' } }"/>
