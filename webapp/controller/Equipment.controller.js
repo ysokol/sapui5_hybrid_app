@@ -56,16 +56,6 @@ sap.ui.define([
 				},
 				file
 			).then(function(attachment_result) {
-
-				sap.m.MessageBox.confirm("Set image as default equipment picture?", {
-					onClose: function(oAction) {
-						if (oAction === sap.m.MessageBox.Action.OK) {
-							that.getComponentModel().setProperty(objectPath + "/Equipment", attachment_result.Attachment);
-							that.getComponentModel().submitChanges();
-						}
-					}
-				});
-
 				that.getView().byId("AttachmentListId").setBusy(false);
 			}).catch(function(oException) {
 				that.getView().byId("AttachmentListId").setBusy(false);

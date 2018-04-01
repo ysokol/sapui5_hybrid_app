@@ -72,7 +72,8 @@ sap.ui.define([
 			aProcessNodes[0].title = "Sales Order Draft # " + this._oODataModel.getProperty(sSalesOrderPath + "/SalesOrder");
 			aProcessNodes[0].titleAbbreviation = "SO Draft # " + this._oODataModel.getProperty(sSalesOrderPath + "/SalesOrder");
 
-			if (this._oODataModel.getProperty(sSalesOrderPath + "/Status") === "SUBMITTED" || this._oODataModel.getProperty(sSalesOrderPath + "/Status") === "RELEASED") {
+			if (this._oODataModel.getProperty(sSalesOrderPath + "/Status") === "SUBMITTED" || this._oODataModel.getProperty(sSalesOrderPath +
+					"/Status") === "RELEASED") {
 				aProcessNodes.push({});
 				aProcessNodes[1].id = "20";
 				aProcessNodes[1].lane = "1";
@@ -83,7 +84,7 @@ sap.ui.define([
 
 				aProcessNodes[0].children = ["20"];
 			}
-			
+
 			if (this._oODataModel.getProperty(sSalesOrderPath + "/Status") === "RELEASED") {
 				aProcessNodes.push({});
 				aProcessNodes[2].id = "30";
@@ -112,36 +113,27 @@ sap.ui.define([
 		recalcSalesOrder: function(sSalesOrderPath) {
 			debugger;
 			var that = this;
-			var nOrderTotalGross = 0;
+			//var nOrderTotalGross = 0;
 
-			/*for (let sSalesOrderItemPath of that._oODataModel.getProperty(sSalesOrderPath).SalesOrderItemDetails.__list) {
-				nOrderTotalGross += Number(that._oODataModel.getProperty("/" + sSalesOrderItemPath + "/AmountGross"));
-			}
 
-			that._oODataModel.setProperty(sSalesOrderPath + "/OrderTotalGross", nOrderTotalGross.toString());*/
-
-			//that._oODataModel.
 			return new Promise(function(resolve, reject) {
 				that._oODataModel.readExt(sSalesOrderPath, {
 						"$expand": "SalesOrderItemDetails"
 					})
 					.then(() => {
-						for (let sSalesOrderItemPath of that._oODataModel.getProperty(sSalesOrderPath).SalesOrderItemDetails.__list) {
+						/*for (let sSalesOrderItemPath of that._oODataModel.getProperty(sSalesOrderPath).SalesOrderItemDetails.__list) {
 							nOrderTotalGross += Number(that._oODataModel.getProperty("/" + sSalesOrderItemPath + "/AmountGross"));
 						}
 
-						that._oODataModel.setProperty(sSalesOrderPath + "/OrderTotalGross", nOrderTotalGross.toString());
+						that._oODataModel.setProperty(sSalesOrderPath + "/OrderTotalGross", nOrderTotalGross.toString());*/
+
+						that._oODataModel.setProperty(sSalesOrderPath + "/OrderTotalGross",
+							that._oODataModel.getProperty(sSalesOrderPath).SalesOrderItemDetails.__list
+							.map(sPath => Number(that._oODataModel.getProperty("/" + sPath + "/AmountGross")))
+							.reduce((nOrderTotalGross, nOrderAmount) => nOrderTotalGross + nOrderAmount, 0)
+							.toString()
+						);
 					})
-					/*that._oODataModel.readExt(sSalesOrderPath + "/SalesOrderItemDetails")
-						.then(oData => {
-							for (let oItem of oData.results) {
-								sSalesOrderItemPath = that._oODataModel.getRelatedPath(oItem.__metadata.uri);
-								//that.recalcSalesOrderItem(sSalesOrderItemPath);
-								nOrderTotalGross += Number(that._oODataModel.getProperty(sSalesOrderItemPath + "/AmountGross"));
-							}
-							that._oODataModel.setProperty(sSalesOrderPath + "/OrderTotalGross", nOrderTotalGross.toString());
-							resolve();
-						});*/
 			});
 
 		}

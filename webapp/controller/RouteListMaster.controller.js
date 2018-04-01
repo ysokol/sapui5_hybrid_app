@@ -29,7 +29,7 @@ sap.ui.define([
 		},
 		
 		onRefresh: function() {
-			this.byId("outesListId").getBinding("items").refresh();
+			this.byId("RoutesListId").getBinding("items").refresh();
 		},
 		
 		onUpdateFinished: function(oEvent) {

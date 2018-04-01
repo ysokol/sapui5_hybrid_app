@@ -28,7 +28,7 @@
 										<form:fields>
 											<ComboBox selectedKey="{Customer}" id="CustomerComboBox"
 												items="{ path: '/Customers', sorter: { path: 'Customer' }, templateShareable : true }" change="onMaintenancePlanChange"
-												selectionChange="onCustomerSelected" enabled="{path: 'Status', formatter: '.formatter.statusEditable'}">
+												selectionChange="onCustomerSelected">
 												<core:Item key="{Customer}" text="{Description}"/>
 											</ComboBox>
 										</form:fields>
@@ -56,7 +56,7 @@
 									<HBox>
 										<core:Icon size="2rem" src="sap-icon://attachment-photo" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-											<Link text="{Description}" target="" press="onAttachmentViewImage"/>
+											<Label text="{Description}"/>
 											<Label text="{Attachment}"/>
 										</VBox>
 									</HBox>
@@ -66,7 +66,6 @@
 						<!--<unif:FileUploader id="fileUploader" name="myFileUpload" tooltip="Upload your file to the local server"
 							uploadComplete="handleUploadComplete" change='onFileUploaderSet' mimeType="image/*"/>-->
 					</IconTabFilter>
-					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications"></IconTabFilter>
 				</items>
 			</IconTabBar>
 		</semantic:content>

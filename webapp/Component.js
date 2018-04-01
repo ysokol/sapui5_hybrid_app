@@ -23,12 +23,13 @@ sap.ui.define([
 		},
 
 		init: function() {
+			debugger;
 			// load google maps library
 			var sHttpPath = jQuery.sap.getModulePath("my.sapui5_hybrid_app");
 			sap.ui.getCore().loadLibrary("openui5.googlemaps", sHttpPath + "/utils/googlemaps/");
 			
 			// create core Services
-			this._oPushNotificationService = new PushNotificationService();
+			this._oPushNotificationService = new PushNotificationService(this);
 			this._oBarcodeScannerService = new BarcodeScannerService();
 			this._oCaptureMediaService = new CaptureMediaService();
 			this._oAttachmentService = new AttachmentService(this);
@@ -74,6 +75,8 @@ sap.ui.define([
 				MockServer.init(); // start mock server in order to handle $metdata request which is not handled by Kapsel offline data 
 				this.getModel("mobileDevice").setProperty("/isOffline", true);
 			}
+			
+			$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			
 			this._oOfflineStoreService.init(this);
 			this._oOfflineStoreService.openStore();

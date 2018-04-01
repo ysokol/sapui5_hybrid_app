@@ -11,7 +11,7 @@
 		</semantic:subHeader>
 		<semantic:content>
 			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh="onRefresh"/>
-			<List id="routesListId" items="{ path: '/Routes', sorter: { path: 'Route', descending: false } }" busyIndicatorDelay="{masterView>/delay}"
+			<List id="RoutesListId" items="{ path: '/Routes', sorter: { path: 'Route', descending: false } }" busyIndicatorDelay="{masterView>/delay}"
 				noDataText="No Routes" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true"
 				updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
 				<items>

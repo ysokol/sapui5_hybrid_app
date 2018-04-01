@@ -7,24 +7,31 @@ sap.ui.define([
 		constructor: function(oODataModel) {
 			this._oODataModel = oODataModel;
 		},
-		
-		getNextNumber: function({sEntity, sProperty, sInitialValue, iStep}) {
+
+		getNextNumber: function({
+			sEntity,
+			sProperty,
+			sInitialValue,
+			iStep
+		}) {
 			var that = this;
 			return new Promise(function(resolve, reject) {
 				var sMaxNumber = sInitialValue;
 				var mODataFilter = {
 					"$top": "1",
-					"$orderby": sProperty + " desc"
+					"$orderby": sProperty + " desc",
 				};
-				
+				if (sMaxNumber.substring(0, 1) === "$") {
+					mODataFilter["$filter"] = "startswith(" + sProperty + ", '$') eq true";
+				}
 				that._oODataModel.readExt("/" + sEntity, mODataFilter)
 					.then(function(oData) {
 						if (oData.results[0]) {
 							sMaxNumber = oData.results[0][sProperty];
 						}
 						if (sMaxNumber.substring(0, 1) === "$") {
-							resolve(sMaxNumber.replace(/(\d+)+/g, (match, iNumber) => {
-								parseInt(iNumber) + iStep
+							resolve(sMaxNumber.replace(/(\d+)+/g, function (match, iNumber) {
+								return parseInt(iNumber) + iStep;
 							}));
 						} else {
 							resolve(that.stringPad(parseInt(sMaxNumber) + iStep, sMaxNumber.length));

@@ -16,7 +16,7 @@ sap.ui.define([
 			this.getRouter().getRoute("Visit").attachPatternMatched(this._onObjectMatched, this);
 			this._oRouteService = new RouteService(this.getComponentModel(), this.getComponentModel("routeMapModel"));
 		},
-
+		
 		onVisitOpen: function(oEvent) {
 			var that = this;
 			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
@@ -114,11 +114,11 @@ sap.ui.define([
 		onSalesOrderAdd: function(oEvent) {
 			var that = this;
 			var sVisitPath = oEvent.getSource().getParent().getBindingContext().getPath();
-			var sSalesOrderInitialNumber = "0000000000";
+			var sSalesOrderInitialNumber = "5000000000";
 			var iStep = 10;
 			
 			if (this.isMobileDevice()) {
-				sSalesOrderInitialNumber = "$1";
+				sSalesOrderInitialNumber = "$0";
 				iStep = 1;
 			}
 			
@@ -165,6 +165,15 @@ sap.ui.define([
 					}
 				});
 			}
+		},
+		
+		onRefresh: function() {
+			this.getComponentModel().refresh(true);
+			this.byId("pullToRefresh").hide();
+		},
+		
+		onNavToOfflineStore: function(oEvent) {
+			this.getRouter().navTo("OfflineStore");
 		},
 
 		_onObjectMatched: function(oEvent) {

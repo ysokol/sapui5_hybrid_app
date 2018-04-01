@@ -20,12 +20,16 @@
 			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
 				<items>
 					<IconTabFilter icon="sap-icon://hint" tooltip="{i18n>detailIconTabBarInfo}">
-						<Label text="Route fullfillment progress:"/>
-						<ProgressIndicator class="sapUiSmallMarginBottom" percentValue="{=${VisitsDone} / ${VisitsTotal} * 100}"
-							displayValue="{VisitsDone} visit(s) done of {VisitsTotal}" showValue="true"
-							state="{=(${VisitsDone} === ${VisitsTotal}) ? 'Success' : 'Warning'}"/>
-						<Label text="Comment:"/>
-						<Input value="{Comment}"/>
+						<VBox class="sapUiTinyMarginBeginEnd sapUiTinyMarginTopBottom">
+							<Label text="Route fullfillment progress:"/>
+							<ProgressIndicator class="sapUiSmallMarginBottom" percentValue="{=${VisitsDone} / ${VisitsTotal} * 100}"
+								displayValue="{VisitsDone} visit(s) done of {VisitsTotal}" showValue="true"
+								state="{=(${VisitsDone} === ${VisitsTotal}) ? 'Success' : 'Warning'}"/>
+							<Label text="Comment:"/>
+							<Input value="{Comment}"/>
+							<!--<Label text="Status:"/>
+							<Input value="{Status}" width="5rem"/>-->
+						</VBox>
 					</IconTabFilter>
 					<IconTabFilter icon="sap-icon://map-2" tooltip="View On Map">
 						<gmaps:Map id="routeMapId" height="350px" lat="{directions>/lat}" lng="{directions>/lng}" zoom="7" zoomControl="true"
@@ -46,6 +50,12 @@
 			<List id="list" items="{ path: 'VisitDetails', sorter: { path: 'Visit', descending: false }, parameters: {expand: 'CustomerDetails'} }"
 				growing="true" growingScrollToLoad="true" updateFinished="onUpdateFinished" selectionChange="onSelectionChange" mode="Delete"
 				delete="onVisitDelete">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://add" text="Add Visit" press="onVisitAdd"/>
+					</Toolbar>
+				</headerToolbar>
 				<items>
 					<CustomListItem press="onVisitPress" type="Navigation">
 						<HBox>
@@ -66,9 +76,8 @@
 			</List>
 		</semantic:content>
 		<semantic:customFooterContent>
-			<OverflowToolbarButton icon="sap-icon://add" text="Add Itemm" press="onVisitAdd"/>
-			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onRouteSave"/>
-			<OverflowToolbarButton icon="sap-icon://delete" text="Delete Sales Order" press="onSalesOrderDelete"/>
+			<Button icon="sap-icon://delete" text="Delete Route" press="onRouteDelete"/>
+			<OverflowToolbarButton icon="sap-icon://save" text="Save Route" press="onRouteSave"/>
 		</semantic:customFooterContent>
 	</semantic:DetailPage>
 </mvc:View>

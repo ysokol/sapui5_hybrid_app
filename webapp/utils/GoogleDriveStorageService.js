@@ -5,18 +5,16 @@ sap.ui.define([
 	"use strict";
 	return Object.extend("my.sapui5_hybrid_app.utils.GoogleDriveStorageService", {
 
-		_apiKey: 'AIzaSyD0r-4o-SYW6VFRZKi5H_o1jdRxs5JZafU',
-		_clientId: '655021029955-rhoaknhgtf6vhs7mllqa1a4ghpmo3ndp.apps.googleusercontent.com',
-		_scope: 'https://www.googleapis.com/auth/drive',
-		_parentId: '1vxuDR9UWaY9tIyyaQ0hfLP259v-NtP5f',
-		_isLoggedIn: false,
-
 		constructor: function() {
-
+			this._apiKey = 'AIzaSyD0r-4o-SYW6VFRZKi5H_o1jdRxs5JZafU';
+			this._clientId = '655021029955-g89geiavjsis7a3a4ith8m7dqaim62u3.apps.googleusercontent.com';
+			this._scope = 'https://www.googleapis.com/auth/drive';
+			this._parentId = '1vxuDR9UWaY9tIyyaQ0hfLP259v-NtP5f';
+			this._isLoggedIn = false;
 		},
 
 		init: function() {
-			
+
 		},
 
 		clientInitAndLogin: function() {
@@ -26,14 +24,15 @@ sap.ui.define([
 					resolve();
 				} else {
 					debugger;
-					gapi.client.init({
-							'apiKey': that._apiLey,
-							'clientId': that._clientId,
-							'scope': that._scope,
-							'offline': true, 
-            				'cookiepolicy': 'none'
+					
+					gapi.client.setApiKey(that._apiKey);
+					gapi.auth2.init({
+							client_id: that._clientId,
+							scope: that._scope//,
+							//offline: true,
+							//cookiepolicy: 'none'
 						})
-						.then(gapi.auth2.getAuthInstance().signIn())
+						.then(() => gapi.auth2.getAuthInstance().signIn())
 						.then(function() {
 							that._isLoggedIn = true;
 							resolve();
@@ -41,6 +40,28 @@ sap.ui.define([
 						.catch(function(oException) {
 							reject(new MyException("GoogleDriveStorageServiceException", "Failed clientInitAndLogin()", oException));
 						});
+
+					/*.then(() => gapi.auth2.init({
+							'apiKey': that._apiKey,
+							'clientId': that._clientId,
+							'scope': that._scope
+						}))*/
+
+					/*gapi.client.init({
+							'apiKey': that._apiKey,
+							'clientId': that._clientId,
+							'scope': that._scope,
+							'offline': true,
+							'cookiepolicy': 'none'
+						})
+						.then(() => gapi.auth2.getAuthInstance().signIn())
+						.then(function() {
+							that._isLoggedIn = true;
+							resolve();
+						})
+						.catch(function(oException) {
+							reject(new MyException("GoogleDriveStorageServiceException", "Failed clientInitAndLogin()", oException));
+						});*/
 				}
 			});
 		},

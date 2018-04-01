@@ -53,6 +53,21 @@
 							</form:formContainers>
 						</form:Form>
 					</IconTabFilter>
+					<IconTabFilter icon="sap-icon://process" tooltip="Process Flow">
+						<suite:ProcessFlow id="processflow1" scrollable="false" foldedCorners="true" nodePress="onNodePress" nodeTitlePress="onNodeTitlePress"
+							nodes="{processFlow>/nodes}" lanes="{processFlow>/lanes}">
+							<suite:nodes>
+								<suite:ProcessFlowNode laneId="{processFlow>lane}" nodeId="{processFlow>id}" title="{processFlow>title}"
+									titleAbbreviation="{processFlow>titleAbbreviation}" isTitleClickable="{isTitleClickable}" children="{processFlow>children}"
+									state="{processFlow>state}" stateText="{processFlow>stateText}" texts="{processFlow>texts}" highlighted="{processFlow>highlighted}"
+									focused="{processFlow>focused}"/>
+							</suite:nodes>
+							<suite:lanes>
+								<suite:ProcessFlowLaneHeader laneId="{processFlow>id}" iconSrc="{processFlow>icon}" text="{processFlow>label}"
+									position="{processFlow>position}"/>
+							</suite:lanes>
+						</suite:ProcessFlow>
+					</IconTabFilter>
 					<IconTabFilter id="iconTabBarFilter2" icon="sap-icon://attachment" tooltip="{i18n>detailIconTabBarAttachments}">
 						<List id="AttachmentListId" items="{AttachmentDetails}">
 							<items>
@@ -74,29 +89,10 @@
 						<Button icon="sap-icon://add" press="onAddAttachment"/>
 						<Button icon="sap-icon://add-photo" press="onAddPhoto"/>
 					</IconTabFilter>
-					<IconTabFilter id="iconTabBarFilter3" icon="sap-icon://ui-notifications" tooltip="Notifications">
-						<Button icon="sap-icon://paper-plane" press="onSendNotification"/>
-						<Button icon="sap-icon://bar-code" press="onScanBarcode"/>
-					</IconTabFilter>
-					<IconTabFilter icon="sap-icon://process" tooltip="Process Flow">
-						<suite:ProcessFlow id="processflow1" scrollable="false" foldedCorners="true" nodePress="onNodePress" nodeTitlePress="onNodeTitlePress"
-							nodes="{processFlow>/nodes}" lanes="{processFlow>/lanes}">
-							<suite:nodes>
-								<suite:ProcessFlowNode laneId="{processFlow>lane}" nodeId="{processFlow>id}" title="{processFlow>title}"
-									titleAbbreviation="{processFlow>titleAbbreviation}" isTitleClickable="{isTitleClickable}" children="{processFlow>children}"
-									state="{processFlow>state}" stateText="{processFlow>stateText}" texts="{processFlow>texts}" highlighted="{processFlow>highlighted}"
-									focused="{processFlow>focused}"/>
-							</suite:nodes>
-							<suite:lanes>
-								<suite:ProcessFlowLaneHeader laneId="{processFlow>id}" iconSrc="{processFlow>icon}" text="{processFlow>label}"
-									position="{processFlow>position}"/>
-							</suite:lanes>
-						</suite:ProcessFlow>
-					</IconTabFilter>
 				</items>
 			</IconTabBar>
 			<List id="SalesOrdersListId"
-				items="{ path: 'SalesOrderItemDetails', sorter: { path: 'SalesOrderItem', descending: false }, parameters: {expand: 'MaterialDetails'} }"
+				items="{ path: 'SalesOrderItemDetails', sorter: { path: 'SalesOrderItem', descending: false }, parameters: {expand: 'MaterialDetails, SalesOrderDetails'} }"
 				mode="Delete" delete="onSalesOrderItemDelete">
 				<headerToolbar>
 					<Toolbar>
@@ -125,7 +121,7 @@
 		<semantic:customFooterContent>
 			<Button icon="sap-icon://decline" text="Cancel" press="onSalesOrdeCancel" visible="{= !${path: 'Status', formatter: '.formatter.statusEditable'} }"/>
 			<Button icon="sap-icon://accept" text="Submit" press="onSalesOrderSubmit" visible="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
-			<Button icon="sap-icon://accept" text="Release" press="onSalesOrderRelease" visible="{= ${Status} === 'SUBMITTED' }"/>
+			<Button icon="sap-icon://approvals" text="Release" press="onSalesOrderRelease" visible="{=( ${Status} === 'SUBMITTED' &amp;&amp; !${device>/system/phone} )}"/>
 			<Button icon="sap-icon://save" text="Save" press="onSalesOrderSave" visible="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
 		</semantic:customFooterContent>
 	</semantic:MasterPage>

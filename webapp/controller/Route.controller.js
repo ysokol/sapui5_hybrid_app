@@ -21,7 +21,12 @@ sap.ui.define([
 			this.getView().setModel(this.getComponentModel("routeMapModel"), "directions");
 
 		},
-
+		
+		onRefresh: function() {
+			this.getComponentModel().refresh(true);
+			this.byId("pullToRefresh").hide();
+		},
+		
 		refreshMap: function(sRoutePath) {
 			var sCurrentRoutePath = (sRoutePath) ? sRoutePath : this.getView().getElementBinding().getPath();
 			this._oRouteService.refreshMapDataModel(sCurrentRoutePath);
@@ -82,6 +87,10 @@ sap.ui.define([
 
 		onRouteSave: function(oEvent) {
 			this.getComponentModel().submitChanges();
+		},
+		
+		onRouteDelete: function(oEvent) {
+			this.getComponentModel().remove(this.getView().getElementBinding().getPath());
 		},
 
 		_onObjectMatched: function(oEvent) {

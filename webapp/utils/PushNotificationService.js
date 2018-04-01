@@ -5,8 +5,8 @@ sap.ui.define([
 	"use strict";
 	return Object.extend("my.sapui5_hybrid_app.utils.PushNotificationService", {
 
-		constructor: function() {
-
+		constructor: function(oUiComponent) {
+			this._oUiComponent = oUiComponent;
 		},
 
 		init: function() {
@@ -56,7 +56,6 @@ sap.ui.define([
 				
 				$.ajax(oRequest)
 				.done(function(oData,  sTextStatus, oJqXHR) {
-					console.log(oData);
 					resolve(oData);
 				})
 				.fail(function(oJqXHR, sTextStatus, oErrorThrown ) {
@@ -66,6 +65,20 @@ sap.ui.define([
 		},
 
 		onProcessNotification: function(oNotification) {
+			var that = this;
+			sap.m.MessageBox.confirm("New Notification: " + oNotification.title + ".\r\n" + "Navigate to Sales Order?", {
+					onClose: function(oAction) {
+						if (oAction === sap.m.MessageBox.Action.OK) {
+							that._oUiComponent.getRouter().navTo("SalesOrder", {
+								objectPath: oNotification.data
+							});
+						}
+						that.setPushFeedbackStatus('consumed', oNotification.additionalData.notificationId);
+					}
+				});
+
+			
+			
 			//oNotification = {
 			//	additionalData: {
 			//		foreground:true
@@ -75,8 +88,9 @@ sap.ui.define([
 			//	data:"data"
 			//	title:"alert"
 			//}
-
-			var that = this;
+			//this.getRouter().initialize();
+			
+			/*var that = this;
 			var oDialog = new sap.m.Dialog({
 				content: new sap.m.Text({
 					text: "Notification received \r\n" +
@@ -96,7 +110,7 @@ sap.ui.define([
 					oDialog.destroy();
 				}
 			});
-			oDialog.open();
+			oDialog.open();*/
 
 		},
 

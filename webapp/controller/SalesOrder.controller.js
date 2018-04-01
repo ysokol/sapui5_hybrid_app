@@ -14,17 +14,16 @@ sap.ui.define([
 	return BaseController.extend("my.sapui5_hybrid_app.controller.SalesOrder", {
 
 		formatter: formatter,
-		_attachmentService: null,
+
 		/* =========================================================== */
 		/* lifecycle methods                                           */
 		/* =========================================================== */
 		onInit: function() {
-			
 
 			this.getRouter().getRoute("SalesOrder").attachPatternMatched(this._onObjectMatched, this);
 			this._oProcessFlowModel = new JSONModel();
 			this.getView().setModel(this._oProcessFlowModel, "processFlow");
-			
+
 			this._oSalesOrderService = new SalesOrderService(this.getComponentModel(), this._oProcessFlowModel);
 		},
 
@@ -34,31 +33,52 @@ sap.ui.define([
 		},
 
 		onSalesOrderItemAdd: function(oEvent) {
-			var currentSalesOrderPath = this.getView().getElementBinding().getPath();
-			var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
-			var maxItem = "0000";
 			var that = this;
-			this.getComponentModel().read(currentSalesOrderPath + "/SalesOrderItemDetails", {
-				success: function(oData) {
-					for (let item of oData.results) {
-						if (!isNaN(parseInt(item.SalesOrderItem)) && item.SalesOrderItem > maxItem) {
-							maxItem = item.SalesOrderItem;
-						}
-					}
-					that.getComponentModel().createExt(currentSalesOrderPath + "/SalesOrderItemDetails", {
-							SalesOrder: salesOrderNum,
-							SalesOrderItem: that._utils.stringPad(parseInt(maxItem) + 10, 4),
-							SalesOrderDetails: {
-								__metadata: {
-									uri: currentSalesOrderPath.substring(1)
-								}
+			var sSalesOrderPath = oEvent.getSource().getParent().getBindingContext().getPath();
+			var sSalesOrderNum = this.getComponentModel().getProperty(sSalesOrderPath).SalesOrder;
+
+			that.getNumberRangeService().getNextNumber({
+					sEntity: sSalesOrderPath.substring(1) + "/SalesOrderItemDetails",
+					sProperty: "SalesOrderItem",
+					sInitialValue: "0000",
+					iStep: 10
+				})
+				.then((sNextNumber) =>
+					that.getComponentModel().createExt(sSalesOrderPath + "/SalesOrderItemDetails", {
+						SalesOrder: sSalesOrderNum,
+						SalesOrderItem: sNextNumber,
+						SalesOrderDetails: {
+							__metadata: {
+								uri: sSalesOrderPath.substring(1)
 							}
-						});
-						/*.then(() => that.getComponentModel().readExt(currentSalesOrderPath, {
-							"$expand": "SalesOrderItemDetails"
-						}));*/
+						}
+					})
+				);
+			/*var currentSalesOrderPath = this.getView().getElementBinding().getPath();
+		var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
+		var maxItem = "0000";
+		var that = this;
+		this.getComponentModel().read(currentSalesOrderPath + "/SalesOrderItemDetails", {
+			success: function(oData) {
+				for (let item of oData.results) {
+					if (!isNaN(parseInt(item.SalesOrderItem)) && item.SalesOrderItem > maxItem) {
+						maxItem = item.SalesOrderItem;
+					}
 				}
-			});
+				that.getComponentModel().createExt(currentSalesOrderPath + "/SalesOrderItemDetails", {
+						SalesOrder: salesOrderNum,
+						SalesOrderItem: that._utils.stringPad(parseInt(maxItem) + 10, 4),
+						SalesOrderDetails: {
+							__metadata: {
+								uri: currentSalesOrderPath.substring(1)
+							}
+						}
+					});
+					//.then(() => that.getComponentModel().readExt(currentSalesOrderPath, {
+					//	"$expand": "SalesOrderItemDetails"
+					//}));
+			}
+		}); */
 		},
 
 		onSalesOrderItemDelete: function(oEvent) {
@@ -98,29 +118,43 @@ sap.ui.define([
 				.then(() => that.getComponentModel().submitChanges());*/
 		},
 
+		onSalesOrderItemCancel: function(oEvent) {
+			this._oSalesOrderItemDialog.close();
+		},
+
 		onSalesOrderSave: function(oEvent) {
 			this.getComponentModel().submitChanges();
 		},
-		
+
 		onSalesOrderSubmit: function(oEvent) {
 			var sSalesOrderPath = this.getView().getElementBinding().getPath();
 			this.getComponentModel().setProperty(sSalesOrderPath + "/Status", "SUBMITTED");
 			this.getComponentModel().submitChanges();
 			this._oSalesOrderService.refreshStatusModel(sSalesOrderPath);
 		},
-		
+
 		onSalesOrdeCancel: function(oEvent) {
 			var sSalesOrderPath = this.getView().getElementBinding().getPath();
 			this.getComponentModel().setProperty(sSalesOrderPath + "/Status", "DRAFT");
 			this.getComponentModel().submitChanges();
 			this._oSalesOrderService.refreshStatusModel(sSalesOrderPath);
 		},
-		
+
 		onSalesOrderRelease: function(oEvent) {
+			var that = this;
 			var sSalesOrderPath = this.getView().getElementBinding().getPath();
+			var sSalesOrderNum = this.getComponentModel().getProperty(sSalesOrderPath).SalesOrder;
+
 			this.getComponentModel().setProperty(sSalesOrderPath + "/Status", "RELEASED");
 			this.getComponentModel().submitChanges();
 			this._oSalesOrderService.refreshStatusModel(sSalesOrderPath);
+
+			this.getComponentPushNotificationService().sendNotificationAll("SalesOrder # " + sSalesOrderNum + " Released", sSalesOrderPath.substring(
+					1))
+				.then(oData => sap.m.MessageToast.show("Notification sent!", {
+					duration: 3000
+				}));
+
 		},
 
 		onSalesOrderDelete: function(oEvent) {

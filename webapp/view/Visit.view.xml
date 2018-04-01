@@ -1,7 +1,8 @@
 <mvc:View controllerName="my.sapui5_hybrid_app.controller.Visit" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
 	xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unif="sap.ui.unified">
-	<semantic:MasterPage id="visitPageId" title="Visit details" showNavButton="true" navButtonPress="onNavBack">
+	<semantic:MasterPage id="VisitPageId" title="Visit details" showNavButton="true" navButtonPress="onNavBack">
 		<semantic:content>
+			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh="onRefresh"/>
 			<ObjectHeader id="objectHeader" title="Visit {Visit} of Route {Route}" icon="sap-icon://visits">
 				<attributes>
 					<ObjectAttribute title="Customer" text="{Customer} - {CustomerDetails/Description}"/>
@@ -29,7 +30,7 @@
 										<form:fields>
 											<ComboBox selectedKey="{Customer}" id="CustomerComboBox"
 												items="{ path: '/Customers', sorter: { path: 'Customer' }, templateShareable : true }" change="onMaintenancePlanChange"
-												selectionChange="onCustomerSelected" enabled="{path: 'Status', formatter: '.formatter.statusEditable'}">
+												selectionChange="onCustomerSelected">
 												<core:Item key="{Customer}" text="{Description}"/>
 											</ComboBox>
 										</form:fields>
@@ -103,7 +104,7 @@
 										<core:Icon size="2rem" src="sap-icon://sales-order" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 											<Label text="{SalesOrder}" design="Bold"/>
-											<Label text="{Customer} - {CustomerDetails/Description}"/>
+											<Label text="{Customer} - {CustomerDetails/Description}" width="11rem"/>
 											<Label text="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}"/>
 										</VBox>
 										<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" alignItems="End">
@@ -131,6 +132,7 @@
 			</IconTabBar>
 		</semantic:content>
 		<semantic:customFooterContent>
+			<OverflowToolbarButton icon="sap-icon://database" text="Offline Store" press="onNavToOfflineStore"/>
 			<Button text="Open Visit" icon="sap-icon://open-command-field" press="onVisitOpen"/>
 			<Button text="Close Visit" icon="sap-icon://close-command-field" press="onVisitClose"/>
 			<OverflowToolbarButton icon="sap-icon://save" text="Save Data" press="onVisitSave"/>
