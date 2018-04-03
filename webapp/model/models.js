@@ -51,8 +51,10 @@ sap.ui.define([
 		},
 
 		createODataModelWeb: function() { // oData model used for web application
+			
 			var oDataModel = new MyODataModel(
 				"https://myorderss0004431717trial.hanatrial.ondemand.com:443/MyOrders/odata", {
+				//"/odata", {
 					json: true,
 					useBatch: true,
 					defaultBindingMode: sap.ui.model.BindingMode.TwoWay,

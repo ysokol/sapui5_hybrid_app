@@ -14,7 +14,7 @@
       "test.html"
     ],
     "buildRequired": true,
-    "lastBuildDateTime": "Sat, 03 Mar 2018 17:21:31 GMT"
+    "lastBuildDateTime": "Tue, 03 Apr 2018 19:41:28 GMT"
   },
   "dataBinding": {
     "/webapp/view/App.view.xml": {
@@ -93,6 +93,6 @@
   "hcpdeploy": {
     "account": "s0004431717trial",
     "name": "sapui5hybridapp",
-    "lastVersionWeTriedToDeploy": "1.0.1"
+    "lastVersionWeTriedToDeploy": "1.0.2"
   }
 }

@@ -2,6 +2,7 @@
     "application": {
         "id": "",
         "title": "my.sapui5_hybrid_app.sapui5_hybrid_app",
+        "description": "SAPUI5 Hybrid Application",
         "type": "SAP_UI5_Component",
         "componentUrl": "/",
         "appUrl": "#sapui5_hybrid_app-Display",
@@ -22,10 +23,10 @@
     },
     "tile": {
         "type": "StaticTile",
-        "title": "SAPUI5 Hybrid App",
-        "subtitle": "Subtitle",
-        "searchKeywords": "SAPUI5 Hybrid App,Subtitle",
-        "displayIconUrl": "sap-icon://approvals",
+        "title": "SAPUI5 Hybrid Application",
+        "subtitle": "Showcase app",
+        "searchKeywords": "SAPUI5 Hybrid Application,Showcase app",
+        "displayIconUrl": "sap-icon://business-objects-mobile",
         "displayInfoText": "",
         "size": "1x1",
         "serviceURL": "",

@@ -70,11 +70,11 @@
 			}
 		},
 		"resources": {
-		  "css": [
-			{
-			  "uri": "css/my.css"
-			}
-		  ]
+			"css": [
+				{
+					"uri": "css/my.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -93,62 +93,73 @@
 				},
 				"async": true
 			},
-			"routes": [{
-				"pattern": "",
-				"name": "App",
-				"view": "App",
-				"viewPath": "my.sapui5_hybrid_app.view",
-				"targetControl": "idFullScreenAppControl",
-				"targetAggregation": "pages",
-				"subroutes": [{
+			"routes": [
+				{
 					"pattern": "",
-					"name": "RouteListMaster",
-					"view": "RouteListMaster",
-					"targetControl": "idAppControl",
-					"targetAggregation": "masterPages",
-					"subroutes": [{
-						"pattern": "Routes/{objectPath}",
-						"name": "Route",
-						"view": "Route",
-						"targetAggregation": "detailPages"
-					}]
-				}]
-			}, {
-				"pattern": "RouteMap/{objectPath}",
-				"name": "RouteMap",
-				"view": "RouteMap",
-				"viewPath": "my.sapui5_hybrid_app.view",
-				"targetControl": "idFullScreenAppControl",
-				"targetAggregation": "pages"
-			}, {
-				"pattern": "Visits/{objectPath}",
-				"name": "Visit",
-				"view": "Visit",
-				"viewPath": "my.sapui5_hybrid_app.view",
-				"targetControl": "idFullScreenAppControl",
-				"targetAggregation": "pages"
-			}, {
-				"pattern": "Equipment/{objectPath}",
-				"name": "Equipment",
-				"view": "Equipment",
-				"viewPath": "my.sapui5_hybrid_app.view",
-				"targetControl": "idFullScreenAppControl",
-				"targetAggregation": "pages"
-			}, {
-				"pattern": "SalesOrder/{objectPath}",
-				"name": "SalesOrder",
-				"view": "SalesOrder",
-				"viewPath": "my.sapui5_hybrid_app.view",
-				"targetControl": "idFullScreenAppControl",
-				"targetAggregation": "pages"
-			}, {
-				"pattern": "OfflineStore",
-				"name": "OfflineStore",
-				"view": "OfflineStore",
-				"viewPath": "my.sapui5_hybrid_app.view",
-				"targetControl": "idFullScreenAppControl",
-				"targetAggregation": "pages"
-			}],
+					"name": "App",
+					"view": "App",
+					"viewPath": "my.sapui5_hybrid_app.view",
+					"targetControl": "idFullScreenAppControl",
+					"targetAggregation": "pages",
+					"subroutes": [
+						{
+							"pattern": "",
+							"name": "RouteListMaster",
+							"view": "RouteListMaster",
+							"targetControl": "idAppControl",
+							"targetAggregation": "masterPages",
+							"subroutes": [
+								{
+									"pattern": "Routes/{objectPath}",
+									"name": "Route",
+									"view": "Route",
+									"targetAggregation": "detailPages"
+								}
+							]
+						}
+					]
+				},
+				{
+					"pattern": "RouteMap/{objectPath}",
+					"name": "RouteMap",
+					"view": "RouteMap",
+					"viewPath": "my.sapui5_hybrid_app.view",
+					"targetControl": "idFullScreenAppControl",
+					"targetAggregation": "pages"
+				},
+				{
+					"pattern": "Visits/{objectPath}",
+					"name": "Visit",
+					"view": "Visit",
+					"viewPath": "my.sapui5_hybrid_app.view",
+					"targetControl": "idFullScreenAppControl",
+					"targetAggregation": "pages"
+				},
+				{
+					"pattern": "Equipment/{objectPath}",
+					"name": "Equipment",
+					"view": "Equipment",
+					"viewPath": "my.sapui5_hybrid_app.view",
+					"targetControl": "idFullScreenAppControl",
+					"targetAggregation": "pages"
+				},
+				{
+					"pattern": "SalesOrder/{objectPath}",
+					"name": "SalesOrder",
+					"view": "SalesOrder",
+					"viewPath": "my.sapui5_hybrid_app.view",
+					"targetControl": "idFullScreenAppControl",
+					"targetAggregation": "pages"
+				},
+				{
+					"pattern": "OfflineStore",
+					"name": "OfflineStore",
+					"view": "OfflineStore",
+					"viewPath": "my.sapui5_hybrid_app.view",
+					"targetControl": "idFullScreenAppControl",
+					"targetAggregation": "pages"
+				}
+			],
 			"targets": {
 				"App": {
 					"viewName": "App",

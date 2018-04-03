@@ -45,6 +45,14 @@
       "description": "SAP Document Center Destination"
     },
     {
+		"path": "/odata",
+		"target": {
+			"type": "destination",
+			"name": "my_orders_odata"
+		},
+		"description": "SAP OData Destination"
+	}, 
+    {
       "path": "/yandex_api",
       "target": {
         "type": "destination",
