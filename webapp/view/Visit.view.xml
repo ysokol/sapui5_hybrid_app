@@ -95,6 +95,7 @@
 							<headerToolbar>
 								<Toolbar>
 									<ToolbarSpacer/>
+									<Button icon="sap-icon://refresh" text="Reload" press="onRefresh"/>
 									<Button icon="sap-icon://add" text="New Sales Order" press="onSalesOrderAdd"/>
 								</Toolbar>
 							</headerToolbar>

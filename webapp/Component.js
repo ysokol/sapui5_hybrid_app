@@ -27,7 +27,6 @@ sap.ui.define([
 			// load google maps library
 			var sHttpPath = jQuery.sap.getModulePath("my.sapui5_hybrid_app");
 			sap.ui.getCore().loadLibrary("openui5.googlemaps", sHttpPath + "/utils/googlemaps/");
-			$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			
 			// create core Services
 			this._oPushNotificationService = new PushNotificationService(this);
@@ -49,12 +48,13 @@ sap.ui.define([
 				document.addEventListener("offline", $.proxy(this.onOffline, this), false);
 				document.addEventListener("online", $.proxy(this.onOnline, this), false);
 			} else {
+				$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 				this.initFinalSteps();
 			}
 			// load Google API
-			window.addEventListener('load', function() {
-				$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
-			});
+			//window.addEventListener('load', function() {
+			//	$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
+			//});
 			
 			// set defaul error handlers
 			window.onerror = function(msg, url, line, col, error) {
@@ -75,9 +75,9 @@ sap.ui.define([
 			if (navigator.connection.type === Connection.NONE) {
 				MockServer.init(); // start mock server in order to handle $metdata request which is not handled by Kapsel offline data 
 				this.getModel("mobileDevice").setProperty("/isOffline", true);
+			} else {
+				$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			}
-			
-			$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			
 			this._oOfflineStoreService.init(this);
 			this._oOfflineStoreService.openStore();
@@ -113,13 +113,12 @@ sap.ui.define([
 		onOffline: function() {
 			this.getModel("mobileDevice").setProperty("/isOffline", true);
 			sap.m.MessageToast.show("You go offline, please come back soon!");
-			console.log('onOffline()');
 		},
 
 		onOnline: function() {
 			this.getModel("mobileDevice").setProperty("/isOffline", false);
-			sap.m.MessageToast.show("Greate, you are back online");
-			console.log('onOnline()');
+			sap.m.MessageToast.show("Great, you are back online!");
+			$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 		},
 
 		destroy: function() {

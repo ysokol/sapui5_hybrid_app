@@ -3,6 +3,7 @@
 	xmlns:unif="sap.ui.unified" xmlns:suite="sap.suite.ui.commons">
 	<semantic:MasterPage id="visitPageId" title="Sales Order details" showNavButton="true" navButtonPress="onNavBack">
 		<semantic:content>
+			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh="onRefresh"/>
 			<ObjectHeader id="objectHeader" title="{SalesOrder}" number="{ path: 'OrderTotalGross', formatter: '.formatter.currencyValue' }"
 				numberUnit="{Currency}">
 				<statuses>
@@ -97,6 +98,7 @@
 				<headerToolbar>
 					<Toolbar>
 						<ToolbarSpacer/>
+						<Button icon="sap-icon://refresh" text="Reload" press="onRefresh"/>
 						<Button icon="sap-icon://add" text="New Item" press="onSalesOrderItemAdd" enabled="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
 					</Toolbar>
 				</headerToolbar>

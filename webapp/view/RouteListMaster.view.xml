@@ -1,6 +1,6 @@
 <mvc:View controllerName="my.sapui5_hybrid_app.controller.RouteListMaster" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
 	xmlns="sap.m" xmlns:semantic="sap.m.semantic">
-	<semantic:MasterPage id="page" title="{masterView>/title}" navButtonPress="onNavBack" showNavButton="true">
+	<semantic:MasterPage id="page" title="Routes" navButtonPress="onNavBack" showNavButton="true">
 		<semantic:subHeader>
 			<Bar id="headerBar">
 				<contentMiddle>

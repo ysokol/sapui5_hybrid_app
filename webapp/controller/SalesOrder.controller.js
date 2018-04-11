@@ -54,31 +54,6 @@ sap.ui.define([
 						}
 					})
 				);
-			/*var currentSalesOrderPath = this.getView().getElementBinding().getPath();
-		var salesOrderNum = this.getComponentModel().getProperty(currentSalesOrderPath).SalesOrder;
-		var maxItem = "0000";
-		var that = this;
-		this.getComponentModel().read(currentSalesOrderPath + "/SalesOrderItemDetails", {
-			success: function(oData) {
-				for (let item of oData.results) {
-					if (!isNaN(parseInt(item.SalesOrderItem)) && item.SalesOrderItem > maxItem) {
-						maxItem = item.SalesOrderItem;
-					}
-				}
-				that.getComponentModel().createExt(currentSalesOrderPath + "/SalesOrderItemDetails", {
-						SalesOrder: salesOrderNum,
-						SalesOrderItem: that._utils.stringPad(parseInt(maxItem) + 10, 4),
-						SalesOrderDetails: {
-							__metadata: {
-								uri: currentSalesOrderPath.substring(1)
-							}
-						}
-					});
-					//.then(() => that.getComponentModel().readExt(currentSalesOrderPath, {
-					//	"$expand": "SalesOrderItemDetails"
-					//}));
-			}
-		}); */
 		},
 
 		onSalesOrderItemDelete: function(oEvent) {
@@ -159,6 +134,11 @@ sap.ui.define([
 
 		onSalesOrderDelete: function(oEvent) {
 			this.getComponentModel().remove(this.getView().getElementBinding().getPath());
+		},
+		
+		onRefresh: function() {
+			this.getComponentModel().refresh(true);
+			this.byId("pullToRefresh").hide();
 		},
 
 		_onObjectMatched: function(oEvent) {
