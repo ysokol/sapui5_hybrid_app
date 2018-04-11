@@ -27,6 +27,7 @@ sap.ui.define([
 			// load google maps library
 			var sHttpPath = jQuery.sap.getModulePath("my.sapui5_hybrid_app");
 			sap.ui.getCore().loadLibrary("openui5.googlemaps", sHttpPath + "/utils/googlemaps/");
+			$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			
 			// create core Services
 			this._oPushNotificationService = new PushNotificationService(this);

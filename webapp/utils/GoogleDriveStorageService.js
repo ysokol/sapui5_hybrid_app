@@ -7,7 +7,7 @@ sap.ui.define([
 
 		constructor: function() {
 			this._apiKey = 'AIzaSyD0r-4o-SYW6VFRZKi5H_o1jdRxs5JZafU';
-			this._clientId = '655021029955-g89geiavjsis7a3a4ith8m7dqaim62u3.apps.googleusercontent.com';
+			this._clientId = '655021029955-n5mkhrla680o3go7qpk7vpt5hnqaj46v.apps.googleusercontent.com';
 			this._scope = 'https://www.googleapis.com/auth/drive';
 			this._parentId = '1vxuDR9UWaY9tIyyaQ0hfLP259v-NtP5f';
 			this._isLoggedIn = false;

@@ -43,7 +43,7 @@ sap.ui.define([
 					"url": "https://hcpms-s0004431717trial.hanatrial.ondemand.com/restnotification/application/my.orders.hybrid/",
 					"method": "POST",
 					"headers": {
-						"Authorization": "Basic czAwMDQ0MzE3MTc6WnNlJDRyZnY=",
+						"Authorization": "Basic czAwMDQ0MzE3MTc6WnNlNHJmdmcjMQ==",
 						"Accept-Encoding": "gzip, deflate",
 						"Accept": "*/*",
 						"Content-Length": sRequestData.length,
