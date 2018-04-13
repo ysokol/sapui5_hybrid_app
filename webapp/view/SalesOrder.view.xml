@@ -22,7 +22,7 @@
 								<form:FormContainer>
 									<form:FormElement label="Order Date">
 										<form:fields>
-											<DatePicker value="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}" width="12em"
+											<DatePicker value="{path:'OrderDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short', strictParsing: true}}"
 												enabled="{path: 'Status', formatter: '.formatter.statusEditable'}"/>
 										</form:fields>
 									</form:FormElement>
