@@ -6,8 +6,8 @@ sap.ui.define([
 	return Object.extend("my.sapui5_hybrid_app.utils.GoogleDriveStorageService", {
 
 		constructor: function() {
-			this._apiKey = 'AIzaSyD0r-4o-SYW6VFRZKi5H_o1jdRxs5JZafU';
-			this._clientId = '655021029955-7laq3okabq9n12k958mfoe036e24dqel.apps.googleusercontent.com';
+			this._apiKey = 'AIzaSyDNQu2Tkm-kvUvwbeBRlx7omNWiVAnPYzo';
+			this._clientId = '655021029955-ke7cnrpk1sb77ltpoe6r23e120php2jo.apps.googleusercontent.com';
 			this._scope = 'https://www.googleapis.com/auth/drive';
 			this._parentId = '1vxuDR9UWaY9tIyyaQ0hfLP259v-NtP5f';
 			this._isLoggedIn = false;
@@ -24,13 +24,13 @@ sap.ui.define([
 					resolve();
 				} else {
 					debugger;
-					
+
 					gapi.client.setApiKey(that._apiKey);
 					gapi.auth2.init({
 							client_id: that._clientId,
-							scope: that._scope//,
-							//offline: true,
-							//cookiepolicy: 'none'
+							scope: that._scope,
+							offline: true,
+							cookiepolicy: 'none'
 						})
 						.then(() => gapi.auth2.getAuthInstance().signIn())
 						.then(function() {
@@ -41,7 +41,20 @@ sap.ui.define([
 							reject(new MyException("GoogleDriveStorageServiceException", "Failed clientInitAndLogin()", oException));
 						});
 
-					/*.then(() => gapi.auth2.init({
+					/*
+					
+					var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+						
+						gapi.client.init({
+							discoveryDocs: DISCOVERY_DOCS,
+							'apiKey': that._apiKey,
+							'clientId': that._clientId,
+							'scope': that._scope//,
+							//'offline': true,
+							//'cookiepolicy': 'none'
+						})
+					
+					then(() => gapi.auth2.init({
 							'apiKey': that._apiKey,
 							'clientId': that._clientId,
 							'scope': that._scope
