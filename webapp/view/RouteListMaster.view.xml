@@ -34,6 +34,7 @@
 		</semantic:content>
 		<semantic:customFooterContent>
 			<OverflowToolbarButton icon="sap-icon://database" text="Offline Store" press="onNavToOfflineStore"/>
+			<OverflowToolbarButton icon="sap-icon://cloud" text="Login to MS Graph" press="onLoginToMsGraph"/>
 		</semantic:customFooterContent>
 	</semantic:MasterPage>
 </mvc:View>

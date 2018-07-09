@@ -23,11 +23,20 @@ sap.ui.define([
 		},
 
 		init: function() {
-			debugger;
+
+			/*var oldOpen = XMLHttpRequest.prototype.open;
+			XMLHttpRequest.prototype.open = function() {
+				var currentUrl = arguments[1];
+				if (currentUrl === "/odata/$batch") {
+					arguments[1] = arguments[1] + "1";
+				}
+				oldOpen.apply(this, arguments);
+			};*/
+
 			// load google maps library
 			var sHttpPath = jQuery.sap.getModulePath("my.sapui5_hybrid_app");
 			sap.ui.getCore().loadLibrary("openui5.googlemaps", sHttpPath + "/utils/googlemaps/");
-			
+
 			// create core Services
 			this._oPushNotificationService = new PushNotificationService(this);
 			this._oBarcodeScannerService = new BarcodeScannerService();
@@ -35,8 +44,7 @@ sap.ui.define([
 			this._oAttachmentService = new AttachmentService(this);
 			this._oOfflineStoreService = new OfflineStoreService();
 			this._oNumberRangeService = null;
-			
-			
+
 			this.setModel(models.createRouteMapModel(), "routeMapModel");
 			this.setModel(models.createMobileDeviceModel(), "mobileDevice");
 			this.getModel("mobileDevice").setProperty("/isMobileDevice", document.URL.indexOf('http://') === -1 && document.URL.indexOf(
@@ -55,7 +63,7 @@ sap.ui.define([
 			//window.addEventListener('load', function() {
 			//	$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			//});
-			
+
 			// set defaul error handlers
 			window.onerror = function(msg, url, line, col, error) {
 				alert(msg);
@@ -78,7 +86,7 @@ sap.ui.define([
 			} else {
 				$.getScript('https://apis.google.com/js/api.js?onload=googleAapiLoaded');
 			}
-			
+
 			this._oOfflineStoreService.init(this);
 			this._oOfflineStoreService.openStore();
 
@@ -95,7 +103,7 @@ sap.ui.define([
 			} else {
 				this.setModel(models.createODataModelWeb());
 			}
-			
+
 			this._oNumberRangeService = new NumberRangeService(this.getModel());
 
 			sap.ui.getCore().setModel(this.getModel());
